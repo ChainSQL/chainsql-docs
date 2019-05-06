@@ -35,7 +35,7 @@
 2.2 系统架构
 ----------------
 
-        .. image::  ../../../../images/ChainSQL.png
+        .. image::  ../../images/ChainSQL.png
 
 -----------------        
 2.3 元素说明

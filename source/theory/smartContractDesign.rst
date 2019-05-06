@@ -42,7 +42,7 @@
 系统架构
 +++++++++++++++++++++++++++++++++++++
 
-.. image:: ../../../../images/SmartContract.png
+.. image:: ../../images/SmartContract.png
     :width: 600px
     :alt: SmartContractDesign
     :align: center
