@@ -6,7 +6,13 @@
 
 ChainSQL
 ===============
-ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项目Ripple建立，众享比特公司负责日常维护开发。
+ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项目Ripple建立，由 `众享比特 <http://www.peersafe.cn>`_ 公司开发维护。
+
+版本获取
+===============
+- `Chainsql节点 <https://github.com/ChainSQL/chainsqld/releases>`_
+- :ref:`Java API <Java环境>`
+- :ref:`Node.js API <Node环境>`
 
 设计目的
 ===============
@@ -31,9 +37,9 @@ ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项
 
 3. 智能合约
 ------------------------------------------
-- 无缝兼容以太坊智能合约
+- 无缝兼容以太坊智能合约(基于solidity版本：``0.4.25-nightly.2018.8.16+commit.a9e7ae29`` )
 - solidity语法中增加了对表操作的指令
-- solidity语法中增加对Ripple代币的操作指令(进行中）
+- solidity语法中增加对Ripple代币的操作指令(进行中...）
 
 系统架构
 ===============

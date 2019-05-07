@@ -12,6 +12,8 @@ Nodejs接口的使用，需要以下准备：
 1. 安装nodejs环境
 2. 安装chainsql的nodejs模块
 
+.. _Node环境:
+
 ---------------
 安装nodejs环境
 ---------------
