@@ -29,12 +29,16 @@ Nodejs接口的使用，需要以下准备：
 
 .. code-block:: javascript
 
-	// chainsql模块0.6.56及之前的版本引入方式
-	const ChainsqlAPI = require('chainsql').ChainsqlAPI;
-	// chainsql模块0.6.57及之后的版本引入方式
 	const ChainsqlAPI = require('chainsql');
 	
 	// 引入之后使用new创建全局chainsql对象，之后使用chainsql对象进行接口操作
+	const chainsql = new ChainsqlAPI();
+
+.. hint::
+	在0.6.57版本之前，引用chainsql需要用如下方式：
+.. code-block:: javascript
+
+	const ChainsqlAPI = require('chainsql').ChainsqlAPI;
 	const chainsql = new ChainsqlAPI();
 
 .. _Node.js返回值:
