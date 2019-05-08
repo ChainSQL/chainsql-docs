@@ -525,8 +525,8 @@ generateAddress
 
 .. code-block:: java
 
+    String rootSecret = "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb";
 		System.out.println( c.generateAddress() );
-
 		System.out.println( c.generateAddress(rootSecret) );
 
 输出:
@@ -784,7 +784,8 @@ getAccountInfo
 
 .. code-block:: java
 
-    System.out.println(c.getAccountInfo(testAccountAddress));
+    String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
+    System.out.println(c.getAccountInfo(rootAddress));
 
 输出:
 
@@ -1209,13 +1210,13 @@ sign
 
   String hello = "helloworld";
   byte[] signature = c.sign(hello.getBytes(), rootSecret);
-  System.out.println(signature);
+  System.out.println( Util.bytesToHex(signature));
 
 输出
 
 .. code-block:: java
 
-  "[B@56cbfb61"
+  "3044022002B4B80066E900E1EB4DB6DD843F8A31D5237E6A53536ED113694B2714EAF03902203BE9450E143CCAD62642ED7574377F2A580C3EA5ABC6A48E03A5126E2B3A45AA"
 
 
 ------------------------------------------------------------------------------
@@ -1315,6 +1316,7 @@ getTableNameInDB
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
   System.out.println(c.getTableNameInDB(rootAddress,"test1"));
 
 成功
@@ -1380,7 +1382,8 @@ getTableAuth
 
 .. code-block:: java
 
-  System.out.println(c.getTableAuth(testAccountAddress,sTableName2));
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
+  System.out.println(c.getTableAuth(rootAddress,"tableName"));
 
 .. code-block:: Json
 
@@ -1432,6 +1435,7 @@ getAccountTables
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
   System.out.println(c.getAccountTables(rootAddress,true));
 
 输出:
@@ -1746,6 +1750,7 @@ table
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   c.table(sTableName).insert(c.array("{id: 1, 'name': 'peera','age': 22}", "{id: 2, 'name': 'peerb','age': 21}"))
   .submit(SyncCond.db_success);
 
@@ -1783,6 +1788,7 @@ insert
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   // 向表sTableName中插入一条记录.
   c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"))
   .submit(SyncCond.db_success);
@@ -1817,6 +1823,7 @@ update
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   // 更新 id 等于 1 的记录
   c.table(sTableName)
   .get(c.array("{'id': 1}"))
@@ -1850,6 +1857,7 @@ delete
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   // 删除 id 等于 1 的记录.
   c.table(sTableName)
   .get(c.array("{'id': 1}"))
@@ -1895,6 +1903,7 @@ commit
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   c.beginTran();
 
   c.table(sTableName).insert(c.array("{'name': 'Rose','age': 22}","{'name': 'Jack','age': 21}"));
@@ -1958,6 +1967,7 @@ grant
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   JSONObject obj = new JSONObject();
   obj = c.grant(sTableName, sNewAccountId, "{insert:true,update:true}")
           .submit(SyncCond.validate_success);
@@ -2057,6 +2067,7 @@ get
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   //查询 name 等于 hello 的记录.
   JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).submit();
 
@@ -2117,6 +2128,7 @@ limit
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   //查询 name 等于 hello 的前10条记录
   JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).limit("{index:0,total:10}").submit();
   System.out.println(obj);
@@ -2175,6 +2187,7 @@ order
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   // 按 id 升序，name 的降序排序
   JSONObject obj = c.table(sTableName).get(c.array("{'name': 'hello'}")).order(c.array("{id:1}", "{name:-1}")).submit();
   System.out.println(obj);
@@ -2230,6 +2243,7 @@ withFields
 
 .. code-block:: java
 
+  String sTableName = "n12356";
   // 查询 name 等于 hello 的记录.取name以及id字段
   JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).withFields("['name','id']").submit();
   System.out.println(obj);
@@ -2305,6 +2319,8 @@ getBySqlAdmin
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
+  String sTableName = "n12356";
   // select * from t_xxxxxxx
   c.getTableNameInDB(rootAddress, sTableName, new Callback<JSONObject>(){
 
@@ -2411,6 +2427,8 @@ getBySqlUser
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
+  String sTableName = "n12356";
   JSONObject ret = c.getTableNameInDB(rootAddress, sTableName);
   if(ret.has("nameInDB")) {
     JSONObject obj = c.getBySqlUser("select * from t_" + ret.getString("nameInDB"));
@@ -2501,6 +2519,7 @@ subscribeTable
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
   // 用户订阅TestName表信息，表的创建者为rootAddress
   c.event.subscribeTable("TestName", rootAddress,new Callback<JSONObject>() {
     @Override
@@ -2538,6 +2557,7 @@ unsubcribeTable
 
 .. code-block:: java
 
+  String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
   // 用户取消订阅TestName表
   c.event.unsubscribeTable("TestName", rootAddress, new Callback<JSONObject>() {
       @Override
