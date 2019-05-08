@@ -408,8 +408,8 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
 
   * 第二种交易提交之后共识出错，``JsonObject`` 中包含以下字段：
 
-  - ``error`` - ``String`` : 错误类型码，可参考 :ref:`交易类错误码 <tx-errcode>`；
-  - ``error_message`` - ``String`` : 错误具体描述。
+    - ``error`` - ``String`` : 错误类型码，可参考 :ref:`交易类错误码 <tx-errcode>`；
+    - ``error_message`` - ``String`` : 错误具体描述。
 
   * 第三种交易提交共识后出错，主要是数据库入库操作中的错误，``JsonObject`` 中包含以下字段：
 
@@ -425,7 +425,9 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
     - ``tx_hash`` - ``String`` : 交易哈希值。
     - ``error_message`` - ``String`` : [**可选**]在错误类型为 **db_error** 的时候，会额外附加错误信息。
 
+-------
 示例
+-------
 
 .. code-block:: java
 
@@ -497,8 +499,15 @@ generateAddress
 .. code-block:: java
 
   public JSONObject generateAddress();
+  public JSONObject generateAddress(String secret);
 
 生成一个新的ChainSQL账户。但是此时该账户未在链上有效，需要链上有效账户对新账户发起pay操作，新账户才有效。
+
+------------
+参数
+------------
+
+1. ``secret``  - ``String``: 账户私钥
 
 -------
 返回值
@@ -516,17 +525,24 @@ generateAddress
 
 .. code-block:: java
 
-    JSONObject json = c.generateAddress();
+		System.out.println( c.generateAddress() );
+
+		System.out.println( c.generateAddress(rootSecret) );
 
 输出:
 
 .. code-block:: json    
 
-     {
-       "secret":"xcUd996waZzyaPEmeFVp4q5S3FZYB",
-       "address":"zP8Mum8xaGSkypRgDHKRbN8otJSzwgiJ9M",
-       "publicKey":"02B2F836C47A36DE57C2AF2116B8E812B7C70E7F0FEB0906493B8476FC58692EBE"
-     }
+  {
+    "address": "zxSscHsDfb8XZj3tgCgFaTcZgDe2rveySE",
+    "secret": "xpmWr564b9BLo8ZA2ysw7Vicrh76h",
+    "publicKey": "cBQw6iDUjN2Z3Aca56TBRt5R9vhmsX5R7SSHnVo9vnE4pYUjAiV6"
+  }
+  {
+    "address": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+    "secret": "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+    "publicKey": "cBQG8RQArjx1eTKFEAQXz2gS4utaDiEC9wmi7pfUPTi27VCchwgw"
+  }
 
 ------------------------------------------------------------------------------
 
@@ -594,6 +610,10 @@ getServerInfo
 
 获取区块链信息.
 
+------------
+参数
+------------
+
 -------
 返回值
 -------
@@ -606,6 +626,7 @@ getServerInfo
 	* ``complete_ledgers`` - ``String`` : 当前区块范围
 	* ``peers`` - ``Number`` : peer节点数量
 	* ``validation_quorum`` - ``Number`` : 完成共识最少验证节点个数
+
 
 -------
 示例
@@ -653,6 +674,10 @@ getChainInfo
 
 获取链信息
 
+------------
+参数
+------------
+
 -------
 返回值
 -------
@@ -661,6 +686,8 @@ getChainInfo
 
 	* ``chain_time`` - ``int`` : 区块链运行时间
 	* ``tx_count`` - ``JSONObject`` : 见  :ref:`tx_count <trans-count-return>`.
+
+.. _get-chain-info-sample:
 
 -------
 示例
@@ -692,6 +719,10 @@ getUnlList
     public JSONObject getUnlList();
 
 获取信任公钥列表
+
+------------
+参数
+------------
 
 -------
 返回值
@@ -785,7 +816,11 @@ getTransactionCount
 
     private JSONObject getTransactionCount();
 
-获取交易数量， **getServerInfo** 中调用，存于返回的 ``tx_count`` 字段中
+获取交易数量， **getChainInfo** 中调用，存于返回的 ``tx_count`` 字段中
+
+------------
+参数
+------------
 
 .. _trans-count-return:
 
@@ -797,6 +832,12 @@ getTransactionCount
 
 	* ``all``      - ``int`` : 所有交易数量
 	* ``chainsql`` - ``int`` : chainsql交易数量
+
+-------
+示例
+-------
+
+:ref:`示例 <get-chain-info-sample>`
 
 ------------------------------------------------------------------------------
 
@@ -882,11 +923,16 @@ getLedgerVersion
 
 .. code-block:: java
 
-    public void       getLedgerVersion(Callback<JSONObject> cb);
     public JSONObject getLedgerVersion();
-    
+    public void       getLedgerVersion(Callback<JSONObject> cb);
 
 获取最新区块高度（区块号）
+
+------------
+参数
+------------
+
+1. ``cb``      - ``Callback`` : 异步接口，参数为 回调函数
 
 -------
 返回值
@@ -1040,6 +1086,10 @@ getTransaction
 -------
 
 ``JSONObject`` - 详细格式见示例
+
+-------
+示例
+-------
 
 成功
 
