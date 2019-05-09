@@ -391,6 +391,8 @@ $gt	           大于	                            {field:{$gt:value}}
 $ge	           大于等于	                           {field:{$ge:value}}
 $in	            字段值在指定的数组中	                 {field:{$in:[v1, v2, ..., vn]}}
 $nin	         字段值不在指定的数组中	                 {field:{$nin:[v1, v2, ..., vn]}}
+$is            字段在表中的值是否为null             {field:{$is:"null"}}
+$isnot         字段在表中的值是否为null             {field:{$isnot:"null"}}
 ============   ===========================     =========================================
 
 
