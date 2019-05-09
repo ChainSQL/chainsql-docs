@@ -1463,6 +1463,8 @@ getAccountTables
 网关交易
 *****************
 
+.. _account-set:
+
 accountSet 
 =====================
 
@@ -1574,15 +1576,15 @@ pay(转账网关代币)
 
 网关要收取的手续费的计算公式如下
 
-``transferRate``   - 费率，    为 ``accountSet`` 函数中传入的参数
+``transferRate``   - 费率，    为网关属性设置 :ref:`accountSet <account-set>` 函数中传入的 ``transferRate`` 
 
-``transferFeeMin`` - 最小花费， 为 ``accountSet`` 函数中传入的参数
+``transferFeeMin`` - 最小花费， 为网关属性设置 :ref:`accountSet <account-set>` 函数中传入的 ``transferFeeMin`` 
 
-``transferFeeMax`` - 最大花费， 为 ``accountSet`` 函数中传入的参数
+``transferFeeMax`` - 最大花费， 为网关属性设置 :ref:`accountSet <account-set>` 函数中传入的 ``transferFeeMax`` 
 
 .. math::
     \begin{gather}
-    fee   = 转账金额*费率 \\
+    fee   = 转账金额*(费率-1.0) \\
     交易花费=\begin{cases}
     最小花费, \quad fee<最小花费 \\
     fee,\quad 最小花费\leq fee\leq 最大花费 \\ 
