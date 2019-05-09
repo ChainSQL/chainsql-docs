@@ -74,6 +74,98 @@ validation_create属于管理命令，通过椭圆曲线加密算法，使用种
       - 字符串
       - 证书私钥 Base58编码。
 
+submit
++++++++++++++++++++++++++++++++
+
+submit属于交易命令，用来提交一个交易。有两种模式：
+
+仅提交模式
+===============================
+
+语法：
+
+::
+
+    ./chainsqld submit <tx_blob>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - tx_blob
+      - 字符串
+      - 签名后的交易的16进制格式。
+
+示例：
+
+::
+
+    submit 1200002280000000240000000361D4838D7EA4C6800000000000000000000000000055534400000000004B4E9C06F24296074F7BC48F92A97916C6DC5EA968400000000000000A732103AB40A0490F9B7ED8DF29D246BF2D6269820A0EE7742ACDD457BEA7C7D0931EDB74473045022100D184EB4AE5956FF600E7536EE459345C7BBCF097A84CC61A93B9AF7197EDB98702201CEA8009B7BEEBAA2AACC0359B41C427C1C5B550A4CA4B80CF2174AF2D6D5DCE81144B4E9C06F24296074F7BC48F92A97916C6DC5EA983143E9D4A2B8AA0780F682D136F7A56D6724EF53754
+
+签名和提交模式
+==================================
+
+签名和提交模式，需要提供账户的私钥。
+
+语法：
+
+::
+
+    ./chainsqld submit <secret> <json>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - secret
+      - 字符串
+      - 提交此交易的账户的私钥，用来签名交易。
+    * - json
+      - 字符串
+      - 具体交易的json格式。
+
+示例：
+
+根账户\ ``zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh``\ 向账户\ ``zHYfrrZyyfAMrNgm3akQot6CuSmMM6MLda``\ 转账10000个ZXC。
+``xnoPBzXtMeMyMHUVTgbuqAfg1SUTb``\ 是根账户的私钥。
+
+::
+
+    ./chainsqld submit xnoPBzXtMeMyMHUVTgbuqAfg1SUTb '{"Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh","Amount":"10000000000","Destination":"zHYfrrZyyfAMrNgm3akQot6CuSmMM6MLda","TransactionType":"Payment"}' 
+
+返回结果：
+
+::
+
+    {
+        "result": {
+            "engine_result": "tesSUCCESS",
+            "engine_result_code": 0,
+            "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
+            "status": "success",
+            "tx_blob": "12000022800000002400000002201B0002FA0E614000000005F5E10068400000000000000A73210330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD0207446304402207E88AA09F5C23A8E7AB29EC9BE5258B0C0A3F751AD8A8C26096FD6F022EC26FF0220112A2140F206679085B0015A2273BB4F802E23BFE64EF58F851F606BF6861ED68114B5F762798A53D543A014CAF8B297CFF8F2F937E88314934CD4FACC490E3DC5152F7C1BAD57EEEE3F9C77",
+            "tx_json": {
+                "Account": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                "Amount": "10000000000",
+                "Destination": "zHYfrrZyyfAMrNgm3akQot6CuSmMM6MLda",
+                "Fee": "10",
+                "Flags": 2147483648,
+                "LastLedgerSequence": 195086,
+                "Sequence": 2,
+                "SigningPubKey": "0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
+                "TransactionType": "Payment",
+                "TxnSignature": "304402207E88AA09F5C23A8E7AB29EC9BE5258B0C0A3F751AD8A8C26096FD6F022EC26FF0220112A2140F206679085B0015A2273BB4F802E23BFE64EF58F851F606BF6861ED6",
+                "hash": "1A4CA19291EED3A1F7D3FD8218B5FE1FF82D0A93368746A0188285E4CF60F6C1"
+            }
+        }
+    }
+
 server_info
 +++++++++++++++++++++++++++++++
 
