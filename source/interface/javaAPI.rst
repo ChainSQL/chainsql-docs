@@ -431,21 +431,100 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
 
 .. code-block:: java
 
+
   // 1、
-  c.table("marvel")
-  .insert(c.array("{'name': 'peera','age': 22}","{'name': 'peerb','age': 21}"))
-  .submit();
+  JSONObject obj = c.pay(sNewAccountId,"10").submit(SyncCond.validate_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+
+    JSONObject objRet = new JSONObject();
+    objRet.put("status", obj.getString("status"));
+    System.out.println( objRet);
+  }
 
   // 2、
-  c.table("marvel").insert(c.array("{'name': 'peera','age': 22}", "{'name': 'peerb','age': 21}"))
-  .submit(new Callback () {
-  public void called(JSONObject data) {
-    System.out.println(data);
-  }));
+  obj = c.pay(sNewAccountId,"10").submit(new Callback<JSONObject>() {
+          @Override
+          public void called(JSONObject args) {
 
-  // 3、
-  c.table("marvel").insert(c.array("{'name': 'peera','age': 22}", "{'name': 'peerb','age': 21}"))
-  .submit(SyncCond.db_success);
+            System.out.println(args);
+          }
+        });
+
+
+
+成功输出
+
+.. code-block:: json
+
+    {
+      "status": "validate_success"
+    }
+    {
+      "type": "singleTransaction",
+      "transaction": {
+        "Account": "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4",
+        "Destination": "zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb",
+        "TransactionType": "Payment",
+        "TxnSignature": "3045022100815CA715BC88E199C36D9215F74E8AFBCD4F3863DF0521FCD45B64104D5F6BCA02206C9E6704B42941F52F02BE8E14EECF85CCC083E58E2B46A68BA99EC1C3F1E1DF",
+        "SigningPubKey": "02080EF3E62711D21A502DC6B6290E2819474AA7701271D82CDFF73F65AFEE7276",
+        "Amount": "10000000",
+        "Fee": "11",
+        "Flags": 2147483648,
+        "Sequence": 20,
+        "LastLedgerSequence": 23813,
+        "hash": "C6D8EE4DC86105ECF07CD31AB96205A95B8F41972FD6C1D7E547D593B9B651AC"
+      },
+      "status": "validate_success"
+    }
+
+
+失败输出
+
+.. code-block:: json
+
+    {
+      "error_message": "Insufficient ZXC balance to send.",
+      "tx_json": {
+        "Account": "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4",
+        "Destination": "zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb",
+        "TransactionType": "Payment",
+        "TxnSignature": "30450221009BE2564CAEDF0819668A07F29F6CB30870ADBF95A0CA09DB9E31987CDFDE4F73022023141C6162142880EC2C110821409186C544D18659424CB8488A70BE0888C25D",
+        "SigningPubKey": "02080EF3E62711D21A502DC6B6290E2819474AA7701271D82CDFF73F65AFEE7276",
+        "Amount": "10000000000",
+        "Fee": "11",
+        "Flags": 2147483648,
+        "Sequence": 6,
+        "LastLedgerSequence": 23597,
+        "hash": "5C6E284AAA281A7D9D5139B800E8C9CD19C27D5F3657F46C4BDE910345BE6634"
+      },
+      "error_code": 104,
+      "error": "tecUNFUNDED_PAYMENT",
+      "status": "error"
+    }
+    {
+      "error_message": "Insufficient ZXC balance to send.",
+      "tx_json": {
+        "Account": "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4",
+        "Destination": "zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb",
+        "TransactionType": "Payment",
+        "TxnSignature": "3044022005595A62EC4127C84E22782AA7AA287B4562A991E898A99155E194B991D208F502205969821251C596AF7353DA75F7105D0AC36741F54D5579BAC81591C3F49B554F",
+        "SigningPubKey": "02080EF3E62711D21A502DC6B6290E2819474AA7701271D82CDFF73F65AFEE7276",
+        "Amount": "10000000000",
+        "Fee": "11",
+        "Flags": 2147483648,
+        "Sequence": 7,
+        "LastLedgerSequence": 23597,
+        "hash": "19184535CC6B7FF2DA7AF965071AB50EF15DDA3B60A7E1B28BA43004DA31B5D0"
+      },
+      "error_code": 104,
+      "error": "tecUNFUNDED_PAYMENT",
+      "status": "error"
+    }
+
 
 ------------------------------------------------------------------------------
 
@@ -488,8 +567,14 @@ pay(转账系统币)
 
 .. code-block:: java
 
-  // 给账户地址等于 z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs 的用户转账5ZXC.
-  c.pay("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs", "5").submit(SyncCond.validate_success);
+    JSONObject obj = c.pay("zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb","10000").submit(SyncCond.validate_success);
+    if(obj.has("error_message")){
+
+      System.out.println("激活或转账失败。 失败原因: " + obj.getString("error_message"));
+    }else {
+
+      System.out.println("激活或转账成功");
+    }
 
 ------------------------------------------------------------------------------
 
@@ -1538,6 +1623,7 @@ trustSet
 .. code-block:: java
 
     JSONObject jsonObj = c.trustSet("1000000000", "RMB", "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh").submit(SyncCond.validate_success);
+    System.out.println(jsonObj);
 
 ------------------------------------------------------------------------------
 
@@ -1599,7 +1685,16 @@ pay(转账网关代币)
 .. code-block:: java
 
   // 给账户地址等于 z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs 的用户转账5RMB.
-  c.pay("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs", "5", "RMB", "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh").submit(SyncCond.validate_success);
+  JSONObject obj =  c.pay("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs", "5", "RMB", "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh").submit(SyncCond.validate_success);
+  System.out.println(obj);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  } 
 
 ------------------------------------------------------------------------------
 
@@ -1650,12 +1745,20 @@ createTable
 .. code-block:: java
 
   // 创建表 "dc_universe"
-  JSONObject ret = c.createTable("dc_universe", c.array(
+  JSONObject obj = c.createTable("dc_universe", c.array(
   "{'field':'id','type':'int','length':11,'PK':1,'NN':1,'UQ':1}",
   "{'field':'name','type':'varchar','length':50,'default':null}",
   "{'field':'age','type':'int'}"),
   false)
   .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }
 
 ------------------------------------------------------------------------------
 
@@ -1688,7 +1791,18 @@ renameTable
 .. code-block:: java
 
   // 将表"dc_universe"改为"dc_name"
-  c.renameTable("dc_universe", "dc_name").submit();
+  JSONObject obj = c.renameTable("dc_universe", "dc_name").submit();
+  
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+
+    JSONObject objRet = new JSONObject();
+    objRet.put("status", obj.getString("status"));
+    System.out.println( objRet);
+  }
+
 
 ------------------------------------------------------------------------------
 
@@ -1719,7 +1833,14 @@ dropTable
 
 .. code-block:: java
 
-  c.dropTable("dc_universe").submit();
+  JSONObject obj = c.dropTable("dc_universe").submit();
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+
+    System.out.println( "status" + obj.getString("status"));
+  }
 
 ------------------------------------------------------------------------------
 
@@ -1753,13 +1874,30 @@ table
 .. code-block:: java
 
   String sTableName = "n12356";
-  c.table(sTableName).insert(c.array("{id: 1, 'name': 'peera','age': 22}", "{id: 2, 'name': 'peerb','age': 21}"))
+  JSONObject obj = c.table(sTableName).insert(c.array("{id: 1, 'name': 'peera','age': 22}", "{id: 2, 'name': 'peerb','age': 21}"))
   .submit(SyncCond.db_success);
 
-  c.table(sTableName)
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }
+
+
+  JSONObject obj = c.table(sTableName)
   .get(c.array("{'id': 1}"))
   .update("{'age':52,'name':'Jack'}")
   .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }
 
 ------------------------------------------------------------------------------
 
@@ -1792,8 +1930,16 @@ insert
 
   String sTableName = "n12356";
   // 向表sTableName中插入一条记录.
-  c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"))
+  JSONObject obj =  c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"))
   .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }  
   
 
 ------------------------------------------------------------------------------
@@ -1827,10 +1973,18 @@ update
 
   String sTableName = "n12356";
   // 更新 id 等于 1 的记录
-  c.table(sTableName)
+  JSONObject obj = c.table(sTableName)
   .get(c.array("{'id': 1}"))
   .update("{'age':52,'name':'Jack'}")
   .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }
 
 ------------------------------------------------------------------------------
 
@@ -1861,10 +2015,18 @@ delete
 
   String sTableName = "n12356";
   // 删除 id 等于 1 的记录.
-  c.table(sTableName)
+  JSONObject obj =  c.table(sTableName)
   .get(c.array("{'id': 1}"))
   .delete()
   .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+
+    System.out.println(obj);
+  }else {
+  
+    System.out.println( "status" + obj.getString("status"));
+  }  
 
 ------------------------------------------------------------------------------
 
