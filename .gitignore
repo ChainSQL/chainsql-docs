@@ -1,0 +1,8 @@
+# .gitignore
+
+
+# vscode
+.vscode/
+build/
+chainsqld-docs.code-workspace
+
