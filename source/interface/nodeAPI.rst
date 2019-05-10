@@ -1,3 +1,5 @@
+.. _NodeAPI_entry:
+
 ===========
 Node.js接口
 ===========
@@ -204,7 +206,7 @@ submit
 | submit接口有使用前提，需要事先调用其他操作接口将交易主体构造，比如创建数据库表，需要调用createTable接口，然后调用submit接口，详细使用方法在具体接口处介绍。
 
 .. note::
-	在ChainSQL的查询类操作中，数据库查询接口[ :ref:`get接口 <get-API>` ]仍然需要submit是为了进行查询权限验证。
+	在ChainSQL的查询类操作中，数据库查询接口[ :ref:`get接口 <get-API-node>` ]仍然需要submit是为了进行查询权限验证。
 
 .. _submit-param:
 
@@ -1456,7 +1458,7 @@ None
 表查询
 ===========
 
-.. _get-API:
+.. _get-API-node:
 
 -----------
 get

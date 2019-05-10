@@ -1,8 +1,10 @@
 Raw字段解析
 =======================
 
-    | Chainsql表相关操作中，一般用Raw字段来表示实际操作内容，用到Raw字段的操作包括：建表、授权、插入、更新、删除、查询。
-    | 下面针对各个操作，对Raw字段进行解析。
+ -  Chainsql表相关操作中，一般用Raw字段来表示实际操作内容，用到Raw字段的操作包括：建表、授权、插入、更新、删除、查询。
+ -  这里只是解析Raw字段的写法，针对各个操作的具体使用方法还需要参考 :ref:`Java <JavaAPI_entry>` 与  :ref:`Node.js <NodeAPI_entry>` api使用文档
+  
+  下面针对各个操作，对Raw字段进行解析。
 
 .. _create-table:
 
@@ -263,6 +265,9 @@ Raw字段解析
 
 查询
 -----------
+
+查询接口具体调用方法请参考：:ref:`Java API <get_Java>` 与 :ref:`Node.js API <get-API-node>`
+
 示例
 ************
     查询的Raw字段较为复杂，可以实现mysql中的 ``limit`` , ``order`` , ``withfields`` 等关键字
@@ -291,14 +296,48 @@ Raw字段解析
 
     select * from xxx where id=2 or name='张三';
 
+.. important::
+
+  在API中调用时，Raw中第一个元素对应 ``withFields`` 方法，当要查询的结果中包含表中所有字段时，可以不调用 ``withFields`` 指定字段列表。
+
+对应的Node.js API的调用方式：
+
+.. code-block:: javascript
+
+  var tablename = "xxx";
+  var raw =  {
+          "$or":{
+              "id": 2,
+              "name": "张三"
+          }
+  };
+  var ret = c.table(tablename).get(raw).submit();
+  console.log(ret);
+
+对应的Java API的调用方式：
+
+.. code-block:: java
+
+  String sTableName = "xxx";
+  List<String> raw = c.array("{'$or':{ 'id': 2,'name': '张三'}}");
+  //查询 name 等于 hello 的记录.
+  JSONObject obj  = c.table(sTableName).get(raw).submit();
+
+  System.out.println(obj);
+
 复杂查询
 -----------------
+
+查询接口具体调用方法请参考：:ref:`Java API <get_Java>` 与 :ref:`Node.js API <get-API-node>`
 
 .. _withField-introduce:
 
 对结果进行统计
 ******************************
-    查询中可对结果作统计 ，如 ``count(*)`` ， ``sum(age)`` 等，需要在字段数组中指定，示例如下：
+  | 对应API中的 ``withFields`` 方法。
+  | 查询中可对结果作统计 ，如 ``count(*)`` ， ``sum(age)`` 等，需要在字段数组中指定。
+    
+  示例如下：
 
 .. code-block:: json
 
@@ -320,7 +359,10 @@ Raw字段解析
 
 对查询结果进行排序
 ******************************
-    对结果排序需在查询条件中指定
+  | 对应API中的 ``order`` 方法。
+  | 对结果排序需在查询条件中指定
+    
+  示例如下：
 
 .. code-block:: json
 
@@ -344,8 +386,10 @@ Raw字段解析
 
 分页查询
 ******************************
+  | 对应API中的 ``limit`` 方法
+  | 在查询条件中使用limit关键字来指定返回查询结果的起始下标，以及返回的数量限制
 
-    在查询条件中使用limit关键字来指定返回查询结果的起始下标，以及返回的数量限制
+  示例如下：
 
   .. code-block:: json
 
