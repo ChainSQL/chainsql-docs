@@ -400,11 +400,11 @@ Websocket接口
     *   设置信任网关代币以及代币的额度
     * @param value           代币额度
     * @param sCurrency       代币名称
-    * @param sGateway        信任网关地址
+    * @param gateWay         信任网关地址
     */
-    function trustSet(string value,string sCurrency,string sGateway) public {
+    function trustSet(string value,string sCurrency,address gateWay) public {
 
-        msg.sender.trustSet(value,sCurrency,sGateway);
+        msg.sender.trustSet(value,sCurrency,gateWay);
     }
 
     /*
@@ -412,12 +412,12 @@ Websocket接口
     * @param contractAddr    合约地址
     * @param value           代币额度
     * @param sCurrency       代币名称
-    * @param sGateway        信任网关地址
+    * @param gateWay         信任网关地址
     */
-    function trustSet(address contractAddr,string value,string sCurrency, string sGateway) public {
+    function trustSet(address contractAddr,string value,string sCurrency, address gateWay) public {
 
         // 合约地址也可信任网关
-        contractAddr.trustSet(value,sCurrency,sGateway);
+        contractAddr.trustSet(value,sCurrency,gateWay);
     }
 
 查询网关的信任代币信息
@@ -428,13 +428,13 @@ Websocket接口
     /*
     *   查询网关的信任代币信息
     * @param  sCurrency          代币名称
-    * @param  sGateway           网关地址
+    * @param  gateWay            网关地址
     * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
     */
-    function trustLimit(string sCurrency,string sGateway)
-    public view returns(int) {
+    function trustLimit(string sCurrency,address gateWay)
+    public view returns(int256) {
 
-        return msg.sender.trustLimit(sCurrency,sGateway);
+        return msg.sender.trustLimit(sCurrency,gateWay);
     }
 
 
@@ -442,13 +442,13 @@ Websocket接口
     *   查询网关的信任代币信息
     * @param  contractAddr       合约地址
     * @param  sCurrency          代币名称
-    * @param  sGateway           网关地址
+    * @param  gateWay            网关地址
     * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
     */
-    function trustLimit(address contractAddr,string sCurrency,string sGateway)
-    public view returns(int) {
+    function trustLimit(address contractAddr,string sCurrency,address gateWay)
+    public view returns(int256) {
         // 合约地址也可查询网关信任代币信息
-        return contractAddr.trustLimit(sCurrency,sGateway);
+        return contractAddr.trustLimit(sCurrency,gateWay);
 
     }
 
@@ -460,12 +460,12 @@ Websocket接口
     /*
     *   获取网关代币的余额
     * @param  sCurrency       代币名称
-    * @param  sGateway        网关地址
+    * @param  gateWay         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gateWayBalance(string sCurrency,string sGateway) returns(uint256) public {
+    function gateWayBalance(string sCurrency,address gateWay) returns(int256) public {
 
-        return msg.sender.gateWayBalance(sCurrency,sGateway);
+        return msg.sender.gateWayBalance(sCurrency,gateWay);
     }
 
 
@@ -473,12 +473,12 @@ Websocket接口
     *   获取网关代币的余额
     * @param  contractAddr    合约地址
     * @param  sCurrency       代币名称
-    * @param  sGateway        网关地址
+    * @param  gateWay         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gateWayBalance(address contractAddr,string sCurrency,string sGateway) returns(uint256) public {
+    function gateWayBalance(address contractAddr,string sCurrency,address gateWay) returns(int256) public {
         // 合约地址也可获取网关代币的余额
-        return contractAddr.gateWayBalance(sCurrency,sGateway);
+        return contractAddr.gateWayBalance(sCurrency,gateWay);
     }
 
 
@@ -492,14 +492,14 @@ Websocket接口
     * @param accountTo         转入账户
     * @param value             代币数量
     * @param sCurrency         代币名称
-    * @param sGateway          网关地址
+    * @param gateWay           网关地址
     */
-    function pay(string accountTo,string value,
-                        string sCurrency,string sGateway) public payable{
+    function pay(address accountTo,string value,
+                        string sCurrency,address gateWay) public payable{
         uint balance = gatewayBalance(sCurrency,sGateway);
         require(balance >= value,"balance insufficient");
         
-        msg.sender.pay(accountTo,value,sCurrency,sGateway);
+        msg.sender.pay(accountTo,value,sCurrency,gateWay);
     }
 
     /*
@@ -508,13 +508,13 @@ Websocket接口
     * @param accountTo         转入账户
     * @param value             代币数量
     * @param sCurrency         代币名称
-    * @param sGateway          网关地址
+    * @param gateWay           网关地址
     */
-    function pay(address contractAddr,string accountTo,string value,
-                        string sCurrency,string sGateway) public payable{
-        uint balance = gatewayBalance(contractAddr,sCurrency,sGateway);
+    function pay(address contractAddr,address accountTo,string value,
+                        string sCurrency,address gateWay) public payable{
+        uint balance = gatewayBalance(contractAddr,sCurrency,gateWay);
         require(balance >= value,"balance insufficient");
         
         // 合约地址也可转账代币
-        contractAddr.pay(accountTo,value,sCurrency,sGateway);
+        contractAddr.pay(accountTo,value,sCurrency,gateWay);
     }	
