@@ -24,6 +24,8 @@ Nodejs接口的使用，需要以下准备：
  | 初次安装nodejs，可以到官方 `nodejs下载`_ 网址下载对应平台的最新版本安装包。
  | ChainSQL推荐使用nodejs的版本为 **v8.5.0及以上** 。可以通过命令 ``node -v`` 查看本机nodejs版本。
 
+.. _require-chainsql:
+
 -------------------------
 安装chainsql的nodejs模块
 -------------------------
@@ -36,12 +38,35 @@ Nodejs接口的使用，需要以下准备：
 	// 引入之后使用new创建全局chainsql对象，之后使用chainsql对象进行接口操作
 	const chainsql = new ChainsqlAPI();
 
-.. hint::
-	在0.6.57版本之前，引用chainsql需要用如下方式：
+版本变化
+===========
+nodejs接口在迭代过程中，有几次优化涉及接口使用方式的改变，包括以下方面：
+
+1. **ChainSQL模块引入方式**
+
+| 在 **0.6.57版本** 及之后的版本，引用chainsql使用 :ref:`最新方式 <require-chainsql>`；
+| 在 **0.6.57版本** 之前，引用chainsql需要用如下方式：
+
 .. code-block:: javascript
 
 	const ChainsqlAPI = require('chainsql').ChainsqlAPI;
-	const chainsql = new ChainsqlAPI();
+
+2. **pay接口调用方式**
+
+| 在 **0.6.35版本** 及之后的版本中，:ref:`pay接口 <pay-introduce>` 统一按照现行交易提交方式，调用submit接口进行提交。
+| 在 **0.6.35版本** 之前, pay接口不需要调用submit接口就可以发送pay操作。
+
+3. **submit接口交易调用默认expect值**
+
+| 在 **0.6.54版本** 及之后的版本中， 调用submit接口不传递 ``expect`` 参数的时候默认以"send_success"的方式进行交易提交；
+| 在 **0.6.54版本** 之前的版本中，调用submit接口不传递 ``expect`` 参数的时候默认以"validate_success"的方式进行交易(非合约类)提交。
+
+4. **get接口返回空值方式**
+
+| 在 **ChainSQL节点0.30.3 release版本** 之前，调用get接口查询时，无数据返回时，返回一个 ``null``；
+| **ChainSQL节点0.30.3 release版本** 无数据返回时，返回一个空的数组：``[]``
+
+------------------------------------------------------------------------------
 
 .. _Node.js返回值:
 
@@ -65,8 +90,62 @@ ChainSQL的接口类型可以分为交易类和查询类，每种接口类型返
 	* ``name`` - ``String`` : 错误类型或者说错误码；
 	* ``message`` - ``String`` : 详细错误说明。
 
+------------------------------------------------------------------------------
+
 基础接口
 ===========
+
+.. _connect-api:
+
+-----------
+connect
+-----------
+.. code-block:: javascript
+
+	chainsql.connect(wsAddr[, callback])
+
+如果需要nodejs接口与节点进行交互，必须首先设置节点的websocket地址，与节点进行正常连接。
+
+参数说明
+-----------
+
+1. ``wsAddr`` - ``String`` : 节点的websocket访问地址，格式为：``"ws://ip:port"`` 。
+2. ``callback`` - ``Function`` : [**可选**]回调函数，如果指定，则通过指定回调函数返回结果，否则需要通过then和catch接收promise结果。
+
+返回值
+-----------
+
+``JsonObject`` - 通过提供的websocket地址与节点连接的结果。返回方式取决于是否指定回调函数。
+
+1. 连接成功 - 指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。 主要内容在返回值resObj的 ``resObj.api.connect`` 中，为一个 ``JsonObject``, 包括以下字段：
+	
+	* ``_fee_base`` - ``Number`` : 节点的基础交易手续费；
+	* ``_ledgerVersion`` - ``Number`` : 当前节点区块高度；
+	* ``_maxListeners`` - ``Number`` : 节点的最大连接数。
+	* ``_url`` - ``String`` : 目前与节点连接使用的websocket地址
+	
+2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。 ``JsonObject`` 主要包含以下字段：
+
+	* ``message`` - ``String`` : 返回与指定ws地址链接失败："connect ECONNREFUSED wsAddr"；
+	* ``name`` - ``String`` : 固定值："NotConnectedError"；
+
+示例
+-----------
+.. code-block:: javascript
+
+	// use the promise
+	chainsql.connect("ws://127.0.0.1:6006").then(res => {
+		console.log(res);
+	}).catch(err => {
+		console.error(err);
+	});
+
+	// use the callback
+	chainsql.connect("ws://101.201.40.123:5006", function(err, res) {
+		err ? console.error(err) : console.log(res);
+	});
+
+------------------------------------------------------------------------------
 
 -----------
 as
@@ -76,6 +155,9 @@ as
 	chainsql.as(user)
 
 部分接口与节点进行交互操作前，需要指明一个全局的操作账户，这样避免在每次接口的操作中频繁的提供账户。再次调用该接口即可修改全局操作账户。
+
+.. note::
+	as接口必须在 :ref:`connect接口 <connect-api>` 调用之后使用。
 
 参数说明
 -----------
@@ -119,7 +201,8 @@ use
 use接口主要使用场景是针对ChainSQL的表操作，为其提供 **表的拥有者账户地址** 。
 
 .. note::
-	use接口和as接口的区别如下：
+	1. use接口必须在 :ref:`connect接口 <connect-api>` 调用之后使用。
+	2. use接口和as接口的区别如下：
 
 	- as接口的目的是设置全局操作账户GU，这个GU在表操作接口中扮演表的操作者，并且默认情况下也是表的拥有者（即表的创建者）。
 	- 当as接口设置的账户不是即将操作的表的拥有者时，即可能通过表授权获得表的操作权限时，需要使用use接口设置表的拥有者地址。
@@ -141,56 +224,6 @@ None
 
 	const tableOwnerAddr = "zMpUjXckTSn6NacRq2rcGPbjADHBCPsURF"
 	chainsql.use(tableOwnerAddr);
-
-------------------------------------------------------------------------------
-
------------
-connect
------------
-.. code-block:: javascript
-
-	chainsql.connect(wsAddr[, callback])
-
-如果需要nodejs接口与节点进行交互，必须设置节点的websocket地址，与节点进行正常连接。
-
-参数说明
------------
-
-1. ``wsAddr`` - ``String`` : 节点的websocket访问地址，格式为：``"ws://ip:port"`` 。
-2. ``callback`` - ``Function`` : [**可选**]回调函数，如果指定，则通过指定回调函数返回结果，否则需要通过then和catch接收promise结果。
-
-返回值
------------
-
-``JsonObject`` - 通过提供的websocket地址与节点连接的结果。返回方式取决于是否指定回调函数。
-
-1. 连接成功 - 指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。 主要内容在返回值resObj的 ``resObj.api.connect`` 中，为一个 ``JsonObject``, 包括以下字段：
-	
-	* ``_fee_base`` - ``Number`` : 节点的基础交易手续费；
-	* ``_ledgerVersion`` - ``Number`` : 当前节点区块高度；
-	* ``_maxListeners`` - ``Number`` : 节点的最大连接数。
-	* ``_url`` - ``String`` : 目前与节点连接使用的websocket地址
-	
-2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。 ``JsonObject`` 主要包含以下字段：
-
-	* ``message`` - ``String`` : 返回与指定ws地址链接失败："connect ECONNREFUSED wsAddr"；
-	* ``name`` - ``String`` : 固定值："NotConnectedError"；
-
-示例
------------
-.. code-block:: javascript
-
-	// use the promise
-	chainsql.connect("ws://127.0.0.1:6006").then(res => {
-		console.log(res);
-	}).catch(err => {
-		console.error(err);
-	});
-
-	// use the callback
-	chainsql.connect("ws://101.201.40.123:5006", function(err, res) {
-		err ? console.error(err) : console.log(res);
-	});
 
 ------------------------------------------------------------------------------
 
