@@ -81,3 +81,23 @@ Chainsql节点问题
 5. 节点全部挂掉，找不到原因
     | 使用secureCRT或者Xshell连接服务器，退出时，直接关闭对话窗口，会将nohup后台运行的进程杀死。
     | 应该使用 ``exit`` 命令退出 ssh 工具终端
+
+6. 节点日志报：Clock for is off by ...
+    节点间时间不一致导致的，一般发生在内网，有两种解决方式：
+    
+    1. 手动将时间调整到一致（相关不超过20秒即可）
+    2. 在[sntp_servers]中配置内网的时间服务器地址（推荐用这一种方式）
+
+7. 执行./chainsqld peers 命令报 internal error 403
+    这是因为peers命令是一个admin权限的命令，节点配置文件中的http协议配置中，admin肯定不包含本机，解决方法：
+
+    1. 在http协议配置中admin配置加上127.0.0.1
+    2. 将admin配置为0.0.0.0（表示所有调用http命令的ip都是admin，不推荐这种做法）
+
+.. code-block:: bash
+
+        [port_rpc_admin_local]
+        port = 5006
+        ip = 0.0.0.0
+        admin = 127.0.0.1
+        protocol = http
