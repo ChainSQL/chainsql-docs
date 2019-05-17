@@ -3,8 +3,21 @@ JSON-RPC接口
 
 JSON-RPC，是一个无状态且轻量级的远程过程调用（RPC）传送协议，其传递内容透过 JSON 为主。
 
-chainsqld沿用rippled的JSON-RPC，使用HTTP短连接，由“method”域指定调用的方法，“params”域指定调用的参数。
+| chainsqld沿用rippled的JSON-RPC，使用HTTP短连接，由 ``method`` 域指定调用的方法， ``params`` 域指定调用的参数。
+| 格式示例：
+
+.. code-block:: json
+
+  {
+      "method": "method_name",
+      "params": [{
+          "param1Name":"...",
+          "param2Name":"..."
+      }]
+  }
+
 可以将RPC接口分为交易类和查询类。
+
 
 .. _RPC返回值:
 

@@ -6,6 +6,19 @@ Websocket接口与JSON-RPC接口的主要区别在于，
 两者之间就直接可以创建持久性的连接，并进行双向数据传输。
 并且节点可以主动向已连接的客户端推送数据，实现订阅/发布。
 
+| websocket请求由 ``command`` 域指定调用的方法， 与 ``command`` 同一级别写调用的参数。
+| 格式示例：
+
+.. code-block:: json
+
+  {
+      "command": "method_name",
+      "id": 123,
+      "param1Name":"...",
+      "param2Name":"..."
+  }
+
+
 接口类型与JSON-RPC一样，可以分为交易类和查询类接口。本文只列举部分接口，其它接口请参考JSON-RPC接口。
 
 .. _Websocket返回值:
