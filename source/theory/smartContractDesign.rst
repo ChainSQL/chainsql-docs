@@ -465,7 +465,7 @@ Websocket接口
     * @param  gateway         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gatewayBalance(string sCurrency,address gateway) returns(int256) public {
+    function gatewayBalance(string sCurrency,address gateway) public view returns(int256)  {
 
         return msg.sender.gatewayBalance(sCurrency,gateway);
     }
@@ -478,7 +478,7 @@ Websocket接口
     * @param  gateway         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gatewayBalance(address contractAddr,string sCurrency,address gateway) returns(int256) public {
+    function gatewayBalance(address contractAddr,string sCurrency,address gateway) public view  returns(int256) {
         // 合约地址也可获取网关代币的余额
         return contractAddr.gatewayBalance(sCurrency,gateway);
     }
