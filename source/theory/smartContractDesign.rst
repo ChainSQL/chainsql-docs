@@ -430,13 +430,14 @@ Websocket接口
     /*
     *   查询网关的信任代币信息.目前版本代币额度返回仅支持整数类型，下一版本会支持浮点类型。
     * @param  sCurrency          代币名称
+    * @param  power              查询精度.例如实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；参数为0时，100*100^0 = 100    
     * @param  gateway            网关地址
     * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
     */
-    function trustLimit(string sCurrency,address gateway)
+    function trustLimit(string sCurrency,uint64 power,address gateway)
     public view returns(int256) {
 
-        return msg.sender.trustLimit(sCurrency,gateway);
+        return msg.sender.trustLimit(sCurrency,power,gateway);
     }
 
 
@@ -444,13 +445,14 @@ Websocket接口
     *   查询网关的信任代币信息.目前版本代币余额返回仅支持整数类型，下一版本会支持浮点类型。
     * @param  contractAddr       合约地址
     * @param  sCurrency          代币名称
+    * @param  power              查询精度.例如实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；参数为0时，100*100^0 = 100    
     * @param  gateWay            网关地址
     * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
     */
-    function trustLimit(address contractAddr,string sCurrency,address gateway)
+    function trustLimit(address contractAddr,string sCurrency,uint64 power,address gateway)
     public view returns(int256) {
         // 合约地址也可查询网关信任代币信息
-        return contractAddr.trustLimit(sCurrency,gateway);
+        return contractAddr.trustLimit(sCurrency,power,gateway);
 
     }
 
@@ -462,12 +464,13 @@ Websocket接口
     /*
     *   获取网关代币的余额
     * @param  sCurrency       代币名称
+    * @param  power           查询精度.例如实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；参数为0时，100*100^0 = 100
     * @param  gateway         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gatewayBalance(string sCurrency,address gateway) public view returns(int256)  {
+    function gatewayBalance(string sCurrency,uint64 power,address gateway) public view returns(int256)  {
 
-        return msg.sender.gatewayBalance(sCurrency,gateway);
+        return msg.sender.gatewayBalance(sCurrency,power,gateway);
     }
 
 
@@ -475,12 +478,13 @@ Websocket接口
     *   获取网关代币的余额
     * @param  contractAddr    合约地址
     * @param  sCurrency       代币名称
+    * @param  power           查询精度.例如实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；参数为0时，100*100^0 = 100
     * @param  gateway         网关地址
     * @return -1:不存在该网关代币; >=0 网关代币的余额
     */
-    function gatewayBalance(address contractAddr,string sCurrency,address gateway) public view  returns(int256) {
+    function gatewayBalance(address contractAddr,string sCurrency,uint64 power,address gateway) public view  returns(int256) {
         // 合约地址也可获取网关代币的余额
-        return contractAddr.gatewayBalance(sCurrency,gateway);
+        return contractAddr.gatewayBalance(sCurrency,power,gateway);
     }
 
 
