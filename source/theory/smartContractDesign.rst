@@ -363,35 +363,33 @@ Websocket接口
         msg.sender.accountSet(uFlag,bSet);
     }
 
-网关交易费率
+设置网关交易费用
 +++++++++++++++++++++++++++++++++++++
 
 .. code-block:: javascript 
 
     /*
-    *  设置网关交易费率
-    * @param sRate  交易费率。范围为"1000000000”- "2000000000",例如 "1001000000","1008000000"  
+    *  设置网关交易费用
+    * @param sRate    交易费率。范围为"1.0”- "2.0" 或者"0.0"
+    * @param minFee   网关交易最小花费  字符串转成10进制数后， >=0
+    * @param maxFee   网关交易最大花费	字符串转成10进制数后,  >=0
+    * @ 
+    *
+    *    备注 ,以下规则均在字符串转化为10进制数后进行
+    *
+    *	 1 sRate 为0或者1时，表示取消费率，但是此时的minFee必须等于maxFee。
+    *	 2 minFee 或者 maxFee为0 时，表示取消相应的最小，最大费用。
+    *	 3 minFee等于maxFee时， sRate 必为0或者1。
+    *	 4 除了minFee 或者 maxFee为0 时的情况时，minFee < maxFee。
+    *	   
     */
-    function setTransferRate(string sRate) public {
+    function setTransferFee(string sRate,string minFee,string maxFee) public {
         
-		// 指令中的是sRate 范围为 ”1000000000”- "2000000000"
-        msg.sender.setTransferRate(sRate);
+        msg.sender.setTransferFee(sRate,minFee,maxFee);
     }
 
 
-设置网关交易费用范围
-+++++++++++++++++++++++++++++++++++++
 
-.. code-block:: javascript
-
-    /*
-    *  设置网关交易费用范围
-    * @param minFee   网关交易最小花费
-    * @param maxFee   网关交易最大花费
-    */
-    function setTransferRange(string minFee,string maxFee) public {
-        msg.sender.setTransferRange(minFee,maxFee);
-    }	
 
 
 设置信任网关代币以及代币的额度
@@ -498,13 +496,14 @@ Websocket接口
     *   转账代币
     * @param accountTo         转入账户
     * @param value             代币数量
+    * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84    
     * @param sCurrency         代币名称
     * @param gateway           网关地址
     */
-    function pay(address accountTo,string value,
+    function pay(address accountTo,string value,string sendMax,
                         string sCurrency,address gateway) public {
     
-        msg.sender.pay(accountTo,value,sCurrency,gateway);
+        msg.sender.pay(accountTo,value,sendMax,sCurrency,gateway);
     }
 
     /*
@@ -512,12 +511,12 @@ Websocket接口
     * @param contractAddr      合约地址
     * @param accountTo         转入账户
     * @param value             代币数量
+    * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84        
     * @param sCurrency         代币名称
     * @param gateway           网关地址
     */
-    function pay(address contractAddr,address accountTo,string value,
-                        string sCurrency,address gateway) public {
+    function pay(address contractAddr,address accountTo,string value,string sendMax,string sCurrency,address gateway) public {
     
         // 合约地址也可转账代币
-        contractAddr.pay(accountTo,value,sCurrency,gateway);
+        contractAddr.pay(accountTo,value,sendMax,sCurrency,gateway);
     }	
