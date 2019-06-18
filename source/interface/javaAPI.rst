@@ -1953,7 +1953,10 @@ update
 
   public Table update(String raw);
 
-更新表中数据。与get函数配合使用，如果get条件为空，则更新表中所有记录。
+更新表中数据。
+
+.. warning::
+	更新之前需要调用table.get接口指定待修改内容，且必须指定，不能为空。详见示例
 
 ------------
 参数
