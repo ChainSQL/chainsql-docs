@@ -38,7 +38,10 @@ Api 调用问题
 
 8. Ledger sequence too high / tefMAX_LEDGER
     这个是因为发送交易的时候，用API发送交易时，会在交易中带一个LastLedgerSequence，当交易发送至节点时，发到节点的时候，发现当前区块号已经大于LastLedgerSequence，就会报这个错误。
-    一般是客户端调试引起的。
+    引起这个错误的原因可能是：
+
+    1. 一般是客户端调试导致发送时间太长
+    2. node.js api客户端执行了同步操作，并且同步操作的时间太长，导致订阅的ledgerVersion得不到更新，在准备交易时取到的是旧的ledgerVersion，虽然最后对ledgerVersion+3作为 LastLedgerSequence的值，但是到节点那里仍然发生tefMAX_LEDGER错误
 
 Chainsql节点问题
 -----------------

@@ -50,11 +50,17 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 版本变化
 *****************
 
+1.5.1
+=====================
+
     - 1.5.1版本之前的版本对多线程的支持不好,新版本支持多线程中调用。
     - 1.5.1版本之前 ``pay`` 方法直接调会返回交易提交结果，而新版本需要在方法后接 ``.submit`` 指定是否共识成功返回。具体示例见 :ref:`示例 <my-reference-pay-sample>`.
     - 1.5.1版本之前对象可以使用Chainsql静态对象： ``Chainsql c = Chainsql.c`` ,现在删除了静态对象，需要用户自己调用 ``new`` ，例如
       ``Chainsql c = new Chainsql();``
-    - 1.5.2版本增加新添加线程池类   :ref:`ChainsqlPool <chainsql_pool>`.  ，可支持创建多个Chainsql对象的连接池。
+
+1.5.2
+=====================
+    - 1.5.2版本增加新添对多线程并发的支持类：   :ref:`ChainsqlPool <chainsql_pool>`  ，并提供了示例代码。
 
 ------------------------
 
@@ -65,7 +71,7 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 
 
 交易类接口
-
+=====================
 
 交易类的接口包括网关交易以及表交易等相关的一系列接口。
 
@@ -134,7 +140,7 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 
 
 查询类接口
-
+=====================
 
 查询类的接口包括账户相关的信息查询以及表查询等相关的一系列接口。
 
@@ -2901,10 +2907,51 @@ unsubscribeTx
 
 .. _chainsql_pool:
 
-线程池
+并发支持
 *****************
 
-1.5.2版本以后，新添加线程池类 ``ChainsqlPool`` ，线程池的大小默认为10。可支持创建多个Chainsql对象的连接池子
+1.5.2版本以后，新添加类 ``ChainsqlPool`` 支持并发操作，``ChainsqlPool`` 的大小默认为10。可支持创建多个Chainsql对象的连接池，如不符合需求，可以参考 `源码 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/java/com/peersafe/chainsql/pool/>`_ 进行修改。
+
+使用说明
+=====================
+ - ChainsqlUnit 资源使用完后，需调用 ``unlock`` 将资源返还给ChainsqlPool。
+ - 请求 ``Chainsql`` 资源时，如果当前 ``ChainsqlPool`` 已无可用资源，这时 ``ChainsqlPool`` 会再创建新的 ``ChainsqlUnit`` 对象 ， 但是这个新创建的 ``ChainsqlUnit``  对象，调用 ``unlock`` 后 , 会自动与服务器节点断开连接。
+
+.. warning::
+    同一个账户不可以并发提交交易，只能在一个线程中串行发送交易，原因是账户在链上存在Sequence，只能顺序执行交易。
+
+代码示例见 `ChainsqlPool示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsqlPool.java>`_。 
+
+基本调用流程：
+
+.. code-block:: java
+
+  //初始化连接地址，设置并发数量
+  ChainsqlPool.instance().init("ws://127.0.0.1:6006",10);
+
+  //开启多线程
+  for(int i=0; i<PublicVar.ThreadCount; i++) {
+    new Thread(new InsertThread(i,mAccountList)).start();
+  }
+
+  //...
+  //下面的操作都在线程中执行
+  {
+    //获取 ChainsqlUnit对象
+    ChainsqlUnit unit = ChainsqlPool.instance().getChainsqlUnit();
+    //获取chainsql对象
+    Chainsql c = unit.getChainsql();
+
+    //使用chainsql对象
+    c.as(a.address, a.secret);
+    c.use(PublicVar.rootAddress);
+    JSONObject obj = c.table(PublicVar.mTableName).insert(Util.array("{'id':" + index + ",'age': 333,'name':'hello'}")).submit();
+
+    //释放chainsql对象
+    unit.unlock();
+  }
+
+**ChainsqlPool对外提供了如下接口：**
 
 init
 =====================
@@ -2913,7 +2960,7 @@ init
 
    public void init(String url,int count);
 
-初始化Chainsql线程池
+初始化ChainsqlChainsqlPool
 
 参数
 ++++++++
@@ -2957,6 +3004,8 @@ getChainsqlUnit
 
 ------------------------------------------------
 
+**ChainsqlUnit对外接口：**
+
 getChainsql
 =====================
 
@@ -2964,7 +3013,7 @@ getChainsql
 
     public Chainsql getChainsql()
 
-获取线程池封装的Chainsql对象。
+获取ChainsqlPool封装的Chainsql对象。
 
 
 参数
@@ -2992,7 +3041,7 @@ unlock
 
    public synchronized Chainsql lock();
 
-解锁操作。``ChainsqlUnit`` 资源使用完后调用，将资源返还给线程池。
+解锁操作。``ChainsqlUnit`` 资源使用完后调用，将资源返还给ChainsqlPool。
 
 参数
 ++++++++
@@ -3009,13 +3058,6 @@ unlock
 
 ------------------------------------------------------------
 
-使用说明
-=====================
-
- - ChainsqlUnit 资源使用完后，需调用 ``unlock`` 将资源返还给线程池。
- - 请求线程池资源时，如果当前线程池已无可用资源，这时线程池会再创建新的 ``ChainsqlUnit`` 对象 ， 但是这个新创建的 ``ChainsqlUnit``  对象，调用 ``unlock`` 后 , 会自动与服务器节点断开连接。
-
-代码示例见 `ChainsqlPool示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsqlPool.java>`_。 
 
 
 智能合约接口
