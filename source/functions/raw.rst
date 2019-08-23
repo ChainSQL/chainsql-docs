@@ -278,10 +278,10 @@ Raw字段解析
         "Raw": [
             [],
             {
-                "$or":{
-                    "id": 2,
-                    "name": "张三"
-                }
+              "$or":[
+                { "id": 2},
+                { "name": "张三"}
+              ]
             }
         ]
     }
@@ -306,10 +306,10 @@ Raw字段解析
 
   var tablename = "xxx";
   var raw =  {
-          "$or":{
-              "id": 2,
-              "name": "张三"
-          }
+          "$or":[
+            { "id": 2},
+            { "name": "张三"}
+          ]
   };
   var ret = c.table(tablename).get(raw).submit();
   console.log(ret);
@@ -319,7 +319,7 @@ Raw字段解析
 .. code-block:: java
 
   String sTableName = "xxx";
-  List<String> raw = c.array("{'$or':{ 'id': 2,'name': '张三'}}");
+  List<String> raw = c.array("{'$or':[{ 'id': 2},{'name': '张三'}]}");
   //查询 id 为 2 或 name 为 ‘张三’ 的记录.
   JSONObject obj  = c.table(sTableName).get(raw).submit();
 
