@@ -2,6 +2,8 @@
 ============
 Jdk1.8
 
+.. _JavaAPI_SmartContract_call:
+
 调用流程
 ==============
 #.	使用智能合约编译工具(solc或remix)编译合约脚本得到bin与abi
@@ -286,10 +288,21 @@ Chainsql中通过fallback函数给合约转账的接口为payToContract:
 
 6.合约中调用新增的表相关指令
 ----------------------------------
-`合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/resources/solidity/table/solidity-TableTxs.sol>`_ 
+`数据库合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/resources/solidity/table/solidity-TableTxs.sol>`_ 
 
-`对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/DBTest.java>`_ 
+`数据库合约对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/DBTest.java>`_ 
 
 `测试用例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
 
 .. note:: 调用表相关操作时，submit参数可以传SyncCond.db_success，入库成功后返回
+
+.. _SmartContract_Gateway_call:
+
+7.合约中调用新增的代币接口相关指令
+----------------------------------
+`代币合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
+
+`代币合约对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/GatewayTest.java>`_ 
+
+`java测试用例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
+

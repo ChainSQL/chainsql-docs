@@ -196,6 +196,7 @@ Websocket接口
  * :ref:`合约的调用（Set） <websocket调用合约>`
  * :ref:`合约的调用（Get）<websocket查询合约>`
 
+.. _Table_sol_instruction:
 
 对表的支持
 *************************************
@@ -338,6 +339,9 @@ Websocket接口
     function renameTable(string name,string newName) public {
         msg.sender.rename(name, newName);
     }
+
+
+.. _Gateway_sol_instruction:
 
 代币接口
 *************************************

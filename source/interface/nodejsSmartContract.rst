@@ -356,3 +356,22 @@
         signature:"0x414b7ab3d46ecc8ab359636c133f9a1b88ffc8c08e9560da2b3ef7949edf8ca3"
         type:"contract_event"
     }
+
+
+
+合约中调用新增的表相关指令
+=================================================
+
+`数据库合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/resources/solidity/table/solidity-TableTxs.sol>`_ 
+
+
+`测试用例 <https://github.com/ChainSQL/node-chainsql-api/blob/feature/dev-escrow/test/testContractTableTxs.js>`_
+
+
+合约中调用新增的代币接口相关指令
+=================================================
+
+`代币合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
+
+
+`node.js测试用例 <https://github.com/ChainSQL/node-chainsql-api/tree/feature/dev-escrow/test/testContractGatewayTxs.js>`_
