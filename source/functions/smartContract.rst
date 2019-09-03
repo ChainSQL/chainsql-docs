@@ -15,6 +15,7 @@ ChainSQL目前支持Solidity智能合约形式。
 - `Remix在线IDE <http://remix.chainsql.net/>`_
 
 
+.. _SmartContract_DB_Oper:
 
 数据库操作智能合约开发
 ****************************************************
@@ -209,7 +210,7 @@ ChainSQL目前支持Solidity智能合约形式。
 通过以下2种方式编译合约sol文件，生成abi以及bin文件。
 
  - 使用Remix在线IDE编译 `Remix在线IDE <http://remix.chainsql.net/>`_  `使用手册 <https://remix-ide.readthedocs.io/en/stable/>`_
- - 使用工具 ``solc`` 编译 `下载地址 <http://www.chainsql.net/libs.zip>`_
+ - 使用工具 ``solc`` 编译 `下载地址 <https://github.com/ChainSQL/solidity/releases/tag/v0.10.1>`_
 
 
 工具 ``solc`` 使用示例
