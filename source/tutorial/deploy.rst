@@ -135,11 +135,15 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 1.	验证节点公私钥的生成
 ----------------------------
-将可执行程序与配置文件（如chainsqld-example.cfg）放在用户目录，先启动一下：
+将可执行程序与配置文件放在用户目录，先启动一下：
 
 .. code-block:: bash
 
-    nohup ./chainsqld --conf="./chainsqld-example.cfg"&
+    nohup ./chainsqld &
+
+.. IMPORTANT::
+
+    如果配置文件在当前目录，且名称为 ``chainsqld.cfg``  ，可直接运行 ``nohup ./chainsqld &`` 命令即可启动节点，否则需要用 ``--conf`` 指定配置文件路径: ``./chainsqld --conf="./ chainsqld-example.cfg" &``
 
 确认chainsqld程序已经启动，输入 ``ps -ef|grep chainsqld`` ，看是否列出chainsqld进程
 
@@ -150,7 +154,7 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 .. code-block:: bash
 
-    ./chainsqld --conf="./ chainsqld-example.cfg"  validation_create
+    ./chainsqld validation_create
     
 返回结果如下：
 
@@ -163,9 +167,6 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
         "validation_seed" : "xxjX5VuTjQKvkTSw6EUyZnahbpgS1"
     }
 
-.. IMPORTANT::
-
-    如果配置文件在当前目录，且名称为 ``chainsqld.cfg``  ，可以不用加 ``--conf`` 指定配置文件路径，直接运行 ``nohup ./chainsqld &`` 命令即可启动节点。
 
 2.	配置文件的修改
 ---------------------------
@@ -200,14 +201,14 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 ``[ips_fixed]``
 
-  chainsql始终尝试进行对等连接的IP地址或主机名（其它三个节点的ip及端口号5123）。
+  chainsql尝试进行对等连接的IP地址或主机名及端口号
 
 例如：::
 
 	[ips_fixed]
-	127.0.0.1 51236
-	127.0.0.1 51237
-	127.0.0.1 51238
+	192.168.0.80 5123
+	192.168.0.81 5123
+	192.168.0.82 5123
 
 ``[validators]`` 或 ``[validators_file]``
 
@@ -235,8 +236,6 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 例如：::
 
-	[validation_public_key]
-	n9Jq6dyM2jbxspDu92qbiz4pq7zg8umnVCmNmEDGGyyJv9XchvVn
 	[validation_seed]
 	xnvq8z6C1hpcYPP94dbBib1VyoEQ1
 
