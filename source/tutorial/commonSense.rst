@@ -60,8 +60,14 @@ Java:
 
 会输出 ``actNotFound`` 的错误信息，想要使用一个账户，需要使用 ``pay`` 接口给账户打钱：
 
+Node.js:
+
 .. code-block:: js
 
+    var account = {
+        secret:"xnnUqirFepEKzVdsoBKkMf577upwT",
+        address:"zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4"
+    }
     var owner = {
         secret: "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
         address: "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh"	
@@ -73,6 +79,25 @@ Java:
             
     let rs = await c.pay(account.address,200).submit({expect:'validate_success'});
     console.log(rs);
+
+Java:
+
+.. code-block:: java
+
+    String rootAddress = "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh";
+    String rootSecret = "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb";
+    String newAddress = "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4";
+
+    c.connect("ws://106.75.99.244:6006");
+    c.connection.client.logger.setLevel(Level.SEVERE);
+    c.as(rootAddress,rootSecret);
+
+    JSONObject obj = c.pay(newAddress,"200").submit(SyncCond.validate_success);
+    if(obj.has("error_message")){
+        System.out.println("激活或转账失败。 失败原因: " + obj.getString("error_message"));
+    }else {
+        System.out.println("激活或转账成功");
+    }
 
 2.Chainsql中的预留费用
 ================================
