@@ -14,7 +14,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项
 
 功能
 ===============
-2016年初开始开发， 目前最新版本是0.30.4，支持功能包括：
+2016年初开始开发， 目前最新版本是0.30.5，支持功能包括：
 
 1. Ripple原有功能
 ---------------------
@@ -51,6 +51,13 @@ ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项
 版本变化
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
+
+0.30.5
+--------------------
+- 增加X509的CA证书功能。
+- 新增加API接口 useCert。  :ref:`java  <UseCertJava>` :ref:`nodejs <UseCertNodeJS>`
+- 新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
+- 其它
 
 0.30.4
 --------------------

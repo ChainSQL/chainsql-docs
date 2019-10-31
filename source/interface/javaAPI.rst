@@ -22,7 +22,7 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
   <dependency>
     <groupId>com.peersafe</groupId>
     <artifactId>chainsql</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.4</version>
   </dependency>
 
 
@@ -62,6 +62,11 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 =====================
     - 对应 ``Chainsqld`` 版本 ``0.30.4`` ，支持智能合约对代币指令的扩展，支持费用调节功能
     - 1.5.2版本增加新添对多线程并发的支持类：   :ref:`ChainsqlPool <chainsql_pool>`  ，并提供了示例代码。
+
+1.5.4
+=====================
+    - 对应 ``Chainsqld`` 版本 ``0.30.5`` ，支持CA证书功能
+    - 1.5.4版本增加新接口useCert     
 
 ------------------------
 
@@ -1590,6 +1595,57 @@ getAccountTables
     }
 
 ------
+
+
+.. _UseCertJava:
+
+useCert
+=====================
+
+.. code-block:: java
+
+  public void useCert(String userCert)
+
+用于设置账户的CA证书信息。
+
+
+参数
+++++++++
+
+
+1. ``userCert``  - ``String``: 用户证书的文件内容.
+
+
+返回值
+++++++++
+
+
+示例
+
+.. code-block:: java
+
+    c.userCert("-----BEGIN CERTIFICATE-----\n
+  MIIC2TCCAcGgAwIBAgICEEkwDQYJKoZIhvcNAQELBQAwczELMAkGA1UEBhMCQ04x\n
+  EDAOBgNVBAgMB1RpYW5qaW4xEDAOBgNVBAcMB1RpYW5qaW4xFTATBgNVBAoMDENI\n
+  SU5BU1NMIEluYzEpMCcGA1UEAwwgQ0hJTkFTU0wgQ2VydGlmaWNhdGlvbiBBdXRo\n
+  b3JpdHkwHhcNMTkwOTA1MDgxOTA1WhcNMjAwOTA0MDgxOTA1WjA6MQswCQYDVQQG\n
+  EwJDTjELMAkGA1UECAwCQkoxETAPBgNVBAoMCFBlZXJzYWZlMQswCQYDVQQDDAJS\n
+  QzBWMBAGByqGSM49AgEGBSuBBAAKA0IABDDn/J1WuyXWiTuj8xeuW88zsykb1j2z\n
+  JlSjEyIvf9AggBfOJ3FHVCCwgJsfIAr6ZK23X5psdD0+LtNE5+ydEiOjfjB8MAkG\n
+  A1UdEwQCMAAwLwYJYIZIAYb4QgENBCIWIENISU5BU1NMIENlcnRpZmljYXRpb24g\n
+  QXV0aG9yaXR5MB0GA1UdDgQWBBSbvkh1rza59QJoFkctRh8GWYO8cTAfBgNVHSME\n
+  GDAWgBRcHyP6yOEhMcLYN/aI/NJvwlRDMzANBgkqhkiG9w0BAQsFAAOCAQEABwBp\n
+  wG/USPuPXIgQQAI1MLCjBwBm0JBLa/iR7ilebthsSMqPA3r5++HlsauyoG9C8w12\n
+  GQeiNWeMKLtHiMK+nqdEMu3/Qu+pfJGho8pNp/xkKoHQKrhwS2nXExJk/TWyqks+\n
+  gV4lVHLgSt0KfDp4qZE2XjSxOSY0bxg0z65ILgG6kulMMfexPj9mWAP+9jkzrarB\n
+  Bnwndq1E8SH80HNC1Yjj4P9tuVZH1XBRd8dDgC7X8bwa8uq9Fv3x53LvzvkSUL7a\n
+  EwC2ruHjaFuOmI1uidXFwLaQ7ufbXFGE5CwYhOamPbf2evUagNnVtCAJASmI1Ysy\n
+  VVTCvkwclRIImtA3+Q==\n
+  -----END CERTIFICATE-----
+  ");
+
+------
+
 
 网关交易
 *****************

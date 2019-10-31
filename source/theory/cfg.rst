@@ -131,6 +131,7 @@
 ----------------
 
     - 0.30.4版本以后，新添加配置选项 :ref:`drops_per_byte <DropsPerByte>`   , :ref:`select_limit <SelectLimit>`
+    - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
 
 
 配置项说明
@@ -327,7 +328,7 @@
 .. _DropsPerByte:
 
 ---------------------
-drops_per_byte
+[drops_per_byte]
 ---------------------
     该选项表示表交易中每字节数据消耗的drops，默认为 976(10^6 /1024)，表示1KB数据消耗1 ZXC，范围为[1,10^6]
 
@@ -359,3 +360,44 @@ drops_per_byte
 
     [select_limit]
     200
+
+
+.. _X509CrtPath:
+
+---------------------
+[x509_crt_path]
+---------------------
+    该选项表示X509 根证书文件路径
+
+.. code-block:: bash
+
+    # X509 根证书文件路径
+    [x509_crt_path]
+    ./ca1.cert
+    ./ca2.cert
+
+.. _CACertsKeys:
+
+---------------------
+[ca_certs_keys]
+---------------------
+    该选项表示信任根证书服务器公钥列表
+
+.. code-block:: bash
+
+    [ca_certs_keys]
+    029d1f40fc569fff2a76417008d98936a04417db0758c8ab123dee6dbd08d79398
+
+.. _CACertsSites:
+
+---------------------
+[ca_certs_sites]
+---------------------
+    该选项表示信任根证书服务器地址
+
+.. code-block:: bash
+
+    [ca_certs_sites]
+    http://192.168.29.112:8081/
+
+
