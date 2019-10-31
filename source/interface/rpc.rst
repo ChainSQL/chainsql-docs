@@ -689,7 +689,7 @@ SQLStatement类型的交易的json格式（tx_json对象）各个域的描述如
                 "Raw": [
                     {
                         "id": 1,
-                        "name": "AAA"
+                        "name": "AAA",
                         "age": 11
                     },
                     {
@@ -699,7 +699,7 @@ SQLStatement类型的交易的json格式（tx_json对象）各个域的描述如
                     }
                 ],
                 "OpType": 6,
-                "AutofillField": "txHash"
+                "AutoFillField": "txHash"
             }
         }]
     }
