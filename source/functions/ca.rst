@@ -61,7 +61,7 @@ CA 证书的校验，是通过在ChainSQL API发送的交易请求中带上CA证
 
 节点对交易中CA证书的校验流程如下图:
 
-    .. image:: ../../images/CAVerify.png
+    .. image:: ../../images/caVerify.png
         :width: 990px
         :alt: ChainSQL Framework
         :align: center
