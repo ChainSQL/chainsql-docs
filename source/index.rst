@@ -57,6 +57,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项
 - 新增 :ref:`CA功能  <CAFeatures>` 
 - 新增API接口 useCert。 :ref:`java  <UseCertJava>` :ref:`nodejs <UseCertNodeJS>`
 - 新添配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
+- 新增1分钟空区块特性 :ref:`DecreaseStorage  <DecreaseStorage>` 
 - 其它
 
 0.30.4
