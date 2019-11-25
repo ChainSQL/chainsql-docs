@@ -21,6 +21,13 @@
 .. note:: 
     只有与共识相关的相关修改需要使用修订来升级，对于不影响共识的逻辑修改（如查询结果的返回格式），是不需要用修订来实现的。
 
+.. _DecreaseStorage:
+
+版本变化
+----------------
+
+    - 0.30.5版本，新添加特性 ``DecreaseStorage 4F26F023FBA6E23CD5FAFBF0751E72EEB306FE944F1BAF9AEB7D8753D5719B15`` 表示当区块链网络中无交易产生时，1min生成一个空区块。
+
 使用方式
 ------------
 1. 在cfg中配置Amendment
@@ -31,6 +38,7 @@
     [features]
     MultiSign
     TrustSetAuth
+    
 
     //2.投反对票
     [veto_amendments]
