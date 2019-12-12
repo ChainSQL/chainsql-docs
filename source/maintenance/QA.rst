@@ -43,6 +43,14 @@ Api 调用问题
     1. 一般是客户端调试导致发送时间太长
     2. node.js api客户端执行了同步操作，并且同步操作的时间太长，导致订阅的ledgerVersion得不到更新，在准备交易时取到的是旧的ledgerVersion，虽然最后对ledgerVersion+3作为 LastLedgerSequence的值，但是到节点那里仍然发生tefMAX_LEDGER错误
 
+9. This sequence number has already past.
+    这个是因为用API发送交易时，会在交易中带一个交易账户的Sequence,当交易发送至节点时，发现账户的Sequence已经大于交易中带的Sequence时，就会报这个错误。
+    引起这个错误的原因可能是：
+
+    1. 同一个账户，没有等上一次的交易成功返回后，继续发送一个新的交易。例如同一个账户准备发送两个交易，发送第一个交易时，Sequence为2；没有等第一个交易成功返回时，继续发送第二个的交易，此时Sequence依然为2。当第二个交易发送到节点时，此时由于第一个交易已经处理成功，账户的Sequence变为了3，而第二个交易中带的Sequence还为2，此时就会出现 **This sequence number has already past** 的错误。
+
+    
+
 Chainsql节点问题
 -----------------
 
