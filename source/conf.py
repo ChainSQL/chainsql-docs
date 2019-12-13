@@ -37,7 +37,7 @@ author = 'peersafe'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.30.3'
+release = '0.30.5'
 
 # -- General configuration ---------------------------------------------------
 
