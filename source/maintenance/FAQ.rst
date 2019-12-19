@@ -126,4 +126,4 @@ Chainsql节点问题
     2019-Dec-19 03:21:07 Application:FTL Invalid seed specified in [validation_seed]
     2019-Dec-19 03:21:07 JobQueue:NFO Auto-tuning to 6 validation/transaction/proposal threads.
 
-``FTL`` 就 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
+``FTL`` 是 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
