@@ -1,6 +1,6 @@
 
 ############
-Q&A
+FAQ
 ############
 
 Api 调用问题
@@ -93,7 +93,7 @@ Chainsql节点问题
     | 使用secureCRT或者Xshell连接服务器，退出时，直接关闭对话窗口，会将nohup后台运行的进程杀死。
     | 应该使用 ``exit`` 命令退出 ssh 工具终端
 
-6. 节点日志报：Clock for is off by ...
+6. peers命令看不到其它节点，节点日志报：Clock for is off by ...
     节点间时间不一致导致的，一般发生在内网，有两种解决方式：
     
     1. 手动将时间调整到一致（相关不超过20秒即可）
@@ -112,3 +112,18 @@ Chainsql节点问题
         ip = 0.0.0.0
         admin = 127.0.0.1
         protocol = http
+
+8. peers命令看不到其它节点，配置没问题，telnet peer端口能通，不是问题6的情况
+    可能原因：
+
+    1. ``db/peerfinder.sqlite`` 与 ``db/wallet.db`` 会缓存之前的连接ip，会影响节点发现，将这两个文件删除再重启
+
+9. 节点启动时突然退出，日志最后几行没有错误信息
+    在日志中查找有没有 ``FTL`` 字样的信息，如：
+
+::
+
+    2019-Dec-19 03:21:07 Application:FTL Invalid seed specified in [validation_seed]
+    2019-Dec-19 03:21:07 JobQueue:NFO Auto-tuning to 6 validation/transaction/proposal threads.
+
+``FTL`` 就 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
