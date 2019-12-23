@@ -48,6 +48,7 @@ Java:
 
 .. code-block:: java
 
+    Chainsql c = new Chainsql();
     JSONObject account = c.generateAddress();
     System.out.println(account);
 

@@ -45,6 +45,8 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
     import com.peersafe.chainsql.core.Submit.SyncCond;
     import com.peersafe.chainsql.util.Util;
 
+    // 引入之后使用new创建chainsql对象，之后使用chainsql对象进行接口操作
+    Chainsql c = new Chainsql();
 ------
 
 版本变化
