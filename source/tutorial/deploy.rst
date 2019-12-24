@@ -186,7 +186,7 @@ auto_sync配置为1表示开启表自动同步，开启后，在节点正常运�
 
 	watch ./chainsqld server_info
 
-等待2分钟左右，当输出结果中，字段 ``complete_ledgers``  :有值，类似 "1-10"，则chainsqld服务启动成功
+**等待2分钟左右**，当输出结果中，字段 ``complete_ledgers``  :有值，类似 "1-10"，则chainsqld服务启动成功
 每个网络节点的chainsql服务都要求成功运行
 
 查看其它节点的运行情况：::

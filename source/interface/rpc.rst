@@ -472,7 +472,7 @@ TableListSet类型的交易的json格式（tx_json对象）各个域的描述如
     * - UQ
       - 整数
       - 值为1表示为列创建唯一约束。
-    * - Index
+    * - index
       - 整数
       - 值为1表示为列建立索引。
     * - FK

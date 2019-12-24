@@ -546,7 +546,7 @@ TableListSet类型的交易的json格式（tx_json对象）各个域的描述如
                 "PK": 1,
                 "NN": 1,
                 "UQ": 1,
-                "Index": 1
+                "index": 1
             },
             {
                 "field": "age",
