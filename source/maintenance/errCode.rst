@@ -120,7 +120,7 @@ noAccount         			No such account
 noClosed          			Closed ledger is unavailable	
 noCurrent         			Current ledger is unavailable	
 noEvents          			Current transport does not support events	
-noNetwork         			Not synced to Ripple network	
+noNetwork         			Not synced to Chainsql network	
 noPath            			Unable to find a ripple path	
 noPermission      			You don't have permission for this command	
 noPathRequest     			No pathfinding request in progress	

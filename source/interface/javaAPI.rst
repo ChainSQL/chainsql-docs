@@ -468,10 +468,8 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
   JSONObject obj = c.pay(sNewAccountId,"10").submit(SyncCond.validate_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-
     JSONObject objRet = new JSONObject();
     objRet.put("status", obj.getString("status"));
     System.out.println( objRet);
@@ -481,7 +479,6 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
   obj = c.pay(sNewAccountId,"10").submit(new Callback<JSONObject>() {
           @Override
           public void called(JSONObject args) {
-
             System.out.println(args);
           }
         });
@@ -603,10 +600,8 @@ pay(转账系统币)
 
     JSONObject obj = c.pay("zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb","10000").submit(SyncCond.validate_success);
     if(obj.has("error_message")){
-
       System.out.println("激活或转账失败。 失败原因: " + obj.getString("error_message"));
     }else {
-
       System.out.println("激活或转账成功");
     }
 
@@ -1810,10 +1805,8 @@ pay(转账网关代币)
   System.out.println(obj);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   } 
 
@@ -1876,10 +1869,8 @@ createTable
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }
 
@@ -1916,13 +1907,11 @@ renameTable
 .. code-block:: java
 
   // 将表"dc_universe"改为"dc_name"
-  JSONObject obj = c.renameTable("dc_universe", "dc_name").submit();
+  JSONObject obj = c.renameTable("dc_universe", "dc_name").submit(SyncCond.db_success);
   
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-
     JSONObject objRet = new JSONObject();
     objRet.put("status", obj.getString("status"));
     System.out.println( objRet);
@@ -1960,12 +1949,10 @@ dropTable
 
 .. code-block:: java
 
-  JSONObject obj = c.dropTable("dc_universe").submit();
+  JSONObject obj = c.dropTable("dc_universe").submit(SyncCond.db_success);
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-
     System.out.println( "status" + obj.getString("status"));
   }
 
@@ -2007,10 +1994,8 @@ table
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }
 
@@ -2021,10 +2006,8 @@ table
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }
 
@@ -2065,10 +2048,8 @@ insert
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }  
   
@@ -2115,10 +2096,8 @@ update
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }
 
@@ -2159,10 +2138,8 @@ delete
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
-
     System.out.println(obj);
   }else {
-  
     System.out.println( "status" + obj.getString("status"));
   }  
 
