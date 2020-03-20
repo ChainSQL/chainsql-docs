@@ -111,7 +111,7 @@ codegen_chainsql.jar_
 .. code-block:: java
 
 	//同步调用,共识通过返回
-	Greeter contract = Greeter.deploy(c,Contract.GAS_LIMIT,Contract.INITIAL_DROPS,"Hello blockchain world!").send();
+	Greeter contract = Greeter.deploy(c,Contract.GAS_LIMIT,Contract.INITIAL_DROPS,"Hello blockchain world!");
 	//输出合约地址
 	System.out.println("Smart contract deployed to address " + contract.getContractAddress());
 
