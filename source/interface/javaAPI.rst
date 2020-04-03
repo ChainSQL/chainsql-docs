@@ -1100,6 +1100,67 @@ getLedgerVersion
 
 ------
 
+.. _javaledger_txs:
+
+getLedgerTxs
+=====================
+
+.. code-block:: java
+
+    // 同步接口
+    public JSONObject getLedgerTxs(Integer ledgerSeq, boolean bIncludeSuccess, boolean bIncludefailure);
+
+    // 异步接口
+    public void getLedgerTxs(Integer ledgerSeq, boolean bIncludeSuccess, boolean bIncludefailure, Callback<JSONObject> cb);
+
+获取区块中的成功、失败交易数，以及错误交易的hash及错误码。
+
+参数
+++++++++
+
+1. ``ledgerSeq`` - ``Integer``: 账本索引
+
+2. ``bIncludeSuccess`` - ``boolean``: 是否要获取所有成功交易的哈希
+
+3. ``bIncludefailure`` - ``boolean``: 是否要获取所有失败交易的哈希和错误码
+
+4. ``cb`` - ``Callback`` : 异步接口，参数为 回调函数
+
+返回值
+++++++++
+
+1. 可参考RPC\ :ref:`ledger_txs <rpcledger_txs>`\ 接口。
+
+示例
+
+
+.. code-block:: java
+
+    JSONObject json = c.c.getLedgerTxs(2,true,true);
+
+输出:
+
+.. code-block:: json
+
+  {
+    "txn_failure_detail":[],
+    "txn_failure":0,
+    "txn_success":1,
+    "ledger_index":2,
+    "txn_success_detail":[
+      {
+        "hash":"41521F8535F1A6A581528BFB56F3085F9D4B09EBE913A6C854B1C9453BD0C46D",
+        "transaction_result":"tesSUCCESS"
+      }
+    ]
+  }
+
+.. warning::
+
+  此API为\ :ref:`PoP共识版本 <PoP共识版本>`\ 新增API，只适用于PoP共识版本。
+
+------
+
 getAccountTransactions
 ==================================
 
@@ -2874,6 +2935,8 @@ unsubcribeTable
   });
 
 ------
+
+.. _javaAPI订阅交易:
 
 subscribeTx
 =====================

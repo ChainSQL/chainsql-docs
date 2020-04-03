@@ -461,6 +461,84 @@ wallet_propose
       - 字符串
       - 账户的公钥。
 
+.. _cmdledger_txs:
+
+ledger_txs
++++++++++++++++++++++++++++++++
+
+查询区块中的成功、失败交易数，以及错误交易的hash及错误码。
+
+语法：
+
+::
+
+    ./chainsqld ledger_txs <ledger_seq> [include_success] [include_failure]
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - ledger_seq
+      - 整形
+      - 要查询的区块号。
+    * - include_success
+      - 字符串
+      - 若省略，则返回结果中，不包括成功的交易的hash。
+    * - include_failure
+      - 字符串
+      - 若省略，则返回结果中，不包括错误交易的hash及错误码。
+
+返回结果示例：
+
+.. code-block:: json
+
+    {
+        "id" : 1,
+        "result" : {
+            "ledger_index" : 2,
+            "status" : "success",
+            "txn_failure" : 0,
+            "txn_failure_detail" : [],
+            "txn_success" : 1,
+            "txn_success_detail" : [
+              {
+                "hash" : "41521F8535F1A6A581528BFB56F3085F9D4B09EBE913A6C854B1C9453BD0C46D",
+                "transaction_result" : "tesSUCCESS"
+              }
+            ]
+        }
+    }
+
+结果说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - status
+      - 字符串
+      - 标识命令是否执行成功。
+    * - txn_failure
+      - 整形
+      - 区块包含的错误交易个数。
+    * - txn_success
+      - 整形
+      - 区块包含的成功交易个数。
+    * - txn_failure_detail
+      - 对象数组
+      - 包含每个错误交易的哈希和错误码。
+    * - txn_success_detail
+      - 对象数组
+      - 包含每个成功交易的哈希。
+
+.. warning::
+
+  此命令为\ :ref:`PoP共识版本 <PoP共识版本>`\ 新增命令，只适用于PoP共识版本。
+
 chainsqld命令
 *****************************
 
