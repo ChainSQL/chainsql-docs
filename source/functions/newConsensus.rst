@@ -78,10 +78,9 @@ PoP共识算法
 
 2. 增加 ``ledger_txs`` 接口。
 
-可查询区块中的成功、失败交易数，以及错误交易的hash及错误码，可配合 ``ledger_data`` 接口使用。
+可查询区块中的成功、失败交易数，以及错误交易的hash及错误码，可配合\ `ledger_data <https://xrpl.org/ledger_data.html>`_\ 接口使用。
 
-接口详情可查看\ :ref:`命令行接口 <cmdledger_txs>`\ 、\ :ref:`RPC接口 <rpcledger_txs>`\ 、\ :ref:`JAVA接口 <javaledger_txs>`\ 、Node.js接口。
-
+接口详情可查看\ :ref:`命令行接口 <cmdledger_txs>`\ 、\ :ref:`RPC接口 <rpcledger_txs>`\ 、\ :ref:`JAVA接口 <javaledger_txs>`\ 、\ :ref:`Node.js <jsledger_txs>`\ 接口。
 
 3. 修改交易订阅，交易状态增加\ ``validate_error``\ 。
 

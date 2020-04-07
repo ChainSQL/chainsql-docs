@@ -1129,7 +1129,7 @@ getLedgerTxs
 返回值
 ++++++++
 
-1. 可参考RPC\ :ref:`ledger_txs <rpcledger_txs>`\ 接口。
+1. 可参考RPC中的\ :ref:`ledger_txs <rpcledger_txs>`\ 接口。
 
 示例
 

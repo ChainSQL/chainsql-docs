@@ -10,7 +10,7 @@ PoP共识版本对ChainSQL的共识算法做了修改，主要目的是 ``提升
 
 目前新版本已实现的目标如下：
 
-#. 性能提升（以10万条插入交易为样本）PIP
+#. 性能提升（以10万条插入交易为样本）
 
   * 发送tps 700 提升到 4000
   * 共识tps 700 提升到 4000
@@ -23,10 +23,10 @@ PoP共识版本对ChainSQL的共识算法做了修改，主要目的是 ``提升
 PoP共识算法介绍
 *****************
 
-交互示意图（*红色部分为本次修改*）：
+交互示意图：
 
 .. image:: ../../images/new_consensus.png
-    :width: 600px
+    :width: 800px
     :alt: NewConsensusDesign
     :align: center
 

@@ -599,6 +599,42 @@ getLedgerVersion
 
 ------------------------------------------------------------------------------
 
+.. _jsledger_txs:
+
+-----------------
+getLedgerTxs
+-----------------
+.. code-block:: javascript
+
+	chainsql.getLedgerTxs(ledger_index, include_success, include_failure)
+
+获取区块中的成功、失败交易数，以及错误交易的hash及错误码。
+
+参数说明
+-----------
+
+1. ``ledger_index`` - ``integer`` : 指定要获取的区块的区块高度。
+2. ``include_success`` - ``Boolean`` : 是否要获取所有成功交易的哈希。
+3. ``include_failure`` - ``Boolean`` : 是否要获取所有失败交易的哈希和错误码。
+
+返回值
+-----------
+
+1. 可参考RPC中的\ :ref:`ledger_txs <rpcledger_txs>`\ 接口。
+
+示例
+-----------
+.. code-block:: javascript
+
+	var txs = await c.getLedgerTxs(1000, true, true);
+	console.log(txs);
+
+.. warning::
+
+  此API为\ :ref:`PoP共识版本 <PoP共识版本>`\ 新增API，只适用于PoP共识版本。
+
+------------------------------------------------------------------------------
+
 -----------------------
 getAccountTransactions
 -----------------------
