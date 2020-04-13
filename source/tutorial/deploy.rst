@@ -333,3 +333,88 @@ auto_sync配置为1表示开启表自动同步，开启后，在节点正常运�
 
 | 这种方式也很简单，只要修改MySQL配置文件my.cnf的参数 ``max_connections`` ，
 | 将其改为 ``max_connections=10000`` ，然后重启MySQL即可。
+
+
+
+++++++++++++++++
+
+三、Docker 搭建ChainSQL网络
+==============================================================
+
+ChainSQL 节点的 Docker 镜像地址 为  ``docker pull peersafes/chainsql:v0.30.6`` 
+
+
+下面以4个验证节点组建网络为例，介绍Docker搭建ChainSQL网络的过程。
+
+1.	生成4个验证节点的配置文件
+--------------------------------------------------------
+通过 docker镜像  ``peersafes/chainsql-tools`` 完成节点配置文件的生成。下面的命令生成了4个节点的配置文件，其中节点的IP分别为
+``192.168.0.1`` ``192.168.0.2`` ``192.168.0.3`` ``192.168.0.4`` 。
+ 
+.. code-block:: bash
+
+	# 启动镜像
+	docker run -itd --name chainsql-tools  -v ~/docker/cfg:/opt/chainsql-tools/cfg  peersafes/chainsql-tools:v0.1.0 /bin/sh
+
+	# 生成节点配置文件
+	docker exec -it  chainsql-tools  /bin/sh  /opt/chainsql-tools/genCfg.sh 4 "192.168.0.1;192.168.0.2;192.168.0.3;192.168.0.4"
+
+
+生成配置文件后，目录的结构如下，其中目录 1 , 2 , 3 , 4 下的配置文件分别表示节点1，2，3，4的配置文件 。
+
+.. code-block:: bash
+
+	# 目录结构为
+		.
+	├── 1
+	│   └── chainsqld.cfg
+	├── 2
+	│   └── chainsqld.cfg
+	├── 3
+	│   └── chainsqld.cfg
+	└── 4
+		└── chainsqld.cfg
+
+++++++++
+
+2.	启动ChainSQL的Docker镜像
+--------------------------------------------------------
+
+拷贝上一步生成的配置文件到4个节点
+
+.. code-block:: bash
+
+	scp ./1/chainsqld.cfg root@192.168.0.1:/opt/chainsql/
+	scp ./2/chainsqld.cfg root@192.168.0.2:/opt/chainsql/
+	scp ./2/chainsqld.cfg root@192.168.0.3:/opt/chainsql/
+	scp ./3/chainsqld.cfg root@192.168.0.4:/opt/chainsql/
+
+
+依次启动节点1,2,3,4
+
+.. code-block:: bash
+
+	# 登录节点1 后 , 启动节点1
+	docker run -d --name node1 -p 5125:5125 -v /opt/chainsql/chainsqld.cfg:/opt/chainsql/chainsqld.cfg peersafes/chainsql:v0.30.6
+
+	# 登录节点2 后 , 启动节点2
+	docker run -d --name node2 -p 5125:5125 -v /opt/chainsql/chainsqld.cfg:/opt/chainsql/chainsqld.cfg peersafes/chainsql:v0.30.6
+
+	# 登录节点3 后 , 启动节点3
+	docker run -d --name node3 -p 5125:5125 -v /opt/chainsql/chainsqld.cfg:/opt/chainsql/chainsqld.cfg peersafes/chainsql:v0.30.6
+
+	# 登录节点4 后 , 启动节点4
+	docker run -d --name node4 -p 5125:5125 -v /opt/chainsql/chainsqld.cfg:/opt/chainsql/chainsqld.cfg peersafes/chainsql:v0.30.6
+
+++++++++
+
+
+3. 查看网络的状态
+--------------------------------------------------------
+
+通过 节点的 ``peers`` , ``server_info``  等命令查看网络的状态
+
+.. code-block:: bash
+
+	# 通过server_info 查看网络状态 , 返回字段server_status为normal时表示ChainSQL网络正常运行
+	docker exec -it node1 /opt/chainsql/chainsqld server_info
