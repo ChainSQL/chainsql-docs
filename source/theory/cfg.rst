@@ -132,7 +132,7 @@
 
     - 0.30.4版本以后，新添加配置选项 :ref:`drops_per_byte <DropsPerByte>`   , :ref:`select_limit <SelectLimit>`
     - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
-
+    - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
 
 配置项说明
 ----------------
@@ -399,4 +399,30 @@
     [ca_certs_sites]
     http://192.168.29.112:8081/
 
+----------------------------------------------------------------
 
+.. _LedgerAcquire:
+
+[ledger_acquire]
+******************************
+    同步区块相关的配置。
+
+    - skip_blocks 表示同步区块时要跳过的区块，也就是缺失的区块，用逗号分隔多个缺失的域。示例：skip_blocks=5000-6000,8000,9000-10000
+
+.. code-block:: bash
+
+    [ledger_acquire]
+    skip_blocks=5000-6000,8000,9000-10000
+
+
+.. _MissingHashes:
+
+[missing_hashes]
+******************************
+    手动配置节点获取不到区块哈希的区块，每一行配置一个对应的区块号和区块哈希，用冒号分隔区块号和区块哈希。
+
+.. code-block:: bash
+
+    [missing_hashes]
+    8999:<hash of ledger 8999>
+    7999:<hash of ledger 7999>

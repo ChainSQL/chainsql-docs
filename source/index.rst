@@ -52,6 +52,14 @@ ChainSQL是全球首个基于区块链的数据库应用平台，基于开源项
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
 
+0.30.6
+--------------------
+- 调整区块缓存时间以及数量的默认值 
+- 新增加命令行接口:  :ref:`ledger_objects <LedgerObjects>`   , :ref:`node_size <NodeSize>`  , :ref:`malloc_trim <MallocTrim>`
+- 新添配置选项  :ref:`ledger_acquire <LedgerAcquire>`   ,   :ref:`missing_hashes <MissingHashes>`
+- 其它
+
+
 0.30.5
 --------------------
 - 新增 :ref:`CA功能  <CAFeatures>` 

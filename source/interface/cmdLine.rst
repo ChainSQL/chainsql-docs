@@ -730,3 +730,146 @@ t_auditstop
         }
     }
 
+
+
+.. _LedgerObjects:
+
+ledger_objects
++++++++++++++++++++++++++++++++
+
+统计账本中各类别账户的个数。
+
+语法：
+
+::
+
+    chainsqld ledger_objects <ledger_hash>|<ledger_index>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - <ledger_hash>|<ledger_index>
+      - 字符串
+      - 账本哈希值 或者 账本号
+
+
+返回结果：
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "ledger_hash" : "2C7279A24D8ED1A3B10F1C0497D245FEE87496FEDBB661176ABC3D1188F7CAE8",
+          "ledger_index" : 1000,
+          "state" : {
+            "account" : 1,
+            "amendments" : 1,
+            "directory" : 0,
+            "escrow" : 0,
+            "fee" : 0,
+            "hashes" : 2,
+            "offer" : 0,
+            "payment_channel" : 0,
+            "signer_list" : 0,
+            "state" : 0,
+            "table" : 0,
+            "ticket" : 0
+          },
+          "status" : "success",
+          "tx" : 0,
+          "validated" : true
+      }
+    }
+
+------------
+
+.. _NodeSize:
+
+node_size
++++++++++++++++++++++++++++++++
+
+查询和设置节点的缓存级别。不指定 ``type`` 表示查询节点的缓存级别，指定 ``type`` 表示设置节点的缓存级别。
+
+语法：
+
+::
+
+    chainsqld node_size [<type>]
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - type
+      - 字符串
+      - 缓存级别,包括 tiny small medium large huge。
+
+
+返回结果：
+
+- 查询结果
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "node_size" : "medium",
+          "status" : "success"
+      }
+    }
+
+
+- 设置结果
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "status" : "success"
+      }
+    }
+
+
+.. _MallocTrim:
+
+malloc_trim
++++++++++++++++++++++++++++++++
+
+释放由glibc维护的，未还给系统的内存。
+
+语法：
+
+::
+
+    chainsqld malloc_trim
+
+参数说明：
+
+
+返回结果：
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "status" : "success",
+          "value" : 1
+      }
+    }
+
+
+
+
+
+
