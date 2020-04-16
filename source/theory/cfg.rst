@@ -259,6 +259,9 @@
 
 日志级别包括：trace, debug, info, warning, error, fatal
 
+.. _SyncDB:
+
+
 [sync_db]
 *****************
     配置同步表相关交易用的数据库，原生支持mysql,sqlite，可通过 mycat 支持其它数据库，示例如下:

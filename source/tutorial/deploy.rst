@@ -365,7 +365,6 @@ ChainSQL 节点的 Docker 镜像地址 为  ``docker pull peersafes/chainsql:v0.
 .. code-block:: bash
 
 	# 目录结构为
-		.
 	├── 1
 	│   └── chainsqld.cfg
 	├── 2
@@ -373,7 +372,10 @@ ChainSQL 节点的 Docker 镜像地址 为  ``docker pull peersafes/chainsql:v0.
 	├── 3
 	│   └── chainsqld.cfg
 	└── 4
-		└── chainsqld.cfg
+	│   └── chainsqld.cfg
+
+ 
+如果需要节点需要配置数据库，需修改对应节点的配置文件  ``chainsqld.cfg`` , 具体配置参考 :ref:`配置数据库 <SyncDB>`
 
 ++++++++
 
@@ -416,5 +418,5 @@ ChainSQL 节点的 Docker 镜像地址 为  ``docker pull peersafes/chainsql:v0.
 
 .. code-block:: bash
 
-	# 通过server_info 查看网络状态 , 返回字段server_status为normal时表示ChainSQL网络正常运行
+	# 通过 server_info 查看网络状态 , 返回字段server_status为normal时表示ChainSQL网络正常运行
 	docker exec -it node1 /opt/chainsql/chainsqld server_info
