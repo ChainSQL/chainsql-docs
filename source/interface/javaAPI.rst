@@ -976,7 +976,6 @@ getLedger
     // 同步接口
     public JSONObject getLedger();                    // 获取最新账本信息
     public JSONObject getLedger(Integer ledger_index);// 获取指定索引账本信息
-    public JSONObject getLedger(JSONObject option) ;
 
     // 异步接口
     public void getLedger(Callback<JSONObject> cb);
@@ -992,11 +991,7 @@ getLedger
 
 1. ``ledger_index`` - ``Integer``: 账本索引
 
-2. ``option`` - ``JSONObject``:
-
-  * ``ledger_index`` - ``Integer`` : 账本索引
-
-3. ``cb``      - ``Callback`` : 异步接口，参数为 回调函数
+2. ``cb``           - ``Callback`` : 异步接口，参数为 回调函数
 
 
 返回值
@@ -1005,7 +1000,13 @@ getLedger
 
 .. _区块信息字段说明: https://developers.ripple.com/rippleapi-reference.html#getledger
 
-1. ``JsonObject`` : 区块信息，可参考 `区块信息字段说明`_
+1. ``JsonObject`` : 区块信息。正常返回主要字段如下：
+
+    * ``ledger_index``     - ``int`` : 区块号 
+    * ``ledger_hash``      - ``String`` : 区块哈希 
+    * ``parent_hash``      - ``String`` : 父区块哈希 
+    * ``close_time``       - ``String`` : 区块生成时间 
+    * ``transactions``     - ``JSONArray`` : 区块包含的交易数组，数组元素为交易的哈希值 
 
 
 示例
@@ -1013,37 +1014,38 @@ getLedger
 
 .. code-block:: java
 
-    JSONObject json = c.getLedger();
+    JSONObject json = c.getLedger(3833);
 
 输出:
 
 .. code-block:: json
 
-  {
-    "ledger":{
-      "close_flags":0,
-      "ledger_index":"1654",
-      "seqNum":"1654",
-      "account_hash":"B5FAE3E051FDBC120E57A89EEEC54A59FA5974F7FC433236909A24BE09D31B8F",
-      "close_time_resolution":10,
-      "accepted":true,
-      "close_time":609909971,
-      "transactions":[
-      ],
-      "close_time_human":"2019-Apr-30 03:26:11",
-      "ledger_hash":"3B2931B3F2D5FD589322B5EBA704B2249BCCB4E04E6BB660C5405660DAAE7D5B",
-      "total_coins":"99999999999848599",
-      "closed":true,
-      "totalCoins":"99999999999848599",
-      "parent_close_time":609909970,
-      "hash":"3B2931B3F2D5FD589322B5EBA704B2249BCCB4E04E6BB660C5405660DAAE7D5B",
-      "parent_hash":"939FE60220A6016CA0847790B4319C0FFA1AA06A58A3BA30DA37A664FEBD24E5",
-      "transaction_hash":"0000000000000000000000000000000000000000000000000000000000000000"
-    },
-    "validated":true,
-    "ledger_index":1654,
-    "ledger_hash":"3B2931B3F2D5FD589322B5EBA704B2249BCCB4E04E6BB660C5405660DAAE7D5B"
-  }
+{
+	"ledger": {
+		"close_flags": 0,
+		"ledger_index": "3833",
+		"seqNum": "3833",
+		"account_hash": "18D4485E6AC513C877487FF2F9EDC8084E9D7148556A6BA9E3CFA791C4F9E9BF",
+		"close_time_resolution": 10,
+		"accepted": true,
+		"close_time": 643369840,
+		"transactions": [
+			"8AB4C5EBB3DCF0B828EAD31F273EDA6C24963F10F41E6925585EFBA2AEA9153F"
+		],
+		"close_time_human": "2020-May-21 09:50:40",
+		"ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
+		"total_coins": "99999999999491102",
+		"closed": true,
+		"totalCoins": "99999999999491102",
+		"parent_close_time": 643369800,
+		"hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
+		"parent_hash": "7057B6F06A3D198F9CA52AA454346F8FBEBDA0680DF9496050F354AEE7BCF883",
+		"transaction_hash": "BF019692876F5EA793BA66D8E871C781DA39C255C0672480B4F295842E4B8CBD"
+	},
+	"validated": true,
+	"ledger_index": 3833,
+	"ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA"
+}
 
 ------
 
