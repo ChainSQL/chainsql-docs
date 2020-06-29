@@ -1020,32 +1020,32 @@ getLedger
 
 .. code-block:: json
 
-{
-	"ledger": {
-		"close_flags": 0,
-		"ledger_index": "3833",
-		"seqNum": "3833",
-		"account_hash": "18D4485E6AC513C877487FF2F9EDC8084E9D7148556A6BA9E3CFA791C4F9E9BF",
-		"close_time_resolution": 10,
-		"accepted": true,
-		"close_time": 643369840,
-		"transactions": [
-			"8AB4C5EBB3DCF0B828EAD31F273EDA6C24963F10F41E6925585EFBA2AEA9153F"
-		],
-		"close_time_human": "2020-May-21 09:50:40",
-		"ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
-		"total_coins": "99999999999491102",
-		"closed": true,
-		"totalCoins": "99999999999491102",
-		"parent_close_time": 643369800,
-		"hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
-		"parent_hash": "7057B6F06A3D198F9CA52AA454346F8FBEBDA0680DF9496050F354AEE7BCF883",
-		"transaction_hash": "BF019692876F5EA793BA66D8E871C781DA39C255C0672480B4F295842E4B8CBD"
-	},
-	"validated": true,
-	"ledger_index": 3833,
-	"ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA"
-}
+
+  {
+    "ledger": {
+      "close_flags": 0,
+      "ledger_index": "3833",
+      "seqNum": "3833",
+      "account_hash": "18D4485E6AC513C877487FF2F9EDC8084E9D7148556A6BA9E3CFA791C4F9E9BF",
+      "close_time_resolution": 10,
+      "accepted": true,
+      "close_time": 643369840,
+      "transactions": ["8AB4C5EBB3DCF0B828EAD31F273EDA6C24963F10F41E6925585EFBA2AEA9153F"],
+      "close_time_human": "2020-May-21 09:50:40",
+      "ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
+      "total_coins": "99999999999491102",
+      "closed": true,
+      "totalCoins": "99999999999491102",
+      "parent_close_time": 643369800,
+      "hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA",
+      "parent_hash": "7057B6F06A3D198F9CA52AA454346F8FBEBDA0680DF9496050F354AEE7BCF883",
+      "transaction_hash": "BF019692876F5EA793BA66D8E871C781DA39C255C0672480B4F295842E4B8CBD"
+    }, 
+    "validated": true,
+    "ledger_index": 3833,
+    "ledger_hash": "0C3F5E1D7532D8A13756FE721B00AE1877FE2A6AC800E34F11879E72D2F1B0EA"
+  } 
+
 
 ------
 

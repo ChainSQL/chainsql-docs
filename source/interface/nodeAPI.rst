@@ -296,7 +296,6 @@ submit
 			- db_noDbConfig
 			- db_noSyncConfig
 			- db_noAutoSync
-			- db_noTableExistInDB
 		- ``tx_hash`` - ``String`` : 交易哈希值。
 		- ``error_message`` - ``String`` : [**可选**]在错误类型为"db_error"的时候，会额外附加错误信息。
 
@@ -353,7 +352,11 @@ ChainSQL区块链中账户之间转账接口，支持系统币与发行的代币
 		- ``value`` - ``String`` : 转账数额；
 		- ``currency`` - ``String`` : 转账币种；
 		- ``issuer`` - ``String`` : 该币种的发行网关地址。
-3. ``memos`` - ``String`` : [**可选**]用于对这笔转账的说明，最后会随该笔转账交易记录到区块链上。
+3. ``memos`` - ``JSONArray`` : [**可选**]用于对这笔转账的说明，最后会随该笔转账交易记录到区块链上。``JSONArray`` 中的 ``JsonObject`` ，包含以下三个字段:
+
+	- ``data`` - ``String`` : 任意的字符串，通常包含备忘录的内容；
+	- ``format`` - ``String`` : [**可选**] 备忘录内容的格式，例如 ``MIME 类型`` ；
+	- ``type`` - ``String`` : [**可选**] 一个唯一关系（根据RFC 5988）定义了此备忘录的格式。仅允许URL中允许的字符。
 
 返回值
 -----------
@@ -366,13 +369,19 @@ ChainSQL区块链中账户之间转账接口，支持系统币与发行的代币
 
 	const userAddr = "zMpUjXckTSn6NacRq2rcGPbjADHBCPsURF";
 
+	var memos = [  
+		{ 
+			"data":"peersafe"      
+		}
+	];
+
 	//use the promise
-	chainsql.pay(userAddr, "2000").submit({expect:'validate_success'}).then(res => {
+	chainsql.pay(userAddr, "2000",memos).submit({expect:'validate_success'}).then(res => {
 		console.log(res);
 	}).catch(err => {
 		console.error(err);
 	});
-	
+		
 
 ------------------------------------------------------------------------------
 
@@ -527,7 +536,6 @@ getLedger
 	* ``includeAllData`` - ``Boolean`` : [**可选**]设置为True，如果又将includeState和(或)includeTransactions设置为True，会将详细交易和(或)详细账户状态返回；
 	* ``includeState`` - ``Boolean`` : [**可选**]设置为True，会返回一个包含状态哈希值的数组；如果同时将includeAllData设置为True，则会返回一个包含状态详细信息的数组；
 	* ``includeTransactions`` - ``Boolean`` : [**可选**]设置为True，会返回一个包含交易哈希值的数组；如果同时将includeAllData设置为True，则会返回一个包含交易详细信息的数组；
-	* ``ledgerHash`` - ``String`` : [**可选**]将返回此指定区块哈希值的区块头信息；
 	* ``ledgerVersion`` - ``integer`` : [**可选**]将返回此指定区块高度的区块头信息。
 
 2. ``callback`` - ``Function`` : [**可选**]回调函数，如果指定，则通过指定回调函数返回结果，否则返回一个promise对象。
@@ -626,7 +634,7 @@ getLedgerTxs
 -----------
 .. code-block:: javascript
 
-	var txs = await c.getLedgerTxs(1000, true, true);
+	var txs = await chainsql.getLedgerTxs(1000, true, true);
 	console.log(txs);
 
 .. warning::
@@ -650,12 +658,10 @@ getAccountTransactions
 1. ``address`` - ``String`` : 账户地址
 2. ``opts`` - ``JsonObject`` : [**可选**]返回值限定值，可选字段如下：
 
-	* ``binary`` - ``boolean`` : [**可选**]如果为True，则节点返回一个二进制格式的结果，而不是一个可读的Json对象；
-	* ``counterparty`` - ``address`` : [**可选**]如果为True，则节点只返回涉及指定网关的交易；
+	* ``counterparty`` - ``address`` : [**可选**]如果指定该选项，则节点只返回涉及指定网关的交易；
 	* ``earliestFirst`` - ``boolean`` : [**可选**]如果为True，则节点将按最早的交易排前为顺序，默认是最新交易排前；
 	* ``excludeFailures`` - ``boolean`` : [**可选**]如果为True，则节点只返回成功的交易；
-	* ``includeRawTransactions`` - ``object`` : [**可选**]提供交易的原始数据，即交易对象，主要为调试使用，节点需要解析提供的原始交易；
-	* ``initiated`` - ``boolean`` : [**可选**]如果为True，则节点只返回又第一个参数address作为交易发起者的交易，如果为False，则只返回address不是交易发起者的交易；
+	* ``initiated`` - ``boolean`` : [**可选**]如果为True，则节点只返回以第一个参数address作为交易发起者的交易，如果为False，则只返回address不是交易发起者的交易；
 	* ``limit`` - ``integer`` : [**可选**]限定节点返回的交易个数；
 	* ``maxLedgerVersion`` - ``integer`` : [**可选**]节点返回此指定区块之前区块中该账户的交易；
 	* ``minLedgerVersion`` - ``integer`` : [**可选**]节点返回此指定区块之后区块中该账户的交易；
@@ -822,9 +828,10 @@ sign
 		address:"zwqrah4YEKCxLQM2oAG8Qm8p1KQ5dMB9tC",
 		publicKey:"cB4uvqvj49hBjXT25aYYk91K9PwFn8A12wwQZq8WP5g2um9PJFSo",
 		secret:"xnBUAtQZMEhDDtTtfjXhK1LE5yN6D"
-	}
+	};
+
 	let info = await chainsql.getAccountInfo(user.address);
-	chainsql.getLedgerVersion(function(err,data){
+	chainsql.getLedgerVersion( function(err,data){
 		const payment = {
 			"Account": "zwqrah4YEKCxLQM2oAG8Qm8p1KQ5dMB9tC",
 			"Amount":"1000000000",
@@ -834,14 +841,14 @@ sign
 			"LastLedgerSequence":data + 5,
 			"Fee":"50"
 		}
-		let signedRet = chainsql.sign(payment, user.secret);
-	}
+		 let signedRet = chainsql.sign(payment, user.secret);
+		 console.log(signedRet);
+	 }); 
 	>
 	{
   		"signedTransaction": "12000322800000002400000017201B0086955368400000000000000C732102F89EAEC7667B30F33D0687BBA86C3FE2A08CCA40A9186C5BDE2DAA6FA97A37D874473045022100BDE09A1F6670403F341C21A77CF35BA47E45CDE974096E1AA5FC39811D8269E702203D60291B9A27F1DCABA9CF5DED307B4F23223E0B6F156991DB601DFB9C41CE1C770A726970706C652E636F6D81145E7B112523F68D2F5E879DB4EAC51C66980503AF",
   		"id": "02BAE87F1996E3A23690A5BB7F0503BF71CCBA68F79805831B42ABAD5913BA86"
 	}
-
 	//multisigning
 	const signer = {
 		address:"zN9xbg1aPEP8aror3n7yr6s6JBGr7eEPeC",
@@ -1037,25 +1044,24 @@ useCert
 
 .. code-block:: java
 
-    chainsql.userCert("-----BEGIN CERTIFICATE-----\n
-  MIIC2TCCAcGgAwIBAgICEEkwDQYJKoZIhvcNAQELBQAwczELMAkGA1UEBhMCQ04x\n
-  EDAOBgNVBAgMB1RpYW5qaW4xEDAOBgNVBAcMB1RpYW5qaW4xFTATBgNVBAoMDENI\n
-  SU5BU1NMIEluYzEpMCcGA1UEAwwgQ0hJTkFTU0wgQ2VydGlmaWNhdGlvbiBBdXRo\n
-  b3JpdHkwHhcNMTkwOTA1MDgxOTA1WhcNMjAwOTA0MDgxOTA1WjA6MQswCQYDVQQG\n
-  EwJDTjELMAkGA1UECAwCQkoxETAPBgNVBAoMCFBlZXJzYWZlMQswCQYDVQQDDAJS\n
-  QzBWMBAGByqGSM49AgEGBSuBBAAKA0IABDDn/J1WuyXWiTuj8xeuW88zsykb1j2z\n
-  JlSjEyIvf9AggBfOJ3FHVCCwgJsfIAr6ZK23X5psdD0+LtNE5+ydEiOjfjB8MAkG\n
-  A1UdEwQCMAAwLwYJYIZIAYb4QgENBCIWIENISU5BU1NMIENlcnRpZmljYXRpb24g\n
-  QXV0aG9yaXR5MB0GA1UdDgQWBBSbvkh1rza59QJoFkctRh8GWYO8cTAfBgNVHSME\n
-  GDAWgBRcHyP6yOEhMcLYN/aI/NJvwlRDMzANBgkqhkiG9w0BAQsFAAOCAQEABwBp\n
-  wG/USPuPXIgQQAI1MLCjBwBm0JBLa/iR7ilebthsSMqPA3r5++HlsauyoG9C8w12\n
-  GQeiNWeMKLtHiMK+nqdEMu3/Qu+pfJGho8pNp/xkKoHQKrhwS2nXExJk/TWyqks+\n
-  gV4lVHLgSt0KfDp4qZE2XjSxOSY0bxg0z65ILgG6kulMMfexPj9mWAP+9jkzrarB\n
-  Bnwndq1E8SH80HNC1Yjj4P9tuVZH1XBRd8dDgC7X8bwa8uq9Fv3x53LvzvkSUL7a\n
-  EwC2ruHjaFuOmI1uidXFwLaQ7ufbXFGE5CwYhOamPbf2evUagNnVtCAJASmI1Ysy\n
-  VVTCvkwclRIImtA3+Q==\n
-  -----END CERTIFICATE-----
-  ");
+	chainsql.useCert("-----BEGIN CERTIFICATE-----\n"+
+		"MIIC2TCCAcGgAwIBAgICEEkwDQYJKoZIhvcNAQELBQAwczELMAkGA1UEBhMCQ04x\n"+
+		"EDAOBgNVBAgMB1RpYW5qaW4xEDAOBgNVBAcMB1RpYW5qaW4xFTATBgNVBAoMDENI\n"+
+		"SU5BU1NMIEluYzEpMCcGA1UEAwwgQ0hJTkFTU0wgQ2VydGlmaWNhdGlvbiBBdXRo\n"+
+		"b3JpdHkwHhcNMTkwOTA1MDgxOTA1WhcNMjAwOTA0MDgxOTA1WjA6MQswCQYDVQQG\n"+
+		"EwJDTjELMAkGA1UECAwCQkoxETAPBgNVBAoMCFBlZXJzYWZlMQswCQYDVQQDDAJS\n"+
+		"QzBWMBAGByqGSM49AgEGBSuBBAAKA0IABDDn/J1WuyXWiTuj8xeuW88zsykb1j2z\n"+
+		"JlSjEyIvf9AggBfOJ3FHVCCwgJsfIAr6ZK23X5psdD0+LtNE5+ydEiOjfjB8MAkG\n"+
+		"A1UdEwQCMAAwLwYJYIZIAYb4QgENBCIWIENISU5BU1NMIENlcnRpZmljYXRpb24g\n"+
+		"QXV0aG9yaXR5MB0GA1UdDgQWBBSbvkh1rza59QJoFkctRh8GWYO8cTAfBgNVHSME\n"+
+		"GDAWgBRcHyP6yOEhMcLYN/aI/NJvwlRDMzANBgkqhkiG9w0BAQsFAAOCAQEABwBp\n"+
+		"wG/USPuPXIgQQAI1MLCjBwBm0JBLa/iR7ilebthsSMqPA3r5++HlsauyoG9C8w12\n"+
+		"GQeiNWeMKLtHiMK+nqdEMu3/Qu+pfJGho8pNp/xkKoHQKrhwS2nXExJk/TWyqks+\n"+
+		"gV4lVHLgSt0KfDp4qZE2XjSxOSY0bxg0z65ILgG6kulMMfexPj9mWAP+9jkzrarB\n"+
+		"Bnwndq1E8SH80HNC1Yjj4P9tuVZH1XBRd8dDgC7X8bwa8uq9Fv3x53LvzvkSUL7a\n"+
+		"EwC2ruHjaFuOmI1uidXFwLaQ7ufbXFGE5CwYhOamPbf2evUagNnVtCAJASmI1Ysy\n"+
+		"VVTCvkwclRIImtA3+Q==\n"+
+		"-----END CERTIFICATE-----");
 
 ------
 
@@ -1324,7 +1330,7 @@ insert
 -----------
 
 1. ``raw`` - ``Array`` : 插入操作的raw，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ；
-2. ``field`` - ``String`` : 插入操作支持将每次执行插入交易的哈希值作为字段同步插入到数据库中。需要提前在建表的时候指定一个字段为存储交易哈希，然后将该字段名作为参数传递给insert即可。
+2. ``field`` - ``String`` : [**可选**] 插入操作支持将每次执行插入交易的哈希值作为字段同步插入到数据库中。需要提前在建表的时候指定一个字段为存储交易哈希，然后将该字段名作为参数传递给insert即可。
 
 返回值
 -----------
@@ -1767,9 +1773,9 @@ getBySqlAdmin
 .. code-block:: javascript
 
 	const tableOwnerAddr = "zMpUjXckTSn6NacRq2rcGPbjADHBCPsURF";
-	const tableName = "tabelTest";
+	var tableName = "tabelTest";
 	let tableNameInDB = await chainsql.getTableNameInDB(tableOwnerAddr, tableName);
-	let tableName = "t_" + tableNameInDB;
+	tableName = "t_" + tableNameInDB;
 
 	chainsql.getBySqlAdmin("select * from " + tableName).then(res => {
 		console.log(res);
@@ -1813,9 +1819,9 @@ getBySqlUser
 	chainsql.as(user);
 
 	const tableOwnerAddr = "zMpUjXckTSn6NacRq2rcGPbjADHBCPsURF";
-	const tableName = "tabelTest";
+	var tableName = "tabelTest";
 	let tableNameInDB = await chainsql.getTableNameInDB(tableOwnerAddr, tableName);
-	let tableName = "t_" + tableNameInDB;
+	tableName = "t_" + tableNameInDB;
 
 	chainsql.getBySqlUser("select * from " + tableName).then(res => {
 		console.log(res);
@@ -1891,7 +1897,9 @@ unsubcribeTable
 -----------
 .. code-block:: javascript
 
-	chainsql.event.unsubscribeTable(owner, tb).then(res => {
+	const tableOwnerAddr = "zMpUjXckTSn6NacRq2rcGPbjADHBCPsURF";
+	const tableName = "tabelTest";
+	chainsql.event.unsubscribeTable(tableOwnerAddr, tableName).then(res => {
 		console.log("unsubTable success.");
 	}).catch(error => {
 		console.error("unsubTable error:" + error);
@@ -1960,7 +1968,7 @@ unsubscribeTx
 .. code-block:: javascript
 
 	let txHash = "02BAE87F1996E3A23690A5BB7F0503BF71CCBA68F79805831B42ABAD5913BA86";
-	event.unsubscribeTx(txHash).then(res => {
+	chainsql.event.unsubscribeTx(txHash).then(res => {
 		console.log("unsubTx success.");
 	}).catch(error => {
 		console.error("unsubTx error:" + error);
