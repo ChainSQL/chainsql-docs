@@ -22,7 +22,7 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
   <dependency>
     <groupId>com.peersafe</groupId>
     <artifactId>chainsql</artifactId>
-    <version>1.5.4</version>
+    <version>1.5.6</version>
   </dependency>
 
 
@@ -52,6 +52,14 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 
 版本变化
 *****************
+
+1.5.6
+=====================
+    - ``SQLStatement`` 类型的交易支持CA证书功能
+
+1.5.5
+=====================
+    - 插入表交易中支持 ``AutoFillField``
 
 1.5.4
 =====================
