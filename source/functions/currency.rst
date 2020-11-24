@@ -683,9 +683,9 @@
 完整的代码示例
 ++++++++++++++
 
-- `node.js代币发行 <https://github.com/ChainSQL/node-chainsql-api/blob/feature/dev-escrow/test/testRipple.js/>`_
+- `node.js代币发行 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testRipple.js/>`_
 
-- `JAVA 代币发行 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/chainsql/TestRipple.java/>`_
+- `JAVA 代币发行 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/chainsql/TestRipple.java/>`_
 
 
 

@@ -227,7 +227,7 @@ JAVA API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Java API智能合约调用 <JavaAPI_SmartContract_call>`
-- 示例代码见  `JAVA 数据库操作合约调用示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
+- 示例代码见  `JAVA 数据库操作合约调用示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
        
 ----------------
 
@@ -235,7 +235,7 @@ Node.js API的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Node.js API智能合约调用 <contract-newObj>`
-- 示例代码见  `Node.js 数据库操作合约调用示例 <https://github.com/ChainSQL/node-chainsql-api/blob/feature/dev-escrow/test/testContractTableTxs.js>`_
+- 示例代码见  `Node.js 数据库操作合约调用示例 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testContractTableTxs.js>`_
 
 
 ----------------
@@ -433,13 +433,13 @@ JAVA API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Java API智能合约调用 <JavaAPI_SmartContract_call>`
-- 示例代码见  `JAVA 代币发行示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
+- 示例代码见  `JAVA 代币发行示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
 
 
 Node.js API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Node.js智能合约调用 <contract-newObj>`
-- 示例代码见  `Node.js 代币发行示例 <https://github.com/ChainSQL/node-chainsql-api/tree/feature/dev-escrow/test/testContractGatewayTxs.js>`_
+- 示例代码见  `Node.js 代币发行示例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
 
 

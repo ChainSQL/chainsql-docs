@@ -667,7 +667,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 3 完整的代码示例
 *************************
 
-- `node.js 数据库表操作 <https://github.com/ChainSQL/node-chainsql-api/blob/feature/dev-escrow/test/testTable.js/>`_
+- `node.js 数据库表操作 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testTable.js/>`_
 
-- `JAVA 数据库表操作  <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsql.java/>`_
+- `JAVA 数据库表操作  <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsql.java/>`_
 

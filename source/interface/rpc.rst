@@ -1093,7 +1093,140 @@ Rippled查询接口
 +++++++++++++++++++++++++++++++++++++
 
 rippled查询类JSON-RPC接口有很多，详情请参看XRP官方开发文档 `rippled API Reference <https://developers.ripple.com/rippled-api.html>`_。 
-下面展示两个示例。
+下面展示几个基本示例。
+
+查询交易信息
+======================================
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method": "tx",
+        "params": [
+            {
+                "transaction": "7D40675F88AD80C737C2B5B01972D06BE58819F2D545504F26005ECA0118C80C",
+                "binary": false
+            }
+        ]
+    }
+
+参数说明：
+
+.. list-table::
+
+    * - **域**
+      - **类型**
+      - **描述**
+    * - transaction
+      - 字符串
+      - 必填，交易的哈希值(256-bit)，以16进制字符串的形式标志。
+    * - binary
+      - 布尔
+      - 可选，默认值为false。如果设置为true，以二进制序列化为十六进制字符串的形式返回交易数据和元数据;如果设置为true，如果设置为false,交易数据和元数据以JSON形式返回。
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result": {
+            "Account": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+            "Amount": "1000000000",
+            "Destination": "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4",
+            "Fee": "11",
+            "Flags": 2147483648,
+            "LastLedgerSequence": 20,
+            "Sequence": 15,
+            "SigningPubKey": "0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
+            "TransactionType": "Payment",
+            "TxnSignature": "304402201AD5DD8BBE93C9F0B206DB12547E66A0B6CADB832DF2E9410EF84CF0DA0D052602206DCB29B1A79E2DB50C474A3760C3B933600CF749B12A55B57E8DA5B1A7546CC5",
+            "date": 659504566,
+            "hash": "7D40675F88AD80C737C2B5B01972D06BE58819F2D545504F26005ECA0118C80C",
+            "inLedger": 16,
+            "ledger_index": 16,
+            "meta": {
+                "AffectedNodes": [
+                    {
+                        "ModifiedNode": {
+                            "FinalFields": {
+                                "Account": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                                "Balance": "99999984999999835",
+                                "Flags": 0,
+                                "OwnerCount": 0,
+                                "Sequence": 16
+                            },
+                            "LedgerEntryType": "AccountRoot",
+                            "LedgerIndex": "2B6AC232AA4C4BE41BF49D2459FA4A0347E1B543A4C92FCEE0821C0201E2E9A8",
+                            "PreviousFields": {
+                                "Balance": "99999985999999846",
+                                "Sequence": 15
+                            },
+                            "PreviousTxnID": "664A9F31437F53E3F70D8E89209F6BEB2F43FCDE8D0E57DEC8912D4B41206183",
+                            "PreviousTxnLgrSeq": 15
+                        }
+                    },
+                    {
+                        "ModifiedNode": {
+                            "FinalFields": {
+                                "Account": "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4",
+                                "Balance": "15000000000",
+                                "Flags": 0,
+                                "OwnerCount": 0,
+                                "Sequence": 1
+                            },
+                            "LedgerEntryType": "AccountRoot",
+                            "LedgerIndex": "439AEB0C24ABC5F1C1A7F6AD1A5654A9D7AD77797EAA078813272DDB6A6F5432",
+                            "PreviousFields": {
+                                "Balance": "14000000000"
+                            },
+                            "PreviousTxnID": "664A9F31437F53E3F70D8E89209F6BEB2F43FCDE8D0E57DEC8912D4B41206183",
+                            "PreviousTxnLgrSeq": 15
+                        }
+                    }
+                ],
+                "TransactionIndex": 0,
+                "TransactionResult": "tesSUCCESS",
+                "delivered_amount": "1000000000"
+            },
+            "status": "success",
+            "validated": true
+        }
+    }
+
+主要的应答域说明：
+
+.. list-table::
+
+    * - **域**
+      - **类型**
+      - **描述**
+    * - hash
+      - 字符串
+      - 交易的哈希值。  
+    * - ledger_index
+      - 整形
+      - 交易所在的区块。
+    * - date
+      - 整数
+      - 交易的时间戳。此数字表示自2000年1月1日（UTC时间00:00）以来的秒数(Ripple Epoch),与Unix epoch的工作方式一样,唯一不同的是Ripple Epoch是Unix epoch之后的946684800秒。
+    * - TransactionType
+      - 字符串
+      - 交易的类型。
+    * - Account
+      - 字符串
+      - 交易发起方的账户地址。
+    * - Amount
+      - 字符串
+      - 转账的金额，单位为drop。      
+    * - Destination
+      - 字符串
+      - 交易接收方的账户地址。     
+    * - Sequence
+      - 整数
+      - 交易发起方账户的交易序号。            
+
 
 查询账户信息
 ======================================

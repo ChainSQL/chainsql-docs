@@ -22,7 +22,7 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
   <dependency>
     <groupId>com.peersafe</groupId>
     <artifactId>chainsql</artifactId>
-    <version>1.5.6</version>
+    <version>1.5.7</version>
   </dependency>
 
 
@@ -53,13 +53,24 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
 版本变化
 *****************
 
+1.5.7
+=====================
+    - 插入和更新表交易中支持 ``txsHashFillField`` : :ref:`insert  <InsertJava>`  :ref:`update  <UpdateJava>` 
+    - 支持国密算法。相关接口: :ref:`generateAddress  <GenerateAddress>`
+
+------------------------
+
 1.5.6
 =====================
     - ``SQLStatement`` 类型的交易支持CA证书功能
 
+------------------------
+
 1.5.5
 =====================
     - 插入表交易中支持 ``AutoFillField``
+
+------------------------
 
 1.5.4
 =====================
@@ -615,6 +626,9 @@ pay(转账系统币)
 
 ------
 
+
+.. _GenerateAddress:
+
 generateAddress
 =====================
 
@@ -622,6 +636,7 @@ generateAddress
 
   public JSONObject generateAddress();
   public JSONObject generateAddress(String secret);
+  public JSONObject generateAddress(JSONObject options);
 
 生成一个新的ChainSQL账户。但是此时该账户未在链上有效，需要链上有效账户对新账户发起pay操作，新账户才有效。
 
@@ -631,7 +646,10 @@ generateAddress
 
 
 1. ``secret``  - ``String``: 账户私钥
+2. ``options`` - ``JSONObject``: : 指定算法类型或账户私钥,字段如下：
 
+	* ``algorithm`` - ``String`` : 算法类型包括 ed25519 , secp256k1 , softGMAlg
+	* ``secret`` - ``String`` : 账户私钥
 
 返回值
 ++++++++
@@ -650,8 +668,13 @@ generateAddress
 .. code-block:: java
 
     String rootSecret = "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb";
-		System.out.println( c.generateAddress() );
-		System.out.println( c.generateAddress(rootSecret) );
+    System.out.println( c.generateAddress() );
+    System.out.println( c.generateAddress(rootSecret) );
+    
+    // 指定生成国密算法的账户
+    JSONObject options = new JSONObject();
+    options.put("algorithm","softGMAlg");
+    JSONObject ret = c.generateAddress(options);
 
 输出:
 
@@ -667,6 +690,11 @@ generateAddress
     "secret": "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
     "publicKey": "cBQG8RQArjx1eTKFEAQXz2gS4utaDiEC9wmi7pfUPTi27VCchwgw"
   }
+  {
+    "address":"zMD3r5ZNUBbmLs68FBB7AK46fm7ScxDLQH",
+    "secret":"p98kY6F2MA6H8z1nAXMjkAaFrTg4Pqc1b3dJ82Xe6gxn1kv5h2i",
+    "publicKey": "pYvV28qfGdeymQ5f21qpQhbtmFQK36566gZnaJv8VuHoyiZActWerJAkK3MtZWdXV1DggJCdCzkhwmefK2YHebho9QhgBArX"
+  }
 
 ------
 
@@ -677,6 +705,7 @@ validationCreate
 
   public JSONObject validationCreate();
   public JSONArray  validationCreate(int count);
+  public JSONObject validationCreate(JSONObject options);
 
 生成验证key
 
@@ -686,7 +715,10 @@ validationCreate
 
 
 1. ``count`` - ``int``: 生成的key的个数
+2. ``options`` - ``JSONObject``: : 指定算法类型或验证key的私钥,字段如下：
 
+	* ``algorithm`` - ``String`` : 算法类型包括 softGMAlg
+	* ``secret`` - ``String`` : 验证key的私钥
 
 返回值
 ++++++++
@@ -696,8 +728,7 @@ validationCreate
 2. ``JSONArray``  -  一个或多个有效的key，每个key的结构同上
 
 
-示例
-
+示例1
 
 .. code-block:: java
 
@@ -711,6 +742,10 @@ validationCreate
       "seed"     :"xnaKLBqkwZxCxCNk1LokjAekUQaWT",
       "publickey":"n9KrLAkaHZk3kns6TfZS9mRJmPrNJLjARxM8qUtM2CXpBpUcyTdD"
     }
+
+------
+
+示例2
 
 .. code-block:: java
 
@@ -727,6 +762,25 @@ validationCreate
 
 ------
 
+示例3
+
+.. code-block:: java
+
+    // 生成国密版本的验证key
+    JSONObject gmOptions = new JSONObject();
+    gmOptions.put("algorithm","softGMAlg");
+    JSONObject validateCreate = c.validationCreate(gmOptions);
+
+输出:
+
+.. code-block:: json
+
+    {
+      "seed":"pf9D7hEKj2eDCCC8hkUuYshyncY37bVN4rnCMixE1Xyr3JAqjjc","publickey":"pEnYfGwmQ9XsPpXJ3Wj5efA8DnmNH8urEGZkAkW46qSBUbCYW4CS5TSFps6xBg3iCoQzFgQZwRiXAK8H7ZBQ4q7qUyyU5d9p"
+    }   
+
+------
+
 getServerInfo
 =====================
 
@@ -739,7 +793,6 @@ getServerInfo
 
 参数
 ++++++++
-
 
 
 返回值
@@ -1726,6 +1779,55 @@ useCert
 ------
 
 
+memos
+=====================
+
+.. code-block:: java
+
+  public Ripple memos(JSONObject memosInfo);
+
+用于给交易添加备忘录信息。
+
+
+参数
+++++++++
+
+
+1. ``memosInfo`` - ``JSONObject`` : 备忘录信息，包含以下三个字段:
+
+	- ``data`` - ``String`` : 16进制字符串，通常包含备忘录的内容；
+	- ``format`` - ``String`` : [**可选**] 16进制字符串,备忘录内容的格式，例如 ``MIME 类型`` ；
+	- ``type`` - ``String`` : [**可选**] 16进制字符串, 定义了此备忘录的格式（遵从协议 ``RFC 3986`` ）。
+
+
+返回值
+++++++++
+
+``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+
+
+示例
+
+.. code-block:: java
+
+    try{
+        JSONObject item = new JSONObject();
+        item.put("data",Util.toHexString("众享比特"));
+        item.put("format",Util.toHexString("MIME 类型"));
+        item.put("type",Util.toHexString("http://www.peersafe.cn/"));
+
+        JSONObject obj =  c.pay("zcs4x6e64E3Jw59CPSPyZAtYmVuGxUM4gb","1000").memos(item).submit(Submit.SyncCond.validate_success);
+        System.out.println(obj);
+
+    }catch (Exception e){
+        e.printStackTrace();
+        Assert.fail();
+    }
+
+------
+
+
+
 网关交易
 *****************
 
@@ -1755,7 +1857,6 @@ accountSet
 
 返回值
 ++++++++
-
 
 ``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
 
@@ -2082,6 +2183,8 @@ table
     System.out.println( "status" + obj.getString("status"));
   }
 
+.. _InsertJava:
+
 ------
 
 insert
@@ -2090,6 +2193,8 @@ insert
 .. code-block:: java
 
   public Table insert(List<String> raw);
+  public Table insert(List<String> raw,String autoFillField);
+  public Table insert(List<String> orgs,String autoFillField,String txsHashFillField);
 
 向数据库中插入数据。
 
@@ -2097,8 +2202,9 @@ insert
 参数
 ++++++++
 
-
-1. ``raw``    - ``List``:  raw类型必须都是示例中的json格式的数据类型，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ；;
+1. ``raw``    - ``List``:  raw类型必须是示例中json格式的数据类型，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ;
+2. ``autoFillField``  - ``String``: 插入操作支持将每次插入交易的哈希值作为字段信息同步插入到数据库中。使用该功能时，需要在建表时指定一个字段为存储交易哈希,并将该字段名作为参数传递给insert;
+3. ``txsHashFillField``  - ``String``:  该参数的功能与 ``autoFillField`` 类似，可配合update实现存储历史哈希列表的功能，具体使用见 :ref:`update  <UpdateJava>` ; 
 
 
 返回值
@@ -2108,8 +2214,7 @@ insert
 ``Table`` - 见 :ref:`Table  <my-reference-table>`.
 
 
-示例
-
+示例1
 
 .. code-block:: java
 
@@ -2123,7 +2228,26 @@ insert
   }else {
     System.out.println( "status" + obj.getString("status"));
   }  
-  
+
+------
+
+示例2
+
+.. code-block:: java
+
+  String sTableName = "n12356";
+  // 向表sTableName中插入一条记录,并将该条交易的hash填充到该表的 tx_hash 字段中
+  JSONObject obj =  c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"),"tx_hash")
+  .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+    System.out.println(obj);
+  }else {
+    System.out.println( "status" + obj.getString("status"));
+  }  
+
+
+.. _UpdateJava:
 
 ------
 
@@ -2133,6 +2257,8 @@ update
 .. code-block:: java
 
   public Table update(String raw);
+  public Table update(String raw,String autoFillField);
+  public Table update(String raw,String autoFillField,String txsHashFillField);
 
 更新表中数据。
 
@@ -2143,19 +2269,17 @@ update
 参数
 ++++++++
 
-
-1. ``raw``    - ``List``:  raw类型必须都是示例中的json格式的数据类型，详细格式和内容可参看 :ref:`更新raw字段说明 <update-table>`;
-
+1. ``raw``  - ``List``:  raw类型必须都是示例中的json格式的数据类型，详细格式和内容可参看 :ref:`更新raw字段说明 <update-table>`;
+2. ``autoFillField``  - ``String``: 更新操作支持将每次更新交易的哈希值作为字段信息同步更新到数据库中。使用该功能时，需要在建表时指定一个字段存储交易哈希,并将该字段名作为参数传递给update; 
+3. ``txsHashFillField``  - ``String``: 该参数的功能与 ``autoFillField`` 类似,区别在于该参数指定的字段可存储历史交易哈希信息列表，将单条表记录的多次更新操作可汇集成一个hash值列表插入 ``txsHashFillField`` 字段中，并以 ``,`` 分割符分割哈希值，具体使用见示例3; 
 
 返回值
 ++++++++
 
-
 ``Table`` - 见 :ref:`Table  <my-reference-table>`.
 
 
-示例
-
+示例1
 
 .. code-block:: java
 
@@ -2172,6 +2296,69 @@ update
     System.out.println( "status" + obj.getString("status"));
   }
 
+------
+
+示例2
+
+.. code-block:: java
+
+  String sTableName = "n12356";
+  // 更新 id 等于 1 的记录, 并将该条交易的hash填充到该表的 tx_hash 字段中
+  JSONObject obj = c.table(sTableName)
+  .get(c.array("{'id': 1}"))
+  .update("{'age':52,'name':'Jack'}","tx_hash")
+  .submit(SyncCond.db_success);
+
+  if(obj.has("error_message")){
+    System.out.println(obj);
+  }else {
+    System.out.println( "status" + obj.getString("status"));
+  }
+
+------
+
+示例3
+
+.. code-block:: java
+
+      String sHistory = "history_hash_example";
+      List<String> arrTableField = Util.array("{'field':'id','type':'int','length':11,'PK':1,'NN':1,'UQ':1}",
+              "{'field':'txn_hash','type':'text'}", "{'field':'age','type':'int'}");
+
+      // 1、 建表时预留txn_hash 字段用以存于历史交易hash信息
+      JSONObject obj;
+      obj = c.createTable(sHistory,arrTableField,false).submit(Submit.SyncCond.db_success);
+      System.out.println("create result:" + obj);
+
+      // 2、 插表交易，并指定txn_hash 字段存储历史交易hash信息
+      List<String> orgs = Util.array("{'id':1,'age': 1}");
+      obj = c.table(sHistory).insert(orgs,"","txn_hash").submit(Submit.SyncCond.db_success);
+      System.out.println("insert result:" + obj);
+
+      // 3、 更新表交易，并指定txn_hash 字段存储历史交易hash信息
+      List<String> arr1 = Util.array("{'id': 1}");
+      for(int i=0;i<2;i++){
+          String rule = "{'age':" + i + "}";
+          obj = c.table(sHistory).get(arr1).update(rule,"","txn_hash").submit(Submit.SyncCond.db_success);
+      }
+
+      // 4、 查询历史交易hash信息，即查询表中字段txn_hash的信息
+      obj = c.table(sHistory).get("{'id': 1}").submit();
+     
+      // txn_hash字段中存储了历史交易哈希列表信息，哈希值以,进行分割
+      System.out.println("打印历史hash信息:" + obj);
+      //{
+      //  "final_result":true,
+      //  "diff":0,
+      //  "lines":[
+      //    {
+      //      "txn_hash":"C7F2C6D41693B878255610A1ED7A92F71A36A0892A8D6B4BD3C09C0721A7F56E, CF43F21CBA9B91B9AF51B6ED8D4CDF39C2F3E4C075EBB4DF560472BCE047E038,9A211F2F347FD35557B890FA6603F5E93BBE21F4BC79419F660C98B37096E8D0",
+      //      "id":1,
+      //     "age":1
+      //    }
+      //  ]
+      //}
+      
 ------
 
 delete
@@ -3030,7 +3217,7 @@ unsubscribeTx
 并发支持
 *****************
 
-1.5.2版本以后，新添加类 ``ChainsqlPool`` 支持并发操作，``ChainsqlPool`` 的大小默认为10。可支持创建多个Chainsql对象的连接池，如不符合需求，可以参考 `源码 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/main/java/com/peersafe/chainsql/pool/>`_ 进行修改。
+1.5.2版本以后，新添加类 ``ChainsqlPool`` 支持并发操作，``ChainsqlPool`` 的大小默认为10。可支持创建多个Chainsql对象的连接池，如不符合需求，可以参考 `源码 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/java/com/peersafe/chainsql/pool/>`_ 进行修改。
 
 使用说明
 =====================
@@ -3040,7 +3227,7 @@ unsubscribeTx
 .. warning::
     同一个账户不可以并发提交交易，只能在一个线程中串行发送交易，原因是账户在链上存在Sequence，只能顺序执行交易。
 
-代码示例见 `ChainsqlPool示例 <https://github.com/ChainSQL/java-chainsql-api/blob/feature/contract/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsqlPool.java>`_。 
+代码示例见 `ChainsqlPool示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/chainsql/TestChainsqlPool.javaa>`_。 
 
 基本调用流程：
 
