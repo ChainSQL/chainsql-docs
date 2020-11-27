@@ -11,6 +11,8 @@ rippled命令
 rippled原生的命令行接口很多，详情请参看XRP官方开发文档\ `rippled CommandLine Usage <https://developers.ripple.com/commandline-usage.html>`_\ 。 
 下面展示几个常用的命令。
 
+.. _validation_create:
+
 validation_create
 +++++++++++++++++++++++++++++++
 
@@ -20,7 +22,7 @@ validation_create属于管理命令，通过椭圆曲线加密算法，使用种
 
 ::
 
-    ./chainsqld --conf="./chainsqld-example.cfg"  validation_create [secret]
+    ./chainsqld --conf="./chainsqld-example.cfg"  validation_create [algType] [secret]
 
 .. note::
 
@@ -32,12 +34,20 @@ validation_create属于管理命令，通过椭圆曲线加密算法，使用种
 
     * - **参数**
       - **类型**
+      - **可选值**
       - **描述**
+    * - algType
+      - 字符串
+      - secp256k1/gmalg/ed25519
+      - 算法类型，指定生成何种算法的非对称密钥对，不指定默认使用secp256k1，如果使用secret参数，则必须指定。
     * - secret
       - 字符串
+      - 无
       - 秘钥种子，如果省略，则使用随机的种子，相同的种子生成相同的证书。
 
 示例：
+
+1. secp256k1：
 
 ::
 
@@ -48,10 +58,11 @@ validation_create属于管理命令，通过椭圆曲线加密算法，使用种
 ::
 
     {
-        "status" : "success",
-        "validation_key" : "TUCK NUDE CORD BERN LARD COCK ENDS ETC GLUM GALE CASK KEG",
-        "validation_public_key" : "n9L9BaBQr3KwGuMoRWisBbqXfVoKfdJg3Nb3H1gjRSiM1arQ4vNg",
-        "validation_seed" : "xxjX5VuTjQKvkTSw6EUyZnahbpgS1"
+        "validation_key" : "BELA STAG CAB KUDO NUT RENT NET KUDO SIGN MAO COME TUCK",
+        "validation_private_key" : "pnZvrMV2LCNZH2GmrWCrE9zbDEgRFVNPKL4UHADcnK4okJgqbit",
+        "validation_public_key" : "n9LDNrsWjwFPQu5JeHje2tpfKLdgGP3TwRExtXQNQae3zXtyZEuw",
+        "validation_public_key_hex" : "02DBAB0AD21A7DC4AF9F0CC44A190FE49CA9E46BCF57C21CA3AC7FD4B678004E51",
+        "validation_seed" : "xnqezWeMcYukumPrwYRA2cW6kmW53"
     }
 
 结果说明：
@@ -61,18 +72,47 @@ validation_create属于管理命令，通过椭圆曲线加密算法，使用种
     * - **参数**
       - **类型**
       - **描述**
-    * - status
-      - 字符串
-      - 标识命令是否执行成功。
     * - validation_key
       - 字符串
       - 证书私钥 RFC-1751格式。
+    * - validation_private_key
+      - 字符串
+      - 验证私钥 Base58编码，但是不使用，ChainSQL中使用validation_seed。
     * - validation_public_key
       - 字符串
-      - 证书公钥 Base58编码。
+      - 验证公钥 Base58编码。
     * - validation_seed
       - 字符串
-      - 证书私钥 Base58编码。
+      - 公私钥种子Base58编码，ChainSQL中作为验证私钥使用，填写到验证节点配置文件中 。
+
+2. gmalg：
+
+::
+
+    ./chainsqld validation_create gmalg
+
+返回结果：
+
+::
+
+    {
+        "validation_private_key" : "pcViNj73TgAXDqfWKx2kh3dz92KEQhsbVceousZDHD8GvSHgy55",
+        "validation_public_key" : "pEng3cMSNHzGUjXpDiHouC2GTmsDKVusZBdexVAdMXQWob8pph6f2KJm7S5h3M2mU1pJTL19rhwm9EVAZxrDwPjVSLV35gES"
+    }
+
+结果说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - validation_private_key
+      - 字符串
+      - 验证私钥 Base58编码，填写到验证节点配置文件中validation_seed处。
+    * - validation_public_key
+      - 字符串
+      - 验证公钥 Base58编码。
 
 submit
 +++++++++++++++++++++++++++++++
@@ -402,6 +442,8 @@ peers属于管理命令，查看已连接的其他节点的连接状态和同步
       - 字符串
       - 对端节点运行的chainsqld版本。
 
+.. _wallet_propose:
+
 wallet_propose
 +++++++++++++++++++++++++++++++
 
@@ -411,7 +453,7 @@ wallet_propose
 
 ::
 
-    ./chainsqld wallet_propose [passphrase]
+    ./chainsqld wallet_propose [algType] [passphrase]
 
 参数说明：
 
@@ -419,24 +461,49 @@ wallet_propose
 
     * - **参数**
       - **类型**
+      - **可选值**
       - **描述**
+    * - algType
+      - 字符串
+      - secp256k1/gmalg/ed25519
+      - 算法类型，指定生成何种算法的非对称密钥对，不指定默认为节点使用的非对称密码算法，如果使用passphrase参数，则必须指定。
     * - passphrase
       - 字符串
+      - 无
       - 秘钥种子，如果省略，则使用随机的种子，相同的种子生成相同的账户地址和证书。
 
 返回结果示例：
+
+1. secp256k1：
 
 .. code-block:: json
 
     {
         "result" : {
-            "account_id" : "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
+            "account_id" : "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+            "account_id_hex" : "B5F762798A53D543A014CAF8B297CFF8F2F937E8",
             "key_type" : "secp256k1",
             "master_key" : "I IRE BOND BOW TRIO LAID SEAT GOAL HEN IBIS IBIS DARE",
-            "master_seed" : "snoPBrXtMeMyMHUVTgbuqAfg1SUTb",
+            "master_seed" : "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
             "master_seed_hex" : "DEDCE9CE67B451D852FD4E846FCDE31C",
-            "public_key" : "aBQG8RQAzjs1eTKFEAQXr2gS4utcDiEC9wmi7pfUPTi27VCahwgw",
+            "public_key" : "cBQG8RQArjx1eTKFEAQXz2gS4utaDiEC9wmi7pfUPTi27VCchwgw",
             "public_key_hex" : "0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
+            "status" : "success"
+        }
+    }
+
+2. gmalg：
+
+.. code-block:: json
+
+    {
+        "result" : {
+            "account_id" : "zLzooEnenjmeVaPZYykdx8jGJBV5j7uMN9",
+            "account_id_hex" : "D091744D1737B0D574A9C908B3B97E646A7E87F4",
+            "key_type" : "gmalg",
+            "private_key" : "p92iRuvDiFnmRBfSGXGA5QNLuFx1rFucvkQpaSMgoVpYg5g7U8B",
+            "public_key" : "pYvfKPYdmfkdTpQg8NFpxxzpGsr77WT4fDA93sd3mdBhnG66UCapMF296eCFZ7boLEWpeUNQvSRAVeuXXEnxpDmqhyfF7Eb7",
+            "public_key_hex" : "4746CE7928E8D4464F3CA3E35EAC75BEEA210A9A3DAE606F75D4658A133E15BF3B44581F42A208DC06053BFE600166E8FE6E435BE84D8980689889C3CA2EA3E126",
             "status" : "success"
         }
     }
@@ -454,12 +521,22 @@ wallet_propose
     * - account_id
       - 字符串
       - 生成的账户地址。
+    * - account_id_hex
+      - 字符串
+      - 生成的账户地址原始十六进制格式内容。
     * - master_seed
       - 字符串
-      - 账户的种子（私钥）。
+      - 账户的种子（私钥），国密算法没有此项。
+    * - private_key
+      - 字符串
+      - 账户的私钥，国密算法使用此项。
     * - public_key
       - 字符串
       - 账户的公钥。
+    * - public_key_hex
+      - 字符串
+      - 账户的公钥原始十六进制格式内容。
+
 
 .. _cmdledger_txs:
 

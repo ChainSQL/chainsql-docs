@@ -133,6 +133,7 @@
     - 0.30.4版本以后，新添加配置选项 :ref:`drops_per_byte <DropsPerByte>`   , :ref:`select_limit <SelectLimit>`
     - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
     - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
+    - 1.0.1-pop版本之后，新添配置选项 :ref:`crypto_alg <crypto_alg>`
 
 配置项说明
 ----------------
@@ -429,3 +430,18 @@
     [missing_hashes]
     8999:<hash of ledger 8999>
     7999:<hash of ledger 7999>
+
+.. _crypto_alg:
+
+[crypto_alg]
+******************************
+    配置节点组网及共识使用的非对称密码算法和哈希算法。
+    
+    - node_alg_type配置项可选值：gmalg/secp256k1/ed25519;
+    - hash_type配置项可选值：sm3/sha;
+
+.. code-block:: bash
+
+    [crypto_alg]
+    node_alg_type=gmalg
+    hash_type=sm3
