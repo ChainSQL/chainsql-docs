@@ -1199,7 +1199,7 @@ getLedgerTxs
 
 .. code-block:: java
 
-    JSONObject json = c.c.getLedgerTxs(2,true,true);
+    JSONObject json = c.getLedgerTxs(2,true,true);
 
 输出:
 
