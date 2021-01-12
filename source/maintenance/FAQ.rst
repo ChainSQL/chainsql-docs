@@ -7,7 +7,7 @@ Api 调用问题
 ---------------
 
 1. 两笔挂单，分别是买单与卖单，兑换比例一致，但未成交
-    原因：网关未开启 `Rippling <https://developers.ripple.com/rippling.html>`_
+    原因：网关未开启 
 
 2. Insufficient reserve to create offer
     原因：挂单时Zxc余额不满足保留费用要求，需要最终满足::
@@ -64,7 +64,7 @@ Chainsql节点问题
     2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525354 at or above drop threshold 15000
     2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525447 at or above drop threshold 15000
 
-这是因为ripple本身不允许一个ip频繁发请求，认为这是在攻击，如果一个已知ip要这样做，需要把它放到节点的admin列表中::
+这是因为ChainSQL本身不允许一个ip频繁发请求，认为这是在攻击，如果一个已知ip要这样做，需要把它放到节点的admin列表中::
 
     [port_ws_public]
     port = 5006

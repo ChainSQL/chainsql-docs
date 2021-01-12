@@ -1,14 +1,13 @@
 命令行接口
 ############################
 
-chainsqld和rippled一样，可以通过指定一个API接口方法名来启动RPC客户端模式。
+chainsqld可以通过指定一个API接口方法名来启动RPC客户端模式。
 也可以查询服务节点状态和账本数据。
 通过配置文件或者命令行参数指定服务节点的地址和端口。
 
-rippled命令
+基本命令
 *****************************
 
-rippled原生的命令行接口很多，详情请参看XRP官方开发文档\ `rippled CommandLine Usage <https://developers.ripple.com/commandline-usage.html>`_\ 。 
 下面展示几个常用的命令。
 
 validation_create
@@ -289,7 +288,7 @@ server_info属于公共命令，用来查看节点的运行状态。
       - 该验证节点的公钥，有上面的validation_create命令生成。
     * - server_state
       - 字符串
-      - 节点当前状态，可能的状态参考\ `节点状态<https://developers.ripple.com/rippled-server-states.html>`\ 。
+      - 节点当前状态。
     * - state_accounting
       - 对象
       - 节点在每个状态下的运行时长。

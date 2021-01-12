@@ -1059,7 +1059,6 @@ getLedger
 ++++++++
 
 
-.. _区块信息字段说明: https://developers.ripple.com/rippleapi-reference.html#getledger
 
 1. ``JsonObject`` : 区块信息。正常返回主要字段如下：
 
@@ -1488,7 +1487,7 @@ signFor
 
     public JSONObject signFor(JSONObject tx,String secret);
 
-用于交易多方签名，多方签名的详细介绍请参考 `Ripple开发者官网 <https://developers.ripple.com/multi-signing.html>`_ 
+用于交易多方签名
 
 
 参数
@@ -1848,7 +1847,7 @@ accountSet
 ++++++++
 
 
-1. ``nFlag`` - ``int``:                 一般情况下为8，表示asfDefaultRipple，详见 `AccountSet Flags <https://developers.ripple.com/accountset.html>`_
+1. ``nFlag`` - ``int``:                 一般情况下为8，表示asfDefaultRipple，详见 ``AccountSet Flags``
 2. ``bSet`` - ``boolean``:             true:设置nFlag标志 ; false: 取消nFlag标志
 3. ``transferRate`` - ``String``:      网关发行币的转账费率，取值为1.0~2.0；
 4. ``transferFeeMin`` - ``String``:    通过网关进行转账，网关要收取的最小手续费，10进制字符串数字，例如"1"

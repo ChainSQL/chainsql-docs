@@ -115,8 +115,8 @@ Java:
 为了防止每个账户恶意创建对象（如建表操作），导致整个区块链网络占用内存过大，每增加一个对象，chainsql会冻结1个 ``ZXC`` 作为对象增加预留费用，相对的，每减少一个对象，也会解除一个ZXC的保留费用冻结。
 Chainsql中的对象包括：
 
- | 原Ripple对象 ``Escrow,PayChannel,Offer,TrustLine``
- | Chainsql增加的对象 ``Table,Contract``
+ | 基础对象 ``Escrow,PayChannel,Offer,TrustLine``
+ | 表对象 ``Table,Contract``
 
 Chainsql预留费用 = 账户基础预留费用 + 对象增加预留费用
 

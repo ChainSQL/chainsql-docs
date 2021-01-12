@@ -196,8 +196,8 @@ Websocket查询类接口返回的JSON包含的各个域如下：
 交易类接口
 **************************
 
-交易类接口包含rippled原生的交易类接口、chainsqld新增的数据库表交易接口、
-智能合约交易类接口。chainsqld沿用rippled的Websocket接口。交易的通用格式如下：
+交易类接口包含基本的ChainSQL交易类接口、chainsqld新增的数据库表交易接口、
+智能合约交易类接口。交易的通用格式如下：
 
 .. list-table::
 
@@ -229,11 +229,10 @@ Websocket查询类接口返回的JSON包含的各个域如下：
     本文中展示的示例主要是通过向服务节点提供账户私钥的方式。
     如果服务节点不可信任，或者请求通过公共网络发送，则存在风险。
 
-Rippled交易
+ChainSQL 交易
 +++++++++++++++++++++++++++++
 
-rippled Websocket交易类接口有很多，详情请参看XRP官方开发文档 `Transcation Formats <https://developers.ripple.com/transaction-formats.html>`_。 
-下面展示一个示例。
+ChainSQL Websocket交易类接口有很多，下面展示一个示例。
 
 转账
 ============================
@@ -311,8 +310,6 @@ rippled Websocket交易类接口有很多，详情请参看XRP官方开发文档
       - 字符串
       -  | 指定websocket接口（命令）名。
          | 交易请求的主要命令是submit，还有一些非交易类的辅助命令，比如签名交易，查询交易等。
-
-         具体参看XRP官方开发文档 `Transcation Methods <https://developers.ripple.com/transaction-methods.html>`_。
     * - tx_blob
       - 字符串
       - 带\ `签名`_\ 字段的具体交易的16进制序列。
@@ -1064,14 +1061,13 @@ SQLTranscation websocket交易接口的json格式（tx_json对象）各个域的
 查询类接口
 ************************************
 
-查询类接口包含rippled原生的查询类接口、chainsqld新增的数据库记录和信息查询接口、
+查询类接口包含ChainSQL的查询类接口、chainsqld新增的数据库记录和信息查询接口、
 智能合约查询接口。
 
-Rippled查询接口
+ChainSQL查询接口
 +++++++++++++++++++++++++++++++++++++
 
-rippled Websocket查询类接口有很多，详情请参看XRP官方开发文档 `rippled API Reference <https://developers.ripple.com/rippled-api.html>`_。 
-下面展示一个示例。
+ChainSQL Websocket查询类接口有很多，下面展示一个示例。
 
 查询账户信息
 ======================================
@@ -1104,7 +1100,7 @@ rippled Websocket查询类接口有很多，详情请参看XRP官方开发文档
       - 可选，如果设置为True，Account这个域只能填写账户的公钥或者账户地址。
     * - ledger_index
       - 字符串或整形
-      - 可选，指定具体的账本进行查询，可选的值参考\ `Specifying Ledgers <https://developers.ripple.com/basic-data-types.html#specifying-ledgers>`_\ 。
+      - 可选，指定具体的账本进行查询。
 
 应答格式：
 
