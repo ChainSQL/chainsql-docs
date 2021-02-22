@@ -9,6 +9,7 @@
 ------------------
 
 - 根账户是在创世区块中就存在的，区块链中所有的众享币(1000亿ZXC)默认都在根账户中。
+- 根账户地址和公私钥对根据节点使用的非对称密码算法不同而不同。
 - 一般在链初始成功后，会进行根账户转移操作，将所有ZXC转移到一个隐私账户中，以实现对根账户的保护。
 
 生成/查看根账户的命令如下：
@@ -17,7 +18,7 @@
 
     ./chainsqld wallet_propose masterpassphrase
 
-根账户的地址及种子（种子可生成公钥及私钥，在Chainsql中一般不直接使用私钥，而是使用种子）
+- secp256k1算法根账户的地址及种子（种子可生成公钥及私钥，在Chainsql中一般不直接使用私钥，而是使用种子）
 
 .. code-block:: json
 
@@ -27,10 +28,21 @@
         "master_seed" : "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb"
     }
 
+- 国密sm2算法根账户的地址及私钥（国密账户中私钥的作用等同于其他算法账户中的种子 ）
+
+.. code-block:: json
+
+    {
+        "account_id" : "zN7TwUjJ899xcvNXZkNJ8eFFv2VLKdESsj",
+        "public_key" : "pYvWhW4azFwanovo5MhL71j5PyTWSJi2NVurPYUrE9UYaSVLp29RhtxxQB7xeGvFmdjbtKRzBQ4g9bCW5hjBQSeb7LePMwFM",
+        "secret_key" : "p97evg5Rht7ZB7DbEpVqmV3yiSBMxR3pRBKJyLcRWt7SL5gEeBb"
+    }
+
 1.2 账户的生成与激活
 ---------------------------
 
-在chainsql中，除了根账户外，其它账户都是需要激活才能生效的
+在chainsql中，除了根账户外，其它账户都是需要激活才能生效的，下面以节点默认使用secp256k1算法为例进行说明。
+其他算法使用流程一样，但是具体命令或者函数需要参考其在不同算法中的使用方式进行调用。
 我们可以在命令行中使用  ``wallet_propose`` 命令生成一个新的账户，也可以调用  ``generateAddress`` 接口来生成一个新的账户：
 
 命令行：

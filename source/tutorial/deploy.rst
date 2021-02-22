@@ -30,8 +30,17 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 下面以一个验证节点为例进行说明，想要得到更多节点，重复以下步骤即可。
 
+.. IMPORTANT::
+
+    但是节点使用的密码算法类型一经确定，所有参与区块链网络的节点必须使用同一种密码算法，
+    即验证节点公私钥使用同一种密码算法生成，配置文件的[crypto_alg]部分保持一致。
+
 1.	验证节点公私钥的生成
 ----------------------------
+.. WARNING::
+    在0.30.3版本之前，执行验证节点公私钥的生成这一命令要提前启动chainsqld进程，是因为下面的validation_create命令要向进程发送rpc请求，如果进程启动不成功，命令会返回错误。0.30.3及之后的版本可以不启动chainsqld程序直接返回结果。
+
+- 0.30.3版本以前需要先按照以下操作启动chainsql：
 将可执行程序与配置文件放在用户目录，先启动一下：
 
 .. code-block:: bash
@@ -42,16 +51,15 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
     如果配置文件在当前目录，且名称为 ``chainsqld.cfg``  ，可直接运行 ``nohup ./chainsqld &`` 命令即可启动节点，否则需要用 ``--conf`` 指定配置文件路径: ``./chainsqld --conf="./ chainsqld-example.cfg" &``
 
-确认chainsqld程序已经启动，输入 ``ps -ef|grep chainsqld`` ，看是否列出chainsqld进程
+确认chainsqld程序已经启动，输入 ``ps -ef|grep chainsqld`` ，看是否列出chainsqld进程。
 
-.. WARNING::
-    在0.30.3版本之前，执行这一命令要提前启动chainsqld进程，是因为下面的validation_create命令要向进程发送rpc请求，如果进程启动不成功，命令会返回错误。0.30.3及之后的版本可以不启动chainsqld程序直接返回结果。
+- 使用0.30.3之前版本已成功启动chainsql或者使用0.30.3及更高版本执行下面的命令：
 
-生成 ``validation_public_key`` 及 ``validation_seed`` , 输入:
+1-1. secp256k1算法生成 ``validation_public_key`` 及 ``validation_seed`` , 输入:
 
 .. code-block:: bash
 
-    ./chainsqld validation_create
+    ./chainsqld validation_create secp256k1
     
 返回结果如下：
 
@@ -63,6 +71,22 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
         "validation_public_key" : "n9L9BaBQr3KwGuMoRWisBbqXfVoKfdJg3Nb3H1gjRSiM1arQ4vNg",
         "validation_seed" : "xxjX5VuTjQKvkTSw6EUyZnahbpgS1"
     }
+
+1-2. 国密sm2算法生成 ``validation_public_key`` 及 ``validation_private_key(等同validation_seed)`` , 输入:
+
+.. code-block:: bash
+
+    ./chainsqld validation_create gmalg
+    
+返回结果如下：
+
+.. code-block:: json
+
+    {
+        "validation_private_key" : "pcGRX6z6fdGzA58j1uh2xH196JvCMyau9QCZmcLGXGSiBrjT4d9",
+        "validation_public_key" : "pEn2MTzZQc3kCfu19FJoNFExSpKf5U77cMzrh561roCJmQnmGA3XRzhXDuTqkyUugiBpCnLhUc67hooWATktuUN3vQui3ZX3"
+    }
+
 
 
 2.	配置文件的修改
@@ -169,6 +193,22 @@ auto_sync配置为1表示开启表自动同步，开启后，在节点正常运�
 
 - 非加密表格式：	建表账户 表名
 - 加密表格式：		建表账户 表名 可解密账户私钥
+
+``[crypto_alg]``
+
+::
+
+	[crypto_alg]
+	node_alg_type=secp256k1
+    hash_type=sha
+
+配置格式：
+
+- node_alg_type：	支持值：gmalg/secp256k1
+- hash_type：		支持值：sm3/sha
+
+此配置项可不填，默认使用secp256k1和sha，不填时validation_seed和validation_public_key均需为secp256k1算法生成。
+即node_alg_type的类型必须同validation_seed和validation_public_key生成算法一致。
 
 3.	架设网络
 ---------------------------
