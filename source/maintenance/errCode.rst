@@ -176,7 +176,6 @@ mulQueryNotSupport              OperationRule Table not support multi_table sql_
 ===================
 返回码分类
 ----------------
-Ripple中对交易的返回码有专门的说明：`Transaction Results <https://developers.ripple.com/transaction-results.html>`_
 
 一个共识过的区块中，可能包含两种结果的交易:
 

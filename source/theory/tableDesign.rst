@@ -18,7 +18,7 @@
 
         基于以下技术实现
 
-        - Ripple 的区块链技术实现
+        - ChainSQL 区块链技术实现
         - RethinkDB 实时分布式数据库
         - MySQL 以及 sqlite
 
@@ -29,7 +29,7 @@
 ---------------
 2.1 运行环境
 ---------------
-        基于ripple最新源码来定制修改实现区块链的搭建，底层数据库可以直接适配 ``SQLITE`` ，``MySQL`` ，通过 ``mycat`` 间接适配其它各种类型的数据库。上层提供 ``javascript`` 与 ``java`` 版本的 api 对数据表进行增删改查，用户也可以通过 ``kingshard`` 使用原生的数据库接口进行数据库表的各种操作。
+        区块链网络的搭建，底层数据库可以直接适配 ``SQLITE`` ，``MySQL`` ，通过 ``mycat`` 间接适配其它各种类型的数据库。上层提供 ``javascript`` 与 ``java`` 版本的 api 对数据表进行增删改查，用户也可以通过 ``kingshard`` 使用原生的数据库接口进行数据库表的各种操作。
 
 ----------------        
 2.2 系统架构
@@ -45,9 +45,9 @@
 ============  =====================================================================
 名称           定义
 ============  =====================================================================
-用户  		    ripple 中的帐号，数据库表的操作者     
-表  		    对应ripple中的特殊资产及新的ledge tree node		
-读写授权  	    表的所有者赋予其它帐号一定的读写权限，其它帐号才可能操作对应的数据库表
+用户            ChainSQL 中的帐号，数据库表的操作者     
+表              对应ChainSQL中的特殊资产及新的ledge tree node		
+读写授权        表的所有者赋予其它帐号一定的读写权限，其它帐号才可能操作对应的数据库表
 TableList       自定义的LEDGER NODE TYPES，记录用户创建的表 
 TableEntry      TableList中TableEntries数据中元素，记录数据库表中的基本信息
 ============  =====================================================================
@@ -101,7 +101,7 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
             #表的发行帐户地址 表名 跳过ledgerSeq2000
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table3 ~2000
             #表的发行帐户地址 表名 跳过指定的交易hash
-            z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 !860689E0F4A20F4CC0B35804B66486D455DEEFA940666054F780A69F770135C0
+            z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 ~860689E0F4A20F4CC0B35804B66486D455DEEFA940666054F780A69F770135C0
             #表的发行帐户地址 表名 解密的私钥 同步到2016-12-29 12:00:00
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 xxWFBu6veVgMnAqNf6YFRV2UENRd3 2016-12-29_12:00:00
             #表的发行帐户地址 表名 跳过ledgerSeq2000 解密的私钥
@@ -121,7 +121,7 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
         port=3306 //数据库端口
         user=root //数据库用户名
         pass=root //数据库密码
-        db=ripple //数据库中使用的Scheme名称
+        db=chainsql //数据库中使用的Scheme名称
         charset=utf8 //是否使用UTF-8编码，以支持中文
 
 -----------------------
@@ -216,7 +216,7 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
 
 - 通过提供表的创建者账户地址与表名订阅一张表
 - 订阅表成功后，与表相关的交易结果（共识或入库）都会通过回调返回
-- 通过提供交易哈希订阅单个交易（支持Ripple始交易类型）
+- 通过提供交易哈希订阅单个交易
 - 交易订阅成功后交易的共识结果与入库结果（Chainsql）会通过回调返回
 - 取消订阅必需与要取消的订阅在同一个websocket连接中执行
 
@@ -352,7 +352,7 @@ PreviousTxnLgrHash     	 String              	Hash256 	        上次交易的le
 TxCheckHash 	         String              	Hash256 	        上次TxCheckHash+本次交易raw字段，再进行哈希
 Users 	                 Array               	Array                	授权用户列表
 Users[] 	         Object              	Object 	                An association of an address and roles
-Users[].Account 	 String              	AccountID            	被授予对应权限的ripple账户地址
+Users[].Account 	 String              	AccountID            	被授予对应权限的ChainSQL账户地址
 Users[].Flags 	         Number              	UInt32 	                A bit-map of boolean flags enabled for this account. 用户拥有的权限flags
 Users[].Token          	 String              	Blob 	                Cipher encrypted by this user's publickey. 对Raw字段加解密密码使用用户公钥加密后的密文
 =====================  ==================  ======================  ============================================================================================================================================
@@ -383,7 +383,7 @@ Table[] 	          Object   	        Object                  必填，表元素
 Table[].TableName 	  String   	        Blob                    必填，上层表名
 Table[].NameInDB 	  String   	        Hash160 	        选填，实际表名
 Table[].TableNewName 	  String   	        Blob 	                选填，如果有则是表改名操作，如果是NULL则是删除表
-User 	                  String   	        AccountID 	        选填，被授予对应权限的ripple账户地址
+User 	                  String   	        AccountID 	        选填，被授予对应权限的ChainSQL账户地址
 Flags 	                  Number   	        UInt32 	                选填，公用字段，用来记录用户被授予的权限
 OpType 	                  Number   	        UInt32           	必填，操作类型， 1：建表，2：删表，3：改表名，10：验证断言，11：授权，12：表重建，13：多链整合
 Raw                       String   	        Blob 	                选填，建表/删表的sql或json
@@ -432,7 +432,7 @@ Statements[].Tables.Table[] 	                        Object           	Object 	 
 Statements[].Tables.Table[].TableName 	                String           	Blob          	    必填，上层表名
 Statements[].Tables.Table[].NameInDB 	                String           	Hash160 	    选填，实际表名
 Statements[].Tables.Table[].TableNewName 	        String           	Blob 	            选填，如果有则是表改名操作，如果是NULL则是删除表
-Statements[].User 	                                String          	AccountID 	    选填，被授予对应权限的ripple账户地址
+Statements[].User 	                                String          	AccountID 	    选填，被授予对应权限的ChainSQL账户地址
 Statements[].Flags 	                                Number          	UInt32              选填，公用字段，用来记录用户被授予的权限
 Statements[].OpType                              	Number           	UInt32              必填，操作类型， 1：建表, 2：删表, 3：改表名, 6:插入记录, 8:更新记录, 9:删除记录, 10.验证断言
 Statements[].AutoFillField 	                        String          	Blob                选填，指定自动填充的字段

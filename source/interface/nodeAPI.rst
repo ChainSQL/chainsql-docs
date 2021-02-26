@@ -543,9 +543,7 @@ getLedger
 返回值
 -----------
 
-.. _区块信息字段说明: https://developers.ripple.com/rippleapi-reference.html#getledger
-
-1. ``JsonObject`` : 区块信息，可参考 `区块信息字段说明`_
+1. ``JsonObject`` : 区块信息
 
 
 示例
@@ -742,9 +740,7 @@ getTransaction
 返回值
 -----------
 
-.. _获取交易: https://developers.ripple.com/rippleapi-reference.html#gettransaction
-
-``JsonObject`` : 交易详情，具体字段描述可参考 `获取交易`_ 的Return Value部分对交易详情的描述。
+``JsonObject`` : 交易详情。
 
 示例
 -----------
@@ -804,9 +800,7 @@ sign
 参数说明
 -----------
 
-.. _交易结构: https://developers.ripple.com/rippleapi-reference.html#transaction-types
-
-1. ``txJson`` - ``JsonObject`` : 交易对象，不同交易类型，结构不同，可参考 `交易结构`_ 的说明。对chainsql的表及合约交易结构的说明可参考 :ref:`rpc接口 <rpc-tx>` 中每个接口的tx_json字段值；
+1. ``txJson`` - ``JsonObject`` : 交易对象，不同交易类型，结构不同。对chainsql的表及合约交易结构的说明可参考 :ref:`rpc接口 <rpc-tx>` 中每个接口的tx_json字段值；
 2. ``secret`` - ``String`` : 签名者的私钥。
 3. ``option`` - ``JsonObject`` : [**可选**]进行多方签名时，需要利用option参数提供签名账户地址，此时secret参数应为option中账户的私钥。此对象只包含一个字段：
 	

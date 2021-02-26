@@ -276,7 +276,7 @@ Node.js API的调用
             
         /*
         *  设置网关相关属性
-        * @param uFlag   一般情况下为8，表示asfDefaultRipple，详见https://developers.ripple.com/accountset.html#accountset-flags
+        * @param uFlag   一般情况下为8，表示asfDefaultRipple
         * @param bSet    true，开启uFlag；false 取消uFlag。
         */
         function accountSet(uint32 uFlag,bool bSet) public {

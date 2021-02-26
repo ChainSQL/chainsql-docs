@@ -3,7 +3,7 @@ JSON-RPC接口
 
 JSON-RPC，是一个无状态且轻量级的远程过程调用（RPC）传送协议，其传递内容透过 JSON 为主。
 
-| chainsqld沿用rippled的JSON-RPC，使用HTTP短连接，由 ``method`` 域指定调用的方法， ``params`` 域指定调用的参数。
+| chainsqld的JSON-RPC，使用HTTP短连接，由 ``method`` 域指定调用的方法， ``params`` 域指定调用的参数。
 | 格式示例：
 
 .. code-block:: json
@@ -186,7 +186,7 @@ RPC查询类接口返回的JSON包含的各个域如下：
 交易类接口
 **************************
 
-交易类接口包含rippled原生的交易类JSON-RPC接口、chainsqld新增的数据库表交易接口、智能合约交易类接口。
+交易类接口包含原生的交易类JSON-RPC接口、chainsqld新增的数据库表交易接口、智能合约交易类接口。
 
 因为交易都需要在区块链上达成共识，所以交易类接口的应答结果是临时的，只代表此次交易是否已经进入本节点的临时账本。
 最终的结果在共识后都有可能发生变化。
@@ -197,11 +197,10 @@ RPC查询类接口返回的JSON包含的各个域如下：
     本文中示例都是通过向服务节点提供账户私钥的方式。
     如果服务节点不可信任，或者请求通过公共网络发送，则存在风险。
 
-Rippled交易
+基本交易
 ++++++++++++++++++++++++++++
 
-rippled交易类JSON-RPC接口有很多，详情请参看XRP官方开发文档 `Transcation Formats <https://developers.ripple.com/transaction-formats.html>`_。 
-下面展示一个示例。
+基本交易类JSON-RPC接口有很多，下面展示一个示例。
 
 转账
 ============================
@@ -237,8 +236,6 @@ rippled交易类JSON-RPC接口有很多，详情请参看XRP官方开发文档 `
       - | Rippled的交易类接口包含的Method有
         | sign、sign_for、submit、submit_multisigned、
         | transaction_entry、tx、tx_history。
-
-        具体参看XRP官方开发文档 `Transcation Methods <https://developers.ripple.com/transaction-methods.html>`_。
     * - params
       - 数组
       - 包含请求的参数。
@@ -1021,7 +1018,7 @@ RPC接口方法名使用Rippled的交易方法名\ ``submit``\ ，交易json格�
 .. note::
 
     应答域中没有直接返回合约地址，有返回部署合约交易的\ ``hash``\ ，
-    可以使用 `tx <https://developers.ripple.com/tx.html>`_ 方法和交易哈希查询交易的详细信息，
+    可以使用 ``tx`` 方法和交易哈希查询交易的详细信息，
     合约地址由返回的交易详细信息中的\ ``meta``\ .\ ``AffectedNodes``\ .\ ``CreatedNode``\ .\ ``NewFields``\ .\ ``Account``\ 域指定。
     建议使用Node.js或Java接口部署智能合约。
 
@@ -1087,13 +1084,12 @@ RPC接口方法名使用Rippled的交易方法名\ ``submit``\ ，交易json格�
 查询类接口
 ************************************
 
-查询类接口包含rippled原生的查询类JSON-RPC接口、chainsqld新增的数据库记录和信息查询接口、智能合约查询接口。
+查询类接口包含原生的查询类JSON-RPC接口、chainsqld新增的数据库记录和信息查询接口、智能合约查询接口。
 
-Rippled查询接口
+查询接口
 +++++++++++++++++++++++++++++++++++++
 
-rippled查询类JSON-RPC接口有很多，详情请参看XRP官方开发文档 `rippled API Reference <https://developers.ripple.com/rippled-api.html>`_。 
-下面展示几个基本示例。
+查询类JSON-RPC接口有很多，下面展示几个基本示例。
 
 查询交易信息
 ======================================
@@ -1261,7 +1257,7 @@ rippled查询类JSON-RPC接口有很多，详情请参看XRP官方开发文档 `
       - 可选，如果设置为True，Account这个域只能填写账户的公钥或者账户地址。
     * - ledger_index
       - 字符串或整形
-      - 可选，指定具体的账本进行查询，可选的值参考\ `Specifying Ledgers <https://developers.ripple.com/basic-data-types.html#specifying-ledgers>`_\ 。
+      - 可选，指定具体的账本进行查询 。
 
 应答格式：
 
