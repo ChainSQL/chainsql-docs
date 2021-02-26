@@ -31,13 +31,13 @@ def setup(sphinx):
     sphinx.add_stylesheet('css/custom.css')
 
 project = 'chainsql'
-copyright = '2019, peersafe'
+copyright = '2021, peersafe'
 author = 'peersafe'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '1.0.1-pop'
+release = '1.1.4-pop'
 
 # -- General configuration ---------------------------------------------------
 
@@ -95,7 +95,7 @@ html_favicon = "../images/favicon.ico"
 
 html_show_sourcelink = False
 
-version = "1.0.1-pop"
+version = "1.1.4-pop"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

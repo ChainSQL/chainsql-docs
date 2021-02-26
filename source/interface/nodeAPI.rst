@@ -70,6 +70,10 @@ nodejs接口在迭代过程中，有几次优化涉及接口使用方式的改�
 
 | 在 **0.6.56版本** 增加接口  :ref:`useCert <UseCertNodeJS>` 支持 :ref:`CA功能  <CAFeatures>` 
 
+6. **generateAddress接口**
+
+| 在 **0.70.1版本** 修改接口  :ref:`generateAddress <generateAddressNodeJS>` 支持国密算法
+
 ------------------------------------------------------------------------------
 
 
@@ -385,12 +389,14 @@ ChainSQL区块链中账户之间转账接口，支持系统币与发行的代币
 
 ------------------------------------------------------------------------------
 
+.. _generateAddressNodeJS:
+
 ----------------
 generateAddress
 ----------------
 .. code-block:: javascript
 
-	chainsql.generateAddress([secret])
+	chainsql.generateAddress([secret][option])
 
 生成一个ChainSQL账户，但是此账户未在链上有效，需要链上有效账户对新账户发起pay操作，新账户才有效。
 
@@ -398,6 +404,8 @@ generateAddress
 -----------
 
 1. ``secret`` - ``String`` : [**可选**]参数为私钥，通过指定私钥，可返回基于该私钥的账户和公私钥对。该参数为空则生成一对新的公私钥及对应地址。
+
+2.   ``option`` - ``JsonObject`` : [**可选**]参数为密码算法类型参数，通过指定密码算法的类别，可返回基于该密码算法的账户和公私钥对，具体使用参见示例。
 
 返回值
 -----------
@@ -419,6 +427,24 @@ generateAddress
 		address:"zwqrah4YEKCxLQM2oAG8Qm8p1KQ5dMB9tC"
 		publicKey:"cB4uvqvj49hBjXT25aYYk91K9PwFn8A12wwQZq8WP5g2um9PJFSo"
 		secret:"xnBUAtQZMEhDDtTtfjXhK1LE5yN6D"
+	}
+
+	// 使用示例
+	let accountInfo = c.generateAddress({algorithm:"softGMAlg"});
+	console.log(accountInfo)
+
+	let accountInfoFromSecret = c.generateAddress({algorithm:"softGMAlg",secret:"p97evg5Rht7ZB7DbEpVqmV3yiSBMxR3pRBKJyLcRWt7SL5gEeBb"});
+	console.log(accountInfoFromSecret)
+	>
+	{
+		address:"zfQzzonsbmSsmfScGbaoX5LKHCh3bkmdfV"
+		publicKey:"pYvGHGtwTpgVx6S6drWfdbBzSLsUqjxjN9ngUVC3uDMUz2P9dFpbmALeMyLQq5gPL1sYF9SmcYyMzw7qfF8kqSzoVku21KWK"
+		secret:"p9qTtdZzAJTWzNbJF4HMVVUxfMEnYUDz9tygQf3GWtQbPtN6Bet"
+	}
+	{
+		address:"zN7TwUjJ899xcvNXZkNJ8eFFv2VLKdESsj"
+		publicKey:"pYvWhW4azFwanovo5MhL71j5PyTWSJi2NVurPYUrE9UYaSVLp29RhtxxQB7xeGvFmdjbtKRzBQ4g9bCW5hjBQSeb7LePMwFM"
+		secret:"p97evg5Rht7ZB7DbEpVqmV3yiSBMxR3pRBKJyLcRWt7SL5gEeBb"
 	}
 
 ------------------------------------------------------------------------------

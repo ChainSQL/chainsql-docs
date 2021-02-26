@@ -40,8 +40,7 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 .. WARNING::
     在0.30.3版本之前，执行验证节点公私钥的生成这一命令要提前启动chainsqld进程，是因为下面的validation_create命令要向进程发送rpc请求，如果进程启动不成功，命令会返回错误。0.30.3及之后的版本可以不启动chainsqld程序直接返回结果。
 
-- 0.30.3版本以前需要先按照以下操作启动chainsql：
-将可执行程序与配置文件放在用户目录，先启动一下：
+- 0.30.3版本以前需要先按照以下操作启动chainsql: 将可执行程序与配置文件放在用户目录，先执行 
 
 .. code-block:: bash
 

@@ -52,6 +52,26 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
 
+1.1.4-pop
+-------------------
+- :ref:`国密算法支持 <密码算法支持>`
+- 预编译合约
+- 单条交易最大500KB
+- 表交易中新增 LONGTEXT 类型字段
+- 新添配置选项 :ref:`[crypto_alg] <crypto_alg>` 
+- 配置选项修改 :ref:`validation_create <validation_create>`  :ref:`wallet_propose <wallet_propose>`
+- Node.js SDK  更新到版本 0.70.1
+- JAVA  SDK 更新到版本 1.5.7
+
+1.0.2-pop
+-------------------
+- 替换智能合约虚拟机执行器，由原先的evmjit替换为Interpreter，兼容新智能合约字节码
+- 防止SQL注入
+- raw字段查询条件支持null
+- 增加字段sfTxsHashFillField，实现表交易的历史哈希信息记录
+- 提高内存的释放速度
+- Bug修复
+
 1.0.1-pop
 -------------------
 - 使用新共识算法，将tps提高到4000-6000，并且默认不生成空区块，减小空区块对存储的浪费
