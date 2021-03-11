@@ -14,9 +14,17 @@
 
 生成/查看根账户的命令如下：
 
+1.1.4-pop之前版本
+
 .. code-block:: bash
 
     ./chainsqld wallet_propose masterpassphrase
+
+1.1.4-pop之后版本,需要指定算法名称，如：secp256k1（默认）,gmalg（国密）
+
+.. code-block:: bash
+
+    ./chainsqld wallet_propose secp256k1 masterpassphrase
 
 - secp256k1算法根账户的地址及种子（种子可生成公钥及私钥，在Chainsql中一般不直接使用私钥，而是使用种子）
 
