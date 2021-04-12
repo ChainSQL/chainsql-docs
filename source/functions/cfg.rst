@@ -137,28 +137,134 @@
 
 配置项说明
 ----------------
-[server]
-************
 
-- 端口列表，chainsqld 会查找文件中具有与列表项相同名称的配置项，并用这些配置荐创建监听端口。
-- 列表中配置项的名称不会影响功配置功能
+[auto_sync]
+********************
+是否开启表自动同步，可设置为0或1，默认为0
 
-单个配置项示例如下：
+.. important:: 
+
+    auto_sync只影响表的创建，如auto_sync为0，在创建新表的交易共识过后，不会在数据库中建表。但是如果表已经存在，这时向表中插入数据，是不受auto_sync值影响的。
+
+
+[ca_certs_keys]
+******************************
+    配置信任X509证书服务器公钥列表
 
 .. code-block:: bash
 
-    [port_rpc_admin_local]
-    port = 5005
-    ip = 0.0.0.0
-    admin = 127.0.0.1
-    protocol = http
+    [ca_certs_keys]
+    029d1f40fc569fff2a76417008d98936a04417db0758c8ab123dee6dbd08d79398
 
-每个配置项包含如下内容：
 
-    - ``port`` 配置端口
-    - ``ip`` 哪些ip可以连接这一端口，如果有多个，以逗号（,）进行分隔， ``0.0.0.0`` 代表任意ip可以连接这一端口
-    - ``admin`` chainsql中有一些命令（如peers,t_dump,t_audit）只有拥有admin权限的ip才能调用，配置方法与 ip 相同
-    - ``protocol`` 协议名称，chainsql中支持协议有 http,https,ws,wss,peer
+.. _CACertsSites:
+
+[ca_certs_sites]
+******************************
+    配置信任X509证书服务器列表
+
+.. code-block:: bash
+
+    [ca_certs_sites]
+    http://192.168.29.112:8081/
+
+.. _crypto_alg:
+
+[crypto_alg]
+******************************
+    配置节点组网及共识使用的非对称密码算法和哈希算法。
+    
+    - node_alg_type配置项可选值：gmalg/secp256k1/ed25519;
+    - hash_type配置项可选值：sm3/sha;
+
+.. code-block:: bash
+
+    [crypto_alg]
+    node_alg_type=gmalg
+    hash_type=sm3
+
+
+[database_path]
+******************
+    sqlite 数据库的存储路径，可以是全路径 ，也可以是相对路径（相对于当前配置文件路径）
+
+[debug_logfile]
+******************
+    日志文件路径
+
+.. _DropsPerByte:
+
+[drops_per_byte]
+******************************
+    该选项表示表交易中每字节数据消耗的drops，默认为 976(10^6 /1024)，表示1KB数据消耗1 ZXC，范围为[1,10^6]
+
+.. code-block:: bash
+
+    [voting]
+    drops_per_byte = 976
+
+.. important:: 
+
+    为了保证与低版本的API的兼容性，drops_per_byte的默认值为976(10^6 /1024),表示1KB数据消耗1 ZXC。drops_per_byte不配置或者配置为默认值，保持与老版本API的向下兼容性；如果该值配置为非默认值，那么与老版本的API都不兼容，无法发起表交易。
+
+[features]
+**************
+    要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ,这里不再赘述。
+
+[ips]
+******************
+    | 要连接的其它节点的Ip及端口，一行只允许出现一个ipv4地址及端口
+    | 配置的端口为要连接节点的peer协议端口
+
+[ledger_history]
+*****************
+- 节点要维护的最小历史区块数量
+- 若不想维护历史区块，则设置为 ``none`` ,若想维护全部历史区块（全节点），则设置为 ``full`` 还可以设置为一个数字
+- 默认值为256，如果 [node_db]中有 ``online_delete`` 配置项，[ledger_history] 的值必须 <= ``online_delete`` 的值
+
+**配置非全节点的示例** :
+
+.. code-block:: bash
+
+    [node_db]
+    type=RocksDB
+    path=/data/chainsql/db1/rocksdb
+    open_files=2000
+    filter_bits=12
+    cache_mb=256
+    file_size_mb=8
+    file_size_mult=2
+    online_delete=2000
+    advisory_delete=0
+
+    #[ledger_history]
+    #full
+
+.. _LedgerAcquire:
+
+[ledger_acquire]
+******************************
+    同步区块相关的配置。
+
+    - skip_blocks 表示同步区块时要跳过的区块，也就是缺失的区块，用逗号分隔多个缺失的域。示例：skip_blocks=5000-6000,8000,9000-10000
+
+.. code-block:: bash
+
+    [ledger_acquire]
+    skip_blocks=5000-6000,8000,9000-10000
+
+.. _MissingHashes:
+
+[missing_hashes]
+******************************
+    手动配置节点获取不到区块哈希的区块，每一行配置一个对应的区块号和区块哈希，用冒号分隔区块号和区块哈希。
+
+.. code-block:: bash
+
+    [missing_hashes]
+    8999:<hash of ledger 8999>
+    7999:<hash of ledger 7999>
+
 
 [node_size]
 **************
@@ -189,63 +295,6 @@
 - ``online_delete`` 最小值为256，节点最小维持的区块数量，这个值不能小于 ``ledger_history`` 配置项的值
 - ``advisory_delete`` 0为禁用，1为启用。如果启用了，需要调用admin权限接口 ``can_delete`` 来开启区块的在线删除功能。
 
-[ledger_history]
-*****************
-- 节点要维护的最小历史区块数量
-- 若不想维护历史区块，则设置为 ``none`` ,若想维护全部历史区块（全节点），则设置为 ``full`` 还可以设置为一个数字
-- 默认值为256，如果 [node_db]中有 ``online_delete`` 配置项，[ledger_history] 的值必须 <= ``online_delete`` 的值
-
-**配置非全节点的示例** :
-
-.. code-block:: bash
-
-    [node_db]
-    type=RocksDB
-    path=/data/chainsql/db1/rocksdb
-    open_files=2000
-    filter_bits=12
-    cache_mb=256
-    file_size_mb=8
-    file_size_mult=2
-    online_delete=2000
-    advisory_delete=0
-
-    #[ledger_history]
-    #full
-
-
-[database_path]
-******************
-    sqlite 数据库的存储路径，可以是全路径 ，也可以是相对路径（相对于当前配置文件路径）
-
-[debug_logfile]
-******************
-    日志文件路径
-
-[sntp_servers]
-******************
-    时间服务器，用于p2p节点间时间同步
-
-.. important:: 
-
-    在内网环境中，公网的时间服务器连不上，这时必须配置内网的时间服务器或手动将节点的时间调节一致，不然会出现节点发现不了，或者达不成共识等各种 问题
-
-[ips]
-******************
-    | 要连接的其它节点的Ip及端口，一行只允许出现一个ipv4地址及端口
-    | 配置的端口为要连接节点的peer协议端口
-
-[validators]
-******************
-    信任节点列表（信任节点的公钥列表）
-
-[validation_seed]
-********************
-    本节点私钥（如不配置，不参与共识，为非共识节点）
-
-[validation_public_key]
-***************************
-    本节点公钥（可选），如果配置了validation_seed，会由 validation_seed 生成节点公钥
 
 [rpc_startup]
 *****************
@@ -260,8 +309,89 @@
 
 日志级别包括：trace, debug, info, warning, error, fatal
 
-.. _SyncDB:
+.. _Schema:
 
+[schema]
+*********************
+    子链相关配置，包括子链路径，是否自动同意加入子链，是否只参与子链共识
+
+    示例：
+
+.. code-block:: bash
+
+    [schema]
+    schema_path=/mnt/schema
+    auto_accept_new_schema = 1
+    only_validate_for_schema = 1
+
+配置项说明：
+
+- ``schema_path`` 子链数据存储路径，节点作为子链节点的配置文件，schema_path文件夹示例如下 ：
+
+.. code-block:: bash
+
+    schema_path/
+    ├── 4F26F023FBA6E23CD5FAFBF0751E72EEB306FE944F1BAF9AEB7D8753D5719B15
+    └── C6970A8B603D8778783B61C0D445C23D1633CCFAEF0D43E7DBCD1521D34BD7C3
+        ├── chainsqld.cfg
+    ├── schema_info
+        ├── db
+        └── rocksdb
+
+其中，schema_info是一个文本文件，用来解决子链文件夹根据 schemaId不易读的问题，schema_info中的内容包括子链名称，建链策略等，示例如下：
+
+
+- ``auto_accept_new_schema`` 配置节点是否自动同意加入子链，默认为0。若新建子链交易不是多方签名交易，则需要节点在命令行执行一下 ``schema_accepet`` 命令手动执行接受操作，否则不执行子链的创建，也不参与后面子链的消息处理。
+- ``only_validate_for_schema`` 是否节点只参与子链共识，默认为 0。 配置为1代表节点不参与主链共识，可以认为是主链上的非共识节点。只属于子链的节点需要配置 only_validate_for_schema = 1 ，不然节点无法同步主链区块，也就无法加入子链。
+
+.. note::
+
+    当节点配置 ``validation_seed`` 去同步主链区块时，因为POP/HotStuff共识的原因会导致同步区块失败，所以增加只参与子链而不参与主链的配置
+
+.. _SelectLimit:
+
+[select_limit]
+********************* 
+    配置表查询相关接口返回的最大查询条数，默认值为200。
+
+.. code-block:: bash
+
+    [select_limit]
+    200
+
+[server]
+************
+
+- 端口列表，chainsqld 会查找文件中具有与列表项相同名称的配置项，并用这些配置荐创建监听端口。
+- 列表中配置项的名称不会影响功配置功能
+
+单个配置项示例如下：
+
+.. code-block:: bash
+
+    [port_rpc_admin_local]
+    port = 5005
+    ip = 0.0.0.0
+    admin = 127.0.0.1
+    protocol = http
+
+每个配置项包含如下内容：
+
+    - ``port`` 配置端口
+    - ``ip`` 哪些ip可以连接这一端口，如果有多个，以逗号（,）进行分隔， ``0.0.0.0`` 代表任意ip可以连接这一端口
+    - ``admin`` chainsql中有一些命令（如peers,t_dump,t_audit）只有拥有admin权限的ip才能调用，配置方法与 ip 相同
+    - ``protocol`` 协议名称，chainsql中支持协议有 http,https,ws,wss,peer
+
+
+[sntp_servers]
+******************
+    时间服务器，用于p2p节点间时间同步
+
+.. important:: 
+
+    在内网环境中，公网的时间服务器连不上，这时必须配置内网的时间服务器或手动将节点的时间调节一致，不然会出现节点发现不了，或者达不成共识等各种 问题
+
+.. _SyncDB:
 
 [sync_db]
 *****************
@@ -298,14 +428,6 @@
         | 在非ubuntu系统中，这个路径是不对的，会导致连接数据库失败，需要用 unix_socket 选项来指定 sock 路径
         | 如果host写为ip（如127.0.0.1）去连接，会使用 tcp 方式连接，就不会有这个问题
 
-[auto_sync]
-********************
-是否开启表自动同步，可设置为0或1，默认为0
-
-.. important:: 
-
-    auto_sync只影响表的创建，如auto_sync为0，在创建新表的交易共识过后，不会在数据库中建表。但是如果表已经存在，这时向表中插入数据，是不受auto_sync值影响的。
-
 [sync_tables]
 *********************
     配置要同步的表，详细配置方法参考 :ref:`sync_tables <表同步设置>`，这里与auto_sync的不同在于：
@@ -313,6 +435,25 @@
     - auto_sync 配置为1，只能同步新建的表，而 sync_tables 还可以同步之前区块上建的表
     - sync_tables 可中配置同步加密表所用的解密私钥，加密表只有通过sync_tables的配置才可以同步下来
     - sync_tables 可配置各种同步条件，如同步到某个区块，同步到某个时间，跳过某个区块等
+
+
+[validators]
+******************
+    信任节点列表（信任节点的公钥列表）
+
+[validation_seed]
+********************
+    本节点私钥（如不配置，不参与共识，为非共识节点）
+
+[validation_public_key]
+***************************
+    本节点公钥（可选），如果配置了validation_seed，会由 validation_seed 生成节点公钥
+
+
+[veto_amendments]
+********************
+    要禁用的特性，在特性启用前禁用，会给特性的开启投反对票，赞成票低于80%，会导致特性无法开启，详情参考：:ref:`features <amendments>`
+
 
 [voting]
 ***************
@@ -329,45 +470,8 @@
     - account_reserve 账户预留费用，指的是激活一个账户所需要的最小系统币（ZXC）数量，也是一个账户的余额要保留的最小值，单位为drop，上面的配置表示账户预留费用为10ZXC。
     - owner_reserve 增加一个对象，要增加的预留费用，这里的对象指的是要占用链上存储的对象，如账户与网关之间的trustline,账户新建的表等，上面的值表示每增加一个对象，账户的预留费用要增加1ZXC。
 
-.. _DropsPerByte:
-
-
-[drops_per_byte]
-******************************
-    该选项表示表交易中每字节数据消耗的drops，默认为 976(10^6 /1024)，表示1KB数据消耗1 ZXC，范围为[1,10^6]
-
-.. code-block:: bash
-
-    [voting]
-    drops_per_byte = 976
-
-.. important:: 
-
-    为了保证与低版本的API的兼容性，drops_per_byte的默认值为976(10^6 /1024),表示1KB数据消耗1 ZXC。drops_per_byte不配置或者配置为默认值，保持与老版本API的向下兼容性；如果该值配置为非默认值，那么与老版本的API都不兼容，无法发起表交易。
-
-[features]
-**************
-    要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ,这里不再赘述。
-
-[veto_amendments]
-********************
-    要禁用的特性，在特性启用前禁用，会给特性的开启投反对票，赞成票低于80%，会导致特性无法开启，详情参考：:ref:`features <amendments>`
-
-
-.. _SelectLimit:
-
-[select_limit]
-********************* 
-    配置表查询相关接口返回的最大查询条数，默认值为200。
-
-.. code-block:: bash
-
-    [select_limit]
-    200
-
 
 .. _X509CrtPath:
-
 
 [x509_crt_path]
 ******************************
@@ -382,66 +486,3 @@
 
 .. _CACertsKeys:
 
-[ca_certs_keys]
-******************************
-    配置信任X509证书服务器公钥列表
-
-.. code-block:: bash
-
-    [ca_certs_keys]
-    029d1f40fc569fff2a76417008d98936a04417db0758c8ab123dee6dbd08d79398
-
-.. _CACertsSites:
-
-
-[ca_certs_sites]
-******************************
-    配置信任X509证书服务器列表
-
-.. code-block:: bash
-
-    [ca_certs_sites]
-    http://192.168.29.112:8081/
-
-----------------------------------------------------------------
-
-.. _LedgerAcquire:
-
-[ledger_acquire]
-******************************
-    同步区块相关的配置。
-
-    - skip_blocks 表示同步区块时要跳过的区块，也就是缺失的区块，用逗号分隔多个缺失的域。示例：skip_blocks=5000-6000,8000,9000-10000
-
-.. code-block:: bash
-
-    [ledger_acquire]
-    skip_blocks=5000-6000,8000,9000-10000
-
-
-.. _MissingHashes:
-
-[missing_hashes]
-******************************
-    手动配置节点获取不到区块哈希的区块，每一行配置一个对应的区块号和区块哈希，用冒号分隔区块号和区块哈希。
-
-.. code-block:: bash
-
-    [missing_hashes]
-    8999:<hash of ledger 8999>
-    7999:<hash of ledger 7999>
-
-.. _crypto_alg:
-
-[crypto_alg]
-******************************
-    配置节点组网及共识使用的非对称密码算法和哈希算法。
-    
-    - node_alg_type配置项可选值：gmalg/secp256k1/ed25519;
-    - hash_type配置项可选值：sm3/sha;
-
-.. code-block:: bash
-
-    [crypto_alg]
-    node_alg_type=gmalg
-    hash_type=sm3

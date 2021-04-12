@@ -916,7 +916,7 @@ SQLTranscation RPC交易类型接口的请求方法名固定为\ ``t_sqlTxs``\ �
 ++++++++++++++++++++++++++++++++++++++++
 
 智能合约交易类型RPC接口包含部署合约接口和调用合约接口。
-RPC接口方法名使用Rippled的交易方法名\ ``submit``\ ，交易json格式（tx_json对象）各个域的描述如下：
+交易json格式（tx_json对象）各个域的描述如下：
 
 .. list-table::
 
@@ -1081,6 +1081,189 @@ RPC接口方法名使用Rippled的交易方法名\ ``submit``\ ，交易json格�
         }
     }
 
+.. _多链交易:
+
+多链交易
+++++++++++++++++++++++++++++++++++++++++
+多链交易包含两种交易类型：
+ 
+- SchemaCreate
+- SchemaModify
+
+.. _rpcSchemaCreate:
+
+创建子链交易
+========================
+
+| ChainSQL中任意用户都可以创建子链，但子链的各参与节点需要同意后才会加入到子链
+| 交易json格式（tx_json对象）各个域的描述如下：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **类型**
+      - **描述**
+    * - TransactionType
+      - 字符串
+      - 必填，交易类型
+    * - Account
+      - 字符串
+      - 必填，交易发起账户
+    * - SchemaAdmin
+      - 字符串
+      - 选填，子链管理员账户，管理子链共识节点
+    * - SchemaName
+      - 字符串
+      - 必填，子链名称
+    * - SchemaStrategy
+      - 整型
+      - 必填，子链建链策略
+    * - AnchorLedgerHash
+      - 字符串
+      - 选填，继承的主链区块hash
+    * - Validators
+      - 数组
+      - 必填，子链共识节点公钥列表（16进制字符串）
+    * - PeerList
+      - 数组
+      - 必填，子链共识节点p2p连接方式列表（16进制字符串）
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method": "submit",
+        "params": [{
+            "secret": "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+            "tx_json": {
+                "TransactionType": "SchemaCreate",
+                "Account": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                "SchemaName":"68656c6c6f31",
+                "SchemaStrategy":1,
+                "SchemaAdmin":"zNRi42SAPegzJYzXYZfRFqPqUfGqKCaSbx",
+                "AnchorLedgerHash":"AB868A6CFEEC779C2FF845C0AF00A642259986AF40C01976A7F842B6918936C7",
+                "Validators":[
+                {
+                        "Validator":{
+                            "PublicKey":"03C53D4B7E4D558DBD8EA67E68AD97844FCCF48DD4C7A5C10E05B293A11DC9BB40"
+                        }
+                    },
+                    {
+                        "Validator":{
+                            "PublicKey":"021D3E9C571DF23054DBB2005E76EA5BE5227D381FB9B4A52467B5E6412ABAFBA0"
+                        }
+                    },
+                    {
+                        "Validator":{
+                            "PublicKey":"0317B5CAEBE6C778D133B1CA670D00E994D3AFAC2C0E6AA8F11B0DA277309F193E"
+                        }
+                    }
+                ],
+                "PeerList":[
+                {
+                        "Peer":{ "Endpoint":"3132372e302e302e313a35313235" }
+                    },
+                    {
+                        "Peer":{ "Endpoint":"3132372e302e302e313a35313236" }
+                    },
+                    {
+                        "Peer":{ "Endpoint":"3132372e302e302e313a35313237"}
+                    }
+          ]
+            }
+        }]
+    }
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result": {
+            "engine_result": "tesSUCCESS",
+            "engine_result_code": 0,
+            "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
+            "status": "success"
+        }
+    }
+      
+.. _rpcSchemaModify:
+
+修改子链交易
+========================
+| ChainSQL子链的修改交易一般由子链管理员账户发起，在子链未设置管理员的情况下，需要通过子链各参与节点通过多方签名的方式以建链用户的身份发起。
+| 交易json格式（tx_json对象）各个域的描述如下：
+
+.. list-table::
+
+  * - **域**
+    - **类型**
+    - **描述**
+  * - TransactionType
+    - 字符串
+    - 必填，交易类型
+  * - Account
+    - 字符串
+    - 必填，交易发起账户，一般为子链管理员账户
+  * - SchemaID
+    - 字符串
+    - 必填，被操作的子链ID
+  * - OpType
+    - 整型
+    - 必填，修改类型，1为增加节点，2为删除节点
+  * - Validators
+    - 数组
+    - 必填，增加或删除的子链共识节点公钥列表（16进制字符串）
+  * - PeerList
+    - 数组
+    - 必填，增加或删除的子链共识节点p2p连接方式列表（16进制字符串）
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method": "submit",
+        "params": [{
+            "secret": "xhoYWMokU6Tboe42Z36GJ7VVmVeSy",
+            "tx_json": {
+                "TransactionType": "SchemaModify",
+                "Account": "zwNSN5J1b67bKqzddvJ9G7HdB87DeML2ak",
+                "OpType":1,
+                "SchemaID":"023BAF061207563D80AEF7594355F49D687C4CDC2C48ADD559749C295FEBD502",
+                "Validators":[                
+                    {
+                        "Validator":{
+                            "PublicKey":"021D3E9C571DF23054DBB2005E76EA5BE5227D381FB9B4A52467B5E6412ABAFBA0"
+                        }
+                    }
+                ],
+                "PeerList":[
+                    {
+                        "Peer":{ "Endpoint":"3132372e302e302e313a35313236"}
+                    }
+          ]
+            }
+        }]
+    }
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result": {
+            "engine_result": "tesSUCCESS",
+            "engine_result_code": 0,
+            "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
+            "status": "success"
+        }
+    }
+          
+
+  
 查询类接口
 ************************************
 
@@ -1887,3 +2070,214 @@ admin接口：
 .. note::
 
     查询结果需要反序列化，建议使用Node.js或Java接口进行智能合约的查询调用。
+
+
+多链查询
+++++++++++++++++++++++++++++++++
+
+.. _rpc查询子链列表:
+
+查询子链列表
+===============================
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method":"schema_list",
+        "params":[
+            {
+                "account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                "running":true
+            }
+        ]
+    }
+
+参数说明：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **json类型**
+      - **内部类型**
+      - **描述**
+    * - account
+      - 字符串
+      - AccountID
+      - 选填，建链账户，不指定则查询链上所有子链
+    * - running
+      - 布尔
+      - 布尔
+      - 选填，指定为true时查询当前节点运行中的子链
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result":{
+            "schemas":[
+                {
+                    "peer_list":[
+                        "192.168.29.110:5430",
+                        "192.168.29.111:5431",
+                        "192.168.29.112:5432"
+                    ],
+                    "schema_admin":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "schema_id":"3CED0FE5359E8DF448CF91B79093A856DA61A90DAD6D9FAFB9259E5CDD5D3E98",
+                    "schema_name":"hello2",
+                    "schema_strategy":1,
+                    "validators":[
+                        {
+                            "pubkey_validator":"n9MzFGhK9uGyxMX8t3i7Z2hqDKhrRcnmm3yQyGsA1DVs9UK423KE",
+                            "val_signed":0
+                        },
+                        {
+                            "pubkey_validator":"n9Mi394bhLAXtqoX2jHBrPXYH2SVmemDSmnUyFNEaFqn9bhxZVfK",
+                            "val_signed":0
+                        },
+                        {
+                            "pubkey_validator":"n9K7QUHEPN81aKpuujkJHsnRQLpHV8AhHxxtRq7qC51mYYyNXVx6",
+                            "val_signed":0
+                        }
+                    ]
+                }
+            ],
+            "status":"success"
+        }
+    }
+
+
+应答域说明：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **类型**
+      - **内部类型**
+      - **描述**
+    * - schema_admin
+      - 字符串
+      - AccountID
+      - 子链管理员账户，子链管理
+    * - schema_id
+      - 字符串
+      - String
+      - 子链ID 
+    * - schema_name
+      - 字符串
+      - String
+      - 子链名称
+    * - schema_strategy
+      - 整型
+      - int
+      - 子链建链策略
+    * - validators
+      - 数组
+      - Json数组
+      - 子链共识节点公钥列表
+    * - peer_list
+      - 数组
+      - Json数组
+      - 子链共识节点p2p连接方式列表
+
+.. _rpc查询子链信息:
+
+查询子链信息
+==================================
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method":"schema_info",
+        "params":[{
+            "schema":"354C1AC4373208223FA3FE915FF8946CABAA8FB558BF36800BC71FC07886E20F"
+        }]
+    }
+
+参数说明：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **json类型**
+      - **内部类型**
+      - **描述**
+    * - schema
+      - 字符串
+      - 子链ID
+      - 必填，建链账户，不指定则查询链上所有子链
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result": {
+            "peer_list": [
+                "127.0.0.1:5431",
+                "127.0.0.1:5432",
+                "127.0.0.1:5436"
+            ],
+            "schema_admin": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+            "schema_id": "354C1AC4373208223FA3FE915FF8946CABAA8FB558BF36800BC71FC07886E20F",
+            "schema_name": "hello3",
+            "schema_strategy": 1,
+            "status": "success",
+            "validators": [
+                {
+                    "pubkey_validator": "n9Mi394bhLAXtqoX2jHBrPXYH2SVmemDSmnUyFNEaFqn9bhxZVfK",
+                    "val_signed": 0
+                },
+                {
+                    "pubkey_validator": "n9K7QUHEPN81aKpuujkJHsnRQLpHV8AhHxxtRq7qC51mYYyNXVx6",
+                    "val_signed": 0
+                },
+                {
+                    "pubkey_validator": "n9L7qxMTJzUk83txjAuCMrxwSvQzcbfzRAzE9uLUMjx2ogJHbR1s",
+                    "val_signed": 0
+                }
+            ]
+        }
+    }
+
+
+应答域说明：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **类型**
+      - **内部类型**
+      - **描述**
+    * - schema_admin
+      - 字符串
+      - AccountID
+      - 子链管理员账户，子链管理
+    * - schema_id
+      - 字符串
+      - String
+      - 子链ID 
+    * - schema_name
+      - 字符串
+      - String
+      - 子链名称
+    * - schema_strategy
+      - 整型
+      - int
+      - 子链建链策略
+    * - validators
+      - 数组
+      - Json数组
+      - 子链共识节点公钥列表
+    * - peer_list
+      - 数组
+      - Json数组
+      - 子链共识节点p2p连接方式列表

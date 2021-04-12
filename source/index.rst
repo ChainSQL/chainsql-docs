@@ -122,19 +122,20 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 
 .. toctree::
     :maxdepth: 2
-    :caption: 原理
+    :caption: 设计文档
 
     theory/tableDesign
     theory/smartContractDesign
-    theory/cfg
     theory/amendments
     theory/newConsensus
     theory/cryptoAlgorithm
+    theory/schema
 
 .. toctree::
     :maxdepth: 2
-    :caption: 功能介绍
+    :caption: 使用说明
 
+    functions/cfg
     functions/currency
     functions/tableOperation
     functions/smartContract
@@ -142,6 +143,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
     functions/raw
     functions/ca
     functions/newConsensus.rst
+    functions/schema
 
 .. toctree::
    :maxdepth: 2

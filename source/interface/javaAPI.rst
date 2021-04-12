@@ -3054,7 +3054,233 @@ getBySqlUser
   }
 
 
-------
+------------------------------------------------------------
+
+智能合约接口
+*****************
+
+.. toctree::
+    :maxdepth: 2
+
+    javaSmartContract
+      
+---------
+
+多链接口
+***********************
+
+.. _javaSchemaCreate:
+
+createSchema
+====================
+
+.. code-block:: java
+
+    public Chainsql createSchema(JSONObject schemaInfo)
+
+创建子链
+
+参数
+++++++++
+
+参数为创建子链的信息，Json结构为：
+
+1. ``SchemaName``       - ``String``:    子链名称;
+2. ``WithState``        - ``String``:    是否继承主链状态;
+3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash
+4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表
+5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表
+
+返回值
+++++++++
+
+``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作,如示例。
+
+
+示例
+
+
+.. code-block:: java
+
+  JSONObject schemaInfo = new JSONObject();
+  schemaInfo.put("SchemaName","hello3");
+  schemaInfo.put("WithState",false);
+  schemaInfo.put("SchemaAdmin",rootAddress);
+
+  List<String> validators = new ArrayList<String>();
+  validators.add("03B31BE0888F679399A26A857BFFB1022376265C98A5236933FDB38C87F3E3EA6B");
+  validators.add("027A642FCB1ADA4FB7346344515BED8E68FF346C142EAF2751DF1D57C09DE97FDD");
+  validators.add("02FF0F655A0FD1E7D2876A8A03F3871F2E08BBAB3435053DCAC803D6E6A100A3A2");
+  JSONArray validatorsJsonArray = new JSONArray(validators);
+  schemaInfo.put("Validators",validatorsJsonArray);
+
+  List<String> peerList = new ArrayList<String>();
+  peerList.add("127.0.0.1:5431");
+  peerList.add("127.0.0.1:5432");
+  peerList.add("127.0.0.1:5436");
+  JSONArray peerListJsonArray = new JSONArray(peerList);
+
+  schemaInfo.put("PeerList",peerListJsonArray);
+  schemaInfo.put("SchemaAdmin",rootAddress);
+  try {
+    JSONObject ret = c.createSchema(schemaInfo).submit(SyncCond.validate_success);
+    System.out.println("创建子链结果："+ret);
+    
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
+
+.. _javaSchemaModify:
+
+modifySchema
+====================
+  
+.. code-block:: java
+  
+  public Chainsql modifySchema(SchemaOpType type,JSONObject schemaInfo)
+  
+
+  修改子链
+
+参数
+++++++++
+
+  参数为1为操作类型，可选值为：
+
+  1. ``schema_add``
+  2. ``schema_del``
+
+  schemaInfo 结构为：
+  
+  1. ``SchemaID``         - ``String``:    子链ID;
+  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表
+  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表
+  
+返回值
+++++++++
+  
+  ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作,如示例。
+  
+  示例
+  
+  .. code-block:: java
+  
+    JSONObject schemaInfo = new JSONObject();
+    schemaInfo.put("SchemaID", "59FA6AD350FFD235460C0455CA83461B31D6428150671EBEC093604AC75F0477");
+
+    List<String> validators = new ArrayList<String>();
+    validators.add("03830017E6B3B77DA7F1FABF461570C54B6F5B9B03554CFE26A5A2B4C3E22E79AF");
+    JSONArray validatorsJsonArray = new JSONArray(validators);
+    schemaInfo.put("Validators",validatorsJsonArray);
+
+    List<String> peerList = new ArrayList<String>();
+    peerList.add("127.0.0.1:5437");
+    JSONArray peerListJsonArray = new JSONArray(peerList);
+    schemaInfo.put("PeerList",peerListJsonArray);
+    try {
+      //增加节点
+      JSONObject obj = c.modifySchema(SchemaOpType.schema_add, schemaInfo).submit(SyncCond.validate_success);
+      System.out.println(obj);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+.. _javagetSchemaList:
+
+getSchemaList
+====================
+
+.. code-block:: java
+  
+  public JSONObject getSchemaList(JSONObject params)
+
+获取子链列表
+
+参数
+++++++++
+  
+  参数有两个可选项，均为过滤条件，不填则查询链上所有子链
+
+  1. ``account``  - ``String``：  可选，建链账户地址
+  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链
+   
+返回值
+++++++++
+
+| 返回值为Json数组，格式参 :ref:`rpc查询子链列表 <rpc查询子链列表>`
+| 示例如下：
+
+.. code-block:: java
+
+  JSONObject option = new JSONObject();
+  option.put("running",true);
+  JSONObject list = c.getSchemaList(option);
+  System.out.println("运行中的子链列表:" + list);
+
+.. _javagetSchemaInfo:
+
+getSchemaInfo
+============================
+
+.. code-block:: java
+  
+  public JSONObject getSchemaInfo(String schemaID)
+
+获取子链信息
+
+参数
+++++++++
+  
+
+  1. ``schemaID``  - ``String``：  子链ID
+   
+返回值
+++++++++
+
+| 返回值为Json数组，格式参考  :ref:`rpc查询子链信息 <rpc查询子链信息>`
+| 示例如下：
+
+.. code-block:: java
+
+  String schemaID = "6BA63B86E5CE48283D03CC21D3BE5F4630CC6572CE7F54982E5AE687C998B7A3";
+  JSONObject ret =  c.getSchemaInfo(schemaID);
+  System.out.println("子链信息:" + ret);
+
+.. _javasetSchema:
+
+setSchema
+============================
+
+.. code-block:: java
+  
+  public void setSchema(String schemaID)
+
+设置要操作的子链ID，设置后所有的请求都针对子链进行
+
+
+参数
+++++++++
+  
+
+  1. ``schemaID``  - ``String``：  子链ID
+    
+返回值
+++++++++
+
+无
+
+示例：
+
+.. code-block:: java
+
+  Chainsql c = new Chainsql();
+  c.connect("ws://192.168.29.116:6006");
+  c.setSchema("6BA63B86E5CE48283D03CC21D3BE5F4630CC6572CE7F54982E5AE687C998B7A3");
+  JSONObject obj = c.getServerInfo();
+  System.out.println(obj);
+
+
+------------------------
 
 订阅
 *****************
@@ -3370,14 +3596,3 @@ unlock
 			ChainsqlUnit unit = ChainsqlPool.instance().getChainsqlUnit();		
 			unit.unlock();
 
-------------------------------------------------------------
-
-
-
-智能合约接口
-*****************
-
-.. toctree::
-   :maxdepth: 2
-
-   javaSmartContract

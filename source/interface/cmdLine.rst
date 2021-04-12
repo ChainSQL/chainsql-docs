@@ -944,8 +944,111 @@ malloc_trim
       }
     }
 
+.. _cmdSchemaList:
+
+schema_list
++++++++++++++++++++++++++++++++
+
+查询子链列表
+
+语法：
+
+::
+
+    chainsqld schema_list <running>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - running
+      - 字符串 running
+      - 加此参数查询当前节点正运行的子链，如果不加，则查询所有子链
+
+返回结果：
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "status" : "success",
+          "value" : 1
+      }
+    }
+
+.. _cmdSchemaInfo:
+
+schema_info
++++++++++++++++++++++++++++++++
+
+查询子链信息
+
+语法：
+
+::
+
+    chainsqld schema_info <schema_id>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - schema_id
+      - 字符串 子链ID
+      - 查询指定子链信息
+
+返回结果：
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "status" : "success",
+          "value" : 1
+      }
+    }
 
 
+.. _cmdSchemaAccept:
 
+schema_accept
++++++++++++++++++++++++++++++++
 
+接受加入子链
 
+语法：
+
+::
+
+    chainsqld schema_accept <schema_id>
+
+参数说明：
+
+.. list-table::
+
+    * - **参数**
+      - **类型**
+      - **描述**
+    * - schema_id
+      - 字符串 子链ID
+      - 查询指定子链信息
+
+返回结果：
+
+.. code-block:: json
+
+    {
+      "id" : 1,
+      "result" : {
+          "status" : "success",
+          "value" : 1
+      }
+    }

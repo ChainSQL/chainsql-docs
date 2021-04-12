@@ -1044,7 +1044,7 @@ getAccountTables
 useCert
 -----------------
 
-.. code-block:: java
+.. code-block:: javascript
 
   chainsql.useCert(userCert)
 
@@ -1062,7 +1062,7 @@ useCert
 示例
 -----------
 
-.. code-block:: java
+.. code-block:: javascript
 
 	chainsql.useCert("-----BEGIN CERTIFICATE-----\n"+
 		"MIIC2TCCAcGgAwIBAgICEEkwDQYJKoZIhvcNAQELBQAwczELMAkGA1UEBhMCQ04x\n"+
@@ -1113,7 +1113,6 @@ accountSet
 	* 关于费率：可取消设置，min/max=0,rate=1.0为取消设置。
 	* 每次设置都是重新设置，之前的设置会被替代。
 	* min,max可只设置一个，但这时要同时设置rate。
-	* 如果只设置rate，默认为取消设置min,max。
 	* 如果只设置min与rate，max会被取消设置,同理只设置max与rate，min会被取消设置。
 
 返回值
@@ -1852,6 +1851,243 @@ getBySqlUser
 ------------------------------------------------------------------------------
 
 
+智能合约接口
+============
+
+.. toctree::
+	:maxdepth: 2
+
+	nodejsSmartContract
+
+------------------------------------------------------------------------------
+
+多链接口
+============
+
+.. _nodecreateSchema:
+
+------------------
+createSchema
+------------------
+
+.. code-block:: javascript
+
+    chainsql.createSchema(schemaInfo)
+
+创建子链
+
+参数说明
+-------------
+
+参数为创建子链的信息，Json结构为：
+
+1. ``SchemaName``       - ``String``:    子链名称;
+2. ``WithState``        - ``String``:    是否继承主链状态;
+3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash
+4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表
+5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表
+
+返回值
+---------
+
+``JsonObject`` : 返回chainsql对象本身。
+
+
+示例
+---------------
+
+.. code-block:: javascript
+
+	// 1、 不继承主链状态
+	let schemaInfo = {
+		SchemaName:"hello",
+		WithState:false,
+		SchemaAdmin:owner.address,
+		Validators:[
+			{
+				Validator:{PublicKey:"0249DF94DCE166BC5097FA6A447C55DD378996A091CE0450B58BACDE258EB785B3"}
+			},
+			{
+				Validator:{PublicKey:"033E10D1FF3DC55889DCC811B537E199DE09876A6B194989D5A1926AD8FBC0FBDB"}
+			},
+			{
+				Validator:{PublicKey:"02AF9D493C879C114BE1084EB675983F3FC457874B299B45BFA34C597E28187647"}
+			}
+		],
+		PeerList:[
+			{
+				Peer:{ Endpoint:"127.0.0.1:15125"}
+			},
+			{
+				Peer:{ Endpoint:"127.0.0.1:25125"}
+			},
+			{
+				Peer:{ Endpoint:"127.0.0.1:35125"}
+			}
+		]
+	}
+
+	let ret = await c.createSchema(schemaInfo).submit({expect:'validate_success'})
+	console.log("创建不继承状态子链:" + JSON.stringify(ret))
+
+.. _nodemodifySchema:
+
+---------------------
+modifySchema
+---------------------
+  
+.. code-block:: javascript
+  
+  chainsql.modifySchema(schemaInfo)
+  
+
+  修改子链
+
+参数说明
+-------------
+
+  参数为1为操作类型，可选值为：
+
+  1. ``schema_add``
+  2. ``schema_del``
+
+  schemaInfo 结构为：
+  
+  1. ``SchemaID``         - ``String``:    子链ID;
+  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表
+  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表
+  4. ``ModifyType``		  - ``String``:	   修改子链类型，可取值为 ``schema_add`` 或 ``schema_del``
+  
+返回值
+------------
+  
+``JsonObject`` : 返回chainsql对象本身。
+  
+示例
+-------------
+  
+.. code-block:: javascript
+  
+  let schemaInfo = {
+	SchemaID:"6BA63B86E5CE48283D03CC21D3BE5F4630CC6572CE7F54982E5AE687C998B7A3",
+	Validators:[
+		{
+			Validator:{PublicKey:"02BD87A95F549ECF607D6AE3AEC4C95D0BFF0F49309B4E7A9F15B842EB62A8ED1B"}
+		}
+	],
+	PeerList:[
+		{
+			Peer:{ Endpoint:"192.168.29.108:5125"}
+		}
+	]
+  }
+
+  let ret = await c.modifySchema(schemaInfo).submit({expect:'validate_success'})
+  console.log("修改子链结果：" , ret)
+
+.. _nodegetSchemaList:
+
+----------------------
+getSchemaList
+----------------------
+
+.. code-block:: javascript
+  
+  chainsql.getSchemaList(option)
+
+获取子链列表
+
+参数说明
+-------------
+  
+  参数有两个可选项，均为过滤条件，不填则查询链上所有子链
+
+  1. ``account``  - ``String``：  可选，建链账户地址
+  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链
+   
+返回值
+---------------
+
+| 返回值为Json数组，格式参 :ref:`rpc查询子链列表 <rpc查询子链列表>`
+
+示例
+-----------
+
+.. code-block:: javascript
+
+	var option = {
+		"running":true
+	}
+	let ret = await c.getSchemaList()
+	console.log("getSchemaList:" + JSON.stringify(ret))
+
+.. _nodegetSchemaInfo:
+
+---------------------------
+getSchemaInfo
+---------------------------
+
+.. code-block:: javascript
+  
+  chainsql.getSchemaInfo(schemaID)
+
+获取子链信息
+
+参数说明
+-------------
+
+  1. ``schemaID``  - ``String``：  子链ID
+   
+返回值
+------------
+
+| 返回值为Json数组，格式参考  :ref:`rpc查询子链信息 <rpc查询子链信息>`
+
+示例
+-----------
+
+.. code-block:: javascript
+
+	let schemaID = "6BA63B86E5CE48283D03CC21D3BE5F4630CC6572CE7F54982E5AE687C998B7A3"
+	let ret = await c.getSchemaInfo(schemaID)
+	console.log("getSchemaInfo:" + JSON.stringify(ret))
+
+.. _nodesetSchema:
+
+----------------------
+setSchema
+----------------------
+
+.. code-block:: javascript
+  
+  chainsql.setSchema(schemaID)
+
+设置要操作的子链ID，设置后所有的请求都针对子链进行
+
+
+参数说明
+-------------
+  
+
+  1. ``schemaID``  - ``String``：  子链ID
+    
+返回值
+------------
+
+无
+
+示例
+-----------
+
+.. code-block:: javascript
+
+	c.setSchema("AB34D23A49AD8A07D1F906135B71E8FEC8F94EE1CF41D36C1860C2CA79FB71BF")
+	ret = await c.getServerInfo();
+	console.log("子链server_info:" + JSON.stringify(ret))
+
+------------------------------------------------------------------------------
+
+
 订阅
 ===========
 
@@ -1994,13 +2230,3 @@ unsubscribeTx
 		console.error("unsubTx error:" + error);
 	});	
 
-------------------------------------------------------------------------------
-
-
-智能合约接口
-============
-
-.. toctree::
-   :maxdepth: 2
-
-   nodejsSmartContract
