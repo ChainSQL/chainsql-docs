@@ -13,3 +13,13 @@
 - pip install recommonmark
 - pip install pygments_lexer_solidity
 
+### 3. 生成html
+#### Windows
+```
+./make.bat html
+```
+
+#### Linux
+```
+make html
+```
