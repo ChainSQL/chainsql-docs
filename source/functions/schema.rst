@@ -32,8 +32,13 @@
 
 .. warning::
 
-    | ``ChainSQL 3.0`` 不支持不配置 ``validation_seed`` 的节点加入到网络中，之前版本中普通节点可以不配置，现在不可以了。
-    | 当配置了 ``only_validate_for_schema`` 为1时，主链配置文件中要把主链共识节点的 ``validation_publickey`` 都配置到 ``validators`` 中，不然会出现当前节点的 ``server_status`` 偶尔变成 ``abnormal`` 的情况
+    | ``ChainSQL 3.0`` 中所有节点必须配置 ``validation_seed`` ，不然无法识别节点身份。
+    | 目前主链中可通过配置 ``only_validate_for_schema=1`` 表示节点为主链的非共识节点。
+    | 目前子链不支持非共识节点
+    
+.. warning::
+    
+    当一个节点配置为主链非共识节点时( ``only_validate_for_schema=1`` )，需要配置主链所有共识节点公钥，不然会出现当前节点的 ``server_status`` 偶尔变成 ``abnormal`` 的情况
 
 ------------------------------
 1.2 子链配置文件

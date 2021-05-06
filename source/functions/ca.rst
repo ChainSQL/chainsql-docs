@@ -73,20 +73,14 @@ CA 证书的校验，是通过在ChainSQL API发送的交易请求中带上CA证
 *************************
 包括以下几个部分
 
+- 生成自签名根证书
 - 证书请求文件生成
+- 签发用户证书
 - 节点配置文件
 -  API接口
 
-3.1 证书请求文件生成
+3.1 生成自签名根证书
 =============================================
-
-- 使用账户的私钥生成证书请求文件 ``x509Req.csr``
-
-.. code-block:: bash
-
-    ./chainsqld_classic --conf="chainsqld.cfg" gen_csr "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb" "CN BJ BJ Peersafe RC"
-
-
 - 通过 ``OpenSSl`` 生成根证书以及签名证书,详细文档参见 `openssl 生成根证书以及签名证书 <https://blog.csdn.net/xiangguiwang/article/details/80333728/>`_ 
 
 .. code-block:: bash
@@ -97,13 +91,29 @@ CA 证书的校验，是通过在ChainSQL API发送的交易请求中带上CA证
     # 2 生成CA自签名根证书
     openssl req  -new -x509 -days 365 -key key.pem -out ca.cert
 
-    # 3 签署用户证书
+
+3.2 证书请求文件生成
+=============================================
+
+- 使用账户的私钥生成证书请求文件 ``x509Req.csr``
+
+.. code-block:: bash
+
+    ./chainsqld_classic --conf="chainsqld.cfg" gen_csr "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb" "CN BJ BJ Peersafe RC"
+
+3.3 签发用户证书
+=============================================
+- 用户将证书请求文件 ``x509Req`` 发送给根CA，然后在根CA目录下执行以下命令签署用户证书 ``userCert.cert``
+
+.. code-block:: bash
+
+    # 签署用户证书
     openssl x509 -req -in x509Req.csr -out userCert.cert -CA ca.cert -CAkey key.pem -CAcreateserial
 
 ------------------------
 
 
-3.2 节点配置文件
+3.4 节点配置文件
 =============================================
 
  - 新增加根证书配置项  ``[x509_crt_path]`` ,该选项表示X509 根证书文件路径
@@ -127,7 +137,7 @@ CA 证书的校验，是通过在ChainSQL API发送的交易请求中带上CA证
 
 ------------------------
 
-3.3 API接口
+3.5 API接口
 =============================================
 
  - 增加接口  ``useCert``,用于设置账户的CA证书信息

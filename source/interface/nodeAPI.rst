@@ -2081,10 +2081,14 @@ setSchema
 
 .. code-block:: javascript
 
-	c.setSchema("AB34D23A49AD8A07D1F906135B71E8FEC8F94EE1CF41D36C1860C2CA79FB71BF")
+	await c.setSchema("AB34D23A49AD8A07D1F906135B71E8FEC8F94EE1CF41D36C1860C2CA79FB71BF")
 	ret = await c.getServerInfo();
 	console.log("子链server_info:" + JSON.stringify(ret))
 
+
+.. note::
+
+	因为切换子链会重新进行区块订阅，需要在setSchema同步返回后继续后面的子链操作
 ------------------------------------------------------------------------------
 
 
