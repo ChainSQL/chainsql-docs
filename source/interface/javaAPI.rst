@@ -2555,6 +2555,8 @@ setRestrict
 
 ------
 
+.. _Java-setNeedVerify:
+
 setNeedVerify
 =====================
 
