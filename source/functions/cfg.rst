@@ -47,7 +47,7 @@
     [node_size]
     medium
 
-    # 区块数据存储配置，windows下用NuDB,Linux/Mac下用RocksDB
+    # 区块数据存储配置，windows下用 ``NuDB`` ,Linux/Mac下用 ``RocksDB`` 或 ``NuDB`` 
     [node_db]
     type=RocksDB
     path=./rocksdb
@@ -342,7 +342,15 @@
         ├── db
         └── rocksdb
 
-其中，schema_info是一个文本文件，用来解决子链文件夹根据 schemaId不易读的问题，schema_info中的内容包括子链名称，建链策略等，示例如下：
+其中，schema_info是一个文本文件，用来解决子链文件夹根据 schemaId不易读的问题，schema_info中的内容包括子链名称，建链策略等，示例如下::
+
+    888D24BC38A7DA8CCEBB44DFD985EB3BDD72D110C70F04D031C4E4065D069950
+    hello3
+    zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh
+    1
+    0000000000000000000000000000000000000000000000000000000000000000
+    n9MzFGhK9uGyxMX8t3i7Z2hqDKhrRcnmm3yQyGsA1DVs9UK423KE 0;n9Mi394bhLAXtqoX2jHBrPXYH2SVmemDSmnUyFNEaFqn9bhxZVfK 0;n9K7QUHEPN81aKpuujkJHsnRQLpHV8AhHxxtRq7qC51mYYyNXVx6 0
+    127.0.0.1:5430;127.0.0.1:5431;127.0.0.1:5432
 
 
 - ``auto_accept_new_schema`` 配置节点是否自动同意加入子链，默认为0。若新建子链交易不是多方签名交易，则需要节点在命令行执行一下 ``schema_accepet`` 命令手动执行接受操作，否则不执行子链的创建，也不参与后面子链的消息处理。

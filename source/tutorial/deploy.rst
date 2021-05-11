@@ -119,7 +119,7 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 ``[node_db]``
 
 - windows平台: type=NuDB
-- Ubuntu平台: type=RocksDB
+- Ubuntu平台: type=RocksDB 或 type=NuDB
 
 ``[ips_fixed]``
 

@@ -233,7 +233,7 @@ RPC查询类接口返回的JSON包含的各个域如下：
       - **描述**
     * - method
       - 字符串
-      - | Rippled的交易类接口包含的Method有
+      - | 交易类接口包含的Method有
         | sign、sign_for、submit、submit_multisigned、
         | transaction_entry、tx、tx_history。
     * - params
@@ -493,7 +493,7 @@ TableListSet类型的交易的json格式（tx_json对象）各个域的描述如
         "tx_hash": "1ED4E0F3CA238CE14145C38CCC06669376AC8B5F492E375D2658F721F07D288A"
     }
 
-各个域的含义参考Rippled交易的\ `应答域说明`_\ 。
+各个域的含义参考交易的\ `应答域说明`_\ 。
 
 删除表
 -------------------------

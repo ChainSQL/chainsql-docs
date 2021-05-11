@@ -26,7 +26,7 @@
 
     ./chainsqld wallet_propose secp256k1 masterpassphrase
 
-- ``secp256k1`` 算法根账户的地址及种子（种子可生成公钥及私钥，在Chainsql中一般不直接使用私钥，而是使用种子）
+- ``secp256k1`` 算法根账户的地址及种子（种子可生成私钥及公钥，在Chainsql中一般不直接使用私钥，而是使用种子）
 
 .. code-block:: json
 
