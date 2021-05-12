@@ -17,6 +17,9 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
         :align: center
 
 
+.. warning::
+
+  一定要用 ``SSD`` 硬盘， ``RocksDB`` 在机械硬盘上性能较差
 
 一、区块链网络搭建
 ===============================

@@ -206,9 +206,8 @@
                     "Account" : "zKQwdkkzpUQC9haHFEe2EwUsKHvvwwPHsv",
                     "SetFlag": 8,
                     "TransferRate":1002000000,
-                    "TransferFeeMin":10,
-                    "TransferFeeMax":15
-
+                    "TransferFeeMin":"30",
+                    "TransferFeeMax":"30"
                 }
             }
         ]
