@@ -4,7 +4,7 @@
 1. 版本获取
 ****************************
 
-ChainSQL分片\ `源码 <https://gitlab.peersafe.cn/chainsql/chainsqld/-/tree/feature/shard>`_\ 及\ `Release版本 <>`_\ 均可从github开源仓库获取。
+ChainSQL分片\ `源码 <https://github.com/ChainSQL/chainsqld/tree/feature/shard>`_\ 及\ `Release版本 <https://github.com/ChainSQL/chainsqld/releases/tag/v2.0.0-shard>`_\ 均可从github开源仓库获取。
 
 .. _分片手册节点配置:
 
@@ -114,6 +114,7 @@ ChainSQL分片版本对节点配置文件进行一些调整。
 
 .. code-block:: ini
 
+    [sync_ips]
     192.168.1.9:5016
     192.168.1.10:5016
 
@@ -248,7 +249,7 @@ ChainSQL分片版本对客户端提交交易做了以下修改：
 4.2 Java SDK
 ============================
 
-支持分片的\ `Java SDK源码 <https://gitlab.peersafe.cn/chainsql/java-chainsql-api/-/tree/feature/trackSequence>`_\ 和\ `Realease版本 <>`_\ 均可从github开源仓库获取。
+支持分片的\ `Java SDK源码 <https://github.com/ChainSQL/java-chainsql-api/tree/feature/shard>`_\ 和\ `Realease版本 <https://github.com/ChainSQL/java-chainsql-api/releases/tag/2.0.0-shard>`_\ 均可从github开源仓库获取。
 
 * Java SDK已添加对链上账户Sequence的自动维护功能，不需要开发者自行维护与关心。
 * Java SDK增加了对合约交易设置 ``Priority`` 的接口。
@@ -304,7 +305,7 @@ ChainSQL分片中只有Lookup角色节点为对接外部客户端的节点。Loo
 7. 目前缺陷
 ****************************
 
-目前ChainSQL分片设计及实现已基本能满足高并发、大规模节点部署的应用的场景，但仍存在一些细节功能上的缺陷。在ChainSQL后续的开发计划中，将继续对分片方案及实现进行完善、优化。欢迎大家体验并反馈意见。
+目前ChainSQL分片设计及实现已基本能满足高并发、大规模节点部署的应用场景，但仍存在一些细节功能上的缺陷。在ChainSQL后续的开发计划中，将继续对分片方案及实现进行完善、优化。欢迎大家体验并反馈意见。
 
 7.1 不支持国密算法
 ============================
