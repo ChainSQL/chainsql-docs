@@ -306,10 +306,6 @@ server_info属于公共命令，用来查看节点的运行状态。
     * - build_version
       - 字符串
       - 节点运行的chainsqld版本。
-    * - closed_ledger
-      - 对象
-      - 本节点中最近一个已关闭，并且还没有完成共识区块信息，
-        如果最近一个关闭的区块已经完成了共识，那这个域将被省略，用validated_ledger代替。
     * - complete_ledgers
       - 字符串
       - 本节点上完整的区块序列，如果本节点上没有任何完整的区块
@@ -325,7 +321,7 @@ server_info属于公共命令，用来查看节点的运行状态。
       - 节点与节点通信时，用来验证这个节点的公钥。节点在启动时自动生成的。
     * - pubkey_validator
       - 字符串
-      - 该验证节点的公钥，有上面的validation_create命令生成。
+      - 该验证节点的公钥，由上面的validation_create命令生成。
     * - server_state
       - 字符串
       - 节点当前状态。
@@ -339,18 +335,18 @@ server_info属于公共命令，用来查看节点的运行状态。
     * - validated_ledger.base_fee_zxc
       - 整形
       - 账本的基本费用，交易、记账以这个数额为基础，单位：zxc。
+    * - validated_ledger.close_time_offset
+      - 整形
+      - 表示账本关闭多长时间了。
+    * - validated_ledger.hash
+      - 字符串
+      - 区块的哈希。  
     * - validated_ledger.reserve_base_zxc
       - 整形
       - 账户必须预留的费用。
     * - validated_ledger.reserve_inc_zxc
       - 整形
       - 账户每增加一个对象（比如一个表）需要额外预留的费用增加这个数值。
-    * - validated_ledger.close_time_offset
-      - 整形
-      - 表示账本关闭多长时间了。
-    * - validated_ledger.hash
-      - 字符串
-      - 区块的哈希。
     * - validated_ledger.seq
       - 整形
       - 区块的序号。
@@ -813,7 +809,7 @@ t_auditstop
 ledger_objects
 +++++++++++++++++++++++++++++++
 
-统计账本中各类别账户的个数。
+统计账本中各类别状态的个数。
 
 语法：
 
