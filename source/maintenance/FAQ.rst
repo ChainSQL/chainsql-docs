@@ -4,7 +4,7 @@ FAQ
 ############
 
 Api 调用问题
----------------
+**********************
 
 1. 两笔挂单，分别是买单与卖单，兑换比例一致，但未成交
     原因：网关未开启 
@@ -21,9 +21,9 @@ Api 调用问题
     原因：表的某个区块没有同步到，由于某种原因被跳过了，然后后面的交易，PreviousTxnLgrSeq总是无法与当前的对上
     目前暂未发现导致的根本原因，只能把LedgerSeq重新置为TxnLedgerSeq:
 
-.. code-block:: sql
+    .. code-block:: sql
 
-    update SyncTableState as t1,(select * from SyncTableState where 
+        update SyncTableState as t1,(select * from SyncTableState where 
         Owner='zDmdwbqbtcxPcj9ytzuKyQLPQi2DuWXmgk' and deleted=0) as t2 set 
         t1.LedgerSeq=t2.TxnLedgerSeq where t1.TableNameInDB=t2.TableNameInDB;
 
@@ -52,27 +52,29 @@ Api 调用问题
     
 
 Chainsql节点问题
------------------
+**********************
 
 1. 客户端频繁发请求，过一段时间就发不了了，直接丢包
     输出如下：
 
-::
+    .. code-block:: console
 
-    2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525166 at or above drop threshold 15000
-    2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525260 at or above drop threshold 15000
-    2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525354 at or above drop threshold 15000
-    2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525447 at or above drop threshold 15000
+        2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525166 at or above drop threshold 15000
+        2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525260 at or above drop threshold 15000
+        2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525354 at or above drop threshold 15000
+        2018-Dec-05 02:45:23 Resource:WRN Consumer entry 114.242.47.14 dropped with balance 525447 at or above drop threshold 15000
 
-这是因为ChainSQL本身不允许一个ip频繁发请求，认为这是在攻击，如果一个已知ip要这样做，需要把它放到节点的admin列表中::
+    这是因为ChainSQL本身不允许一个ip频繁发请求，认为这是在攻击，如果一个已知ip要这样做，需要把它放到节点的admin列表中。
 
-    [port_ws_public]
-    port = 5006
-    ip = 0.0.0.0
-    protocol = ws
-    admin=101.201.40.124,59.110.154.242,114.242.47.102
+    .. code-block:: ini
 
-然后重启节点
+        [port_ws_public]
+        port = 5006
+        ip = 0.0.0.0
+        protocol = ws
+        admin = 101.201.40.124,59.110.154.242,114.242.47.102
+
+    然后重启节点
 
 2. 启动节点报：make db backends error,please check cfg!
     数据库连接失败，请检查配置文件中数据库(sync_db)的配置
@@ -105,7 +107,7 @@ Chainsql节点问题
     1. 在http协议配置中admin配置加上127.0.0.1
     2. 将admin配置为0.0.0.0（表示所有调用http命令的ip都是admin，不推荐这种做法）
 
-.. code-block:: bash
+    .. code-block:: ini
 
         [port_rpc_admin_local]
         port = 5006
@@ -121,9 +123,48 @@ Chainsql节点问题
 9. 节点启动时突然退出，日志最后几行没有错误信息
     在日志中查找有没有 ``FTL`` 字样的信息，如：
 
-::
+    .. code-block:: console
 
-    2019-Dec-19 03:21:07 Application:FTL Invalid seed specified in [validation_seed]
-    2019-Dec-19 03:21:07 JobQueue:NFO Auto-tuning to 6 validation/transaction/proposal threads.
+        2019-Dec-19 03:21:07 Application:FTL Invalid seed specified in [validation_seed]
+        2019-Dec-19 03:21:07 JobQueue:NFO Auto-tuning to 6 validation/transaction/proposal threads.
 
-``FTL`` 是 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
+    ``FTL`` 是 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
+
+表同步问题
+**********************
+
+1. 表同步后，中文显示乱码。
+    可能原因：
+
+    1. 后端数据库配置的字符集不是 ``utf8`` ，确认后端数据库的字符集配置。
+
+    .. code-block:: console
+
+        mysql> show variables like '%character%';
+        +--------------------------+----------------------------------------+
+        | Variable_name            | Value                                  |
+        +--------------------------+----------------------------------------+
+        | character_set_client     | utf8                                   |
+        | character_set_connection | utf8                                   |
+        | character_set_database   | utf8                                   |
+        | character_set_filesystem | binary                                 |
+        | character_set_results    | utf8                                   |
+        | character_set_server     | utf8                                   |
+        | character_set_system     | utf8                                   |
+        | character_sets_dir       | E:\mysql-5.7.24-winx64\share\charsets\ |
+        +--------------------------+----------------------------------------+
+
+    2. 节点配置文件中 ``sync_db`` 配置单元中没有配置 ``charset`` 或 ``charset`` 配置项不是 ``utf8`` 。
+
+    .. code-block:: ini
+
+        [sync_db]
+        type=mysql
+        #type=sqlite
+        host=localhost
+        port=3306
+        user=root
+        pass=123456
+        db=wc
+        charset=utf8
+        #first_storage=0
