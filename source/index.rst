@@ -52,6 +52,13 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
 
+.. _版本2.0.0-shard:
+
+2.0.0-shard
+-------------------
+- 支持\ :ref:`分片共识 <分片设计>`
+- :ref:`Java SDK <分片手册JavaSDK>`\ 版本更新，支持分片，但与2.0.0-shard之前的节点不兼容
+
 .. _版本1.1.4-pop:
 
 1.1.4-pop
@@ -129,9 +136,10 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
     theory/tableDesign
     theory/smartContractDesign
     theory/amendments
-    theory/newConsensus
+    theory/popConsensus
     theory/cryptoAlgorithm
     theory/shard
+    theory/consensus
     theory/schema
 
 .. toctree::
@@ -145,8 +153,9 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
     functions/recordLevel
     functions/raw
     functions/ca
-    functions/newConsensus
+    functions/popConsensus
     functions/shard
+    functions/consensus
     functions/schema
 
 .. toctree::
