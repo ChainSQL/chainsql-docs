@@ -255,6 +255,19 @@
     [ledger_acquire]
     skip_blocks=5000-6000,8000,9000-10000
 
+[ledger_tx_tables] 
+******************************
+    ``transaction.db`` 存储交易相关配置，``1.1.5-pop`` 及以上版本支持
+
+    - ``use_tx_tables`` 是否向 ``transaction.db`` 中存储交易信息，配置为0表示存储，节点不能对外提供查询交易的服务，默认值为1
+    - ``use_trace_table`` 是否使用 ``TraceTransactions`` 表(提供查询上一个，下一个交易功能，以及记录与表/合约相关的交易有哪些)，默认值为1
+
+.. code-block:: bash
+
+    [ledger_tx_tables] 
+    use_tx_tables = 1  
+    use_trace_table = 1 
+
 .. _MissingHashes:
 
 [missing_hashes]
@@ -402,6 +415,17 @@
 .. important:: 
 
     在内网环境中，公网的时间服务器连不上，这时必须配置内网的时间服务器或手动将节点的时间调节一致，不然会出现节点发现不了，或者达不成共识等各种 问题
+
+[sqlite]
+******************
+    sqlite存储相关配置
+
+- synchronous 磁盘的同步模式，该模式控制积极的 SQLite 如何将数据写入物理存储，可配置值包括 ``off, normal, full, extra`` ，详见 https://www.runoob.com/sqlite/sqlite-pragma.html
+
+.. code-block:: bash
+
+    [sqlite]
+    synchronous = off
 
 .. _SyncDB:
 
