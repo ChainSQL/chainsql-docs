@@ -1124,7 +1124,7 @@ accountSet
 -----------
 .. code-block:: javascript
 
-	chainsql opt = {
+	var opt = {
         enableRippling: true,
         rate: 1.002,
         min: 1,

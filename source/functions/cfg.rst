@@ -99,7 +99,7 @@
     [rpc_startup]
     { "command": "log_level", "severity": "warning" }
 
-    #禁用某些支持但未不需要启用的特性
+    #禁用某些支持但不需要启用的特性
     [veto_amendments]
     42EEA5E28A97824821D4EF97081FE36A54E9593C6E4F20CBAE098C69D2E072DC fix1373
     740352F2412A9909880C23A559FCECEDA3BE2126FED62FC7660D628A06927F11 Flow

@@ -2213,6 +2213,9 @@ insert
 2. ``autoFillField``  - ``String``: 插入操作支持将每次插入交易的哈希值作为字段信息同步插入到数据库中。使用该功能时，需要在建表时指定一个字段为存储交易哈希,并将该字段名作为参数传递给insert;
 3. ``txsHashFillField``  - ``String``:  该参数的功能与 ``autoFillField`` 类似，可配合update实现存储历史哈希列表的功能，具体使用见 :ref:`update  <UpdateJava>` ; 
 
+.. IMPORTANT::
+
+  如果要用 ``txsHashFillField`` 功能，在插入时就需要用第三种重载，不然后面再对记录进行修改，交易hash会记录不全
 
 返回值
 ++++++++
@@ -2269,8 +2272,10 @@ update
 
 更新表中数据。
 
-.. warning::
-	更新之前需要调用table.get接口指定待修改内容，且必须指定，不能为空。详见示例
+.. IMPORTANT::
+
+  | 1. 更新之前需要调用table.get接口指定待修改内容，且必须指定，不能为空。详见示例
+  | 2. 如果要用 ``txsHashFillField`` 功能，在插入时就需要向这个字段插入交易Hash
 
 
 参数
