@@ -129,11 +129,12 @@
 
 版本变化
 ----------------
-
-    - 0.30.4版本以后，新添加配置选项 :ref:`drops_per_byte <DropsPerByte>`   , :ref:`select_limit <SelectLimit>`
-    - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
-    - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
+    
+    - 3.0.0 版本增加配置项 :ref:`schema <Schema>` , :ref:`consensus <Consensus>`
     - 1.0.1-pop版本之后，新添配置选项 :ref:`crypto_alg <crypto_alg>`
+    - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
+    - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
+    - 0.30.4版本以后，新添加配置选项 :ref:`drops_per_byte <DropsPerByte>`   , :ref:`select_limit <SelectLimit>`
 
 配置项说明
 ----------------
@@ -167,6 +168,39 @@
 
     [ca_certs_sites]
     http://192.168.29.112:8081/
+
+
+.. _Consensus:
+
+[consensus]
+***************************
+    配置共识参数
+
+.. code:: ini
+
+    [consensus]
+    type = pop
+    min_block_time = 1000
+    max_block_time =1000
+    max_txs_per_ledger =10000
+    omit_empty_block = true
+    time_out = 3000
+    init_time = 10
+    max_txs_in_pool = 1000000
+
+===================  ========  ======  =========  ===========================================================================================================
+配置项                 类型      单位    默认值       说明
+===================  ========  ======  =========  ===========================================================================================================
+type                  字符串     N/A     POP       共识类型，可选值：RPCA/POP/HOTSTUFF，大小写不敏感
+min_block_time        正整数     毫秒    1000      最小区块间隔时间，最小值1000
+max_block_time        正整数     毫秒    1000      最大区块间隔时间，最小值1000，且大于或等于min_block_time
+max_txs_per_ledger    正整数     N/A     10000     每个区块包含的最大交易数，小于或等于max_txs_in_pool
+omit_empty_block      布尔       N/A     true      是否忽略空区块
+time_out              正整数     毫秒    3000      对于POP共识，默认值为3000，并且如果配置的值小于或等于max_block_time，则值调整为max_block_time的2倍
+time_out              正整数     毫秒    5000      对于HotStuff共识，默认值为5000，并且如果配置的值小于2倍max_block_time加1000，则值调整为2倍max_block_time加1000
+init_time             正整数     秒      90        初始化时间，大于或等于2倍time_out
+max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
+===================  ========  ======  =========  ===========================================================================================================
 
 .. _crypto_alg:
 
