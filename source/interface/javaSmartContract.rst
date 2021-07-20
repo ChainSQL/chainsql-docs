@@ -306,3 +306,15 @@ Chainsql中通过fallback函数给合约转账的接口为payToContract:
 
 `java测试用例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
 
+8.合约中调用新增预编译合约接口相关指令
+----------------------------------
+`数据库预编译合约 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/table/solidity-PreCompiled.sol>`_ 
+
+`合约调用预编译合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/table/solidity-PreCompiled-TableTxs.sol>`_ 
+
+`合约调用预编译合约对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/master/chainsql/src/test/java/com/peersafe/example/contract/PreCompiledDBTest.java>`_ 
+
+`测试用例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestPreCompiledContractTableTxs.java>`_
+
+.. note:: 调用表相关操作时，submit参数可以传SyncCond.db_success，入库成功后返回
+

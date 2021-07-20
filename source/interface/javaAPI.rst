@@ -1882,6 +1882,57 @@ accountSet
     System.out.print("set gateWay:" + jsonObj + "\ntrust gateWay ...\n");
 
 ------
+.. _whitelist-set:
+
+whitelistSet 
+=====================
+
+.. code-block:: java
+
+  public Ripple whitelistSet(JSONArray whitelists, int setFlag);
+
+账户属性设置
+
+为网关设置转账不收取手续费用的账户地址集合，这些账户地址集合称为网关白名单。
+
+参数
+++++++++
+
+
+1. ``whitelists`` - ``JSONArray``:     为网关添加或删除的白名单中的账户地址，可以同时添加或删除多个账户地址。
+2. ``setFlag`` - ``int``:              设置白名单的标记，10标识添加白名单，11标识删除白名单。
+
+
+.. note::
+
+	* 白名单重复添加或删除会返回错误信息。
+
+返回值
+++++++++
+
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
+
+
+示例
+++++++++
+
+.. code-block:: java
+
+    //添加网关白名单
+    JSONObject user = new JSONObject();
+    user.put("User", "zLi3jhvjkJp32cKyNScQx6GXZaLoXuEJ2u");
+    JSONObject whitelist = new JSONObject();
+    whitelist.put("WhiteList", user);
+    STObject object = STObject.fromJSONObject(whitelist);
+    STArray arry = new STArray();
+    arry.add(object);
+				
+    String tablestr = "{\"WhiteList\":{\"User\":\"" + sUser1+ "\"}}";
+    JSONArray array =  Util.strToJSONArray(tablestr);
+    jsonObj = c.whitelistSet(array, 10).submit(SyncCond.validate_success);
+    System.out.print("set gateWay:" + jsonObj");
+
+------
 
 trustSet
 =====================
@@ -1988,6 +2039,46 @@ pay(转账网关代币)
   }else {
     System.out.println( "status" + obj.getString("status"));
   } 
+
+------
+
+getAccountBalance
+=====================
+
+.. code-block:: java
+
+  public JSONArray getAccountBalance(String address);
+  public JSONObject getAccountBalance(String address, String gateWay, String currency);
+
+查询货币余额和ZXC余额
+
+
+参数
+++++++++
+
+
+1. ``address`` - ``String``:      账户地址
+2. ``gateWay`` - ``String``:      货币的发行网关地址
+3. ``currency`` - ``String``:     货币。
+
+
+
+返回值
+++++++++
+
+
+
+示例
+
+
+.. code-block:: java
+
+    //获取该账户地址的所有代币余额和ZXC余额
+    JSONArray jsonArry = c.getAccountBalance("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs");
+    System.out.println(jsonArry);
+
+    JSONObject jsonObj = c.getAccountBalance("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs", "zLi3jhvjkJp32cKyNScQx6GXZaLoXuEJ2u", "RMB");
+    System.out.println(jsonObj);
 
 ------
 

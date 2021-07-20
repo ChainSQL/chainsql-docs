@@ -442,3 +442,13 @@
 
 
 `node.js测试用例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
+
+
+合约中调用新增预编译合约接口相关指令
+=================================================
+
+`数据库预编译合约 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/table/solidity-PreCompiled.sol>`_ 
+
+`合约调用预编译合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/table/solidity-PreCompiled-TableTxs.sol>`_ 
+
+`测试用例 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testPreCompiledContractTableTxs.js>`_

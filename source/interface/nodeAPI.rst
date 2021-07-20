@@ -1139,6 +1139,47 @@ accountSet
 ------------------------------------------------------------------------------
 
 -----------
+whitelistSet
+-----------
+.. code-block:: javascript
+
+	chainsql.addWhitelistSet(whiteLists)
+	chainsql.delWhitelistSet(whiteLists)
+
+账户属性设置。为交易类型，需要调用submit提交交易。
+
+参数说明
+-----------
+
+   * ``whiteLists`` - ``JSONArray`` :  为网关添加或删除的白名单的地址，可以同时添加或删除多个白名单。
+
+
+.. note::
+
+	* 白名单重复添加或删除会返回错误信息。
+
+返回值
+-----------
+
+``JsonObject`` : 返回chainsql对象本身。
+
+示例
+-----------
+.. code-block:: javascript
+
+	var whiteLists = [
+		{
+			user: "zKQwdkkzpUQC9haHFEe2EwUsKHvvwwPHsv"
+		}
+	]
+	//添加白名单
+	res = await c.addWhitelistSet(whiteLists).submit({ expect: 'validate_success' });
+	//删除白名单
+	res = await c.delWhitelistSet(whiteLists).submit({ expect: 'validate_success' });
+
+------------------------------------------------------------------------------
+
+-----------
 trustSet
 -----------
 .. code-block:: javascript
