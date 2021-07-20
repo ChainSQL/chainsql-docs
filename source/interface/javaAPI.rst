@@ -2587,6 +2587,7 @@ grant
 .. code-block:: java
 
   public Chainsql grant(String name, String user,String flag);
+  public Chainsql grant(String name, String user,String userPublicKey,String flag);
 
 授权user用户操作表name的各项权限
 
@@ -2598,6 +2599,7 @@ grant
 1. ``name``    - ``String``:  表名
 2. ``user``    - ``String``:  被授权账户地址 
 3. ``flag``    - ``String``:  表操作规则.例如:"{insert:true,delete:false}" 表示user 账户可以执行插入操作，但是不能执行删除操作
+4. ``userPublicKey``  - ``String``:  被授权账户公钥， **加密表** 授权需要用这个重载
 
 
 返回值
