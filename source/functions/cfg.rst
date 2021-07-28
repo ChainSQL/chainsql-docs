@@ -528,19 +528,20 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [voting]
 ***************
-    配置账户预留费用或对象增加费用，示例如下:
+    配置账户预留费用、对象增加费用、GasPrice设置，示例如下:
 
 .. code-block:: bash
 
     [voting]
     account_reserve = 10000000
     owner_reserve = 1000000
+    gas_price = 10
 
 配置项说明：
 
     - account_reserve 账户预留费用，指的是激活一个账户所需要的最小系统币（ZXC）数量，也是一个账户的余额要保留的最小值，单位为drop，上面的配置表示账户预留费用为10ZXC。
     - owner_reserve 增加一个对象，要增加的预留费用，这里的对象指的是要占用链上存储的对象，如账户与网关之间的trustline,账户新建的表等，上面的值表示每增加一个对象，账户的预留费用要增加1ZXC。
-
+    - gas_price 合约在执行过程中需要消耗，这里是 GasPrice的设置，默认值是10。
 
 .. _X509CrtPath:
 
