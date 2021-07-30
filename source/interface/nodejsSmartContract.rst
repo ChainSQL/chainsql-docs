@@ -9,57 +9,58 @@
 
 .. code-block:: javascript
 
-    pragma solidity ^0.4.2;
-
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.0;
+    
     // Modified Greeter contract. Based on example at https://www.ethereum.org/greeter.
-
     contract mortal {
-            /* Define variable owner of the type address*/
-            address owner;
-            
-            
-
-            /* this function is executed at initialization and sets the owner of the contract */
-            constructor() public { owner = msg.sender; }
-
-            /* Function to recover the funds on the contract */
-            function kill() public { if (msg.sender == owner) selfdestruct(owner); }
+        /* Define variable owner of the type address*/
+        address owner;
+    
+        /* this function is executed at initialization and sets the owner of the contract */
+        constructor() { owner = msg.sender; }
+    
+        /* Function to recover the funds on the contract */
+        function kill() public { if (msg.sender == owner) selfdestruct(payable(owner)); }
     }
-
+    
     contract greeter is mortal {
-            /* define variable greeting of the type string */
-            string greeting;
+        /* define variable greeting of the type string */
+        string greeting;
             
+        fallback() external payable { }
+    
+        /* this runs when the contract is executed */
+        constructor(string memory _greeting) public payable{
+            greeting = _greeting;
+        }
+    
+        function newGreeting(string calldata _greeting) public {
+            emit Modified(greeting, _greeting, greeting, _greeting);
+            greeting = _greeting;
+        }
             
-            function() external payable { }
-
-            /* this runs when the contract is executed */
-            constructor(string _greeting) public payable{
-                    greeting = _greeting;
-            }
-
-            function newGreeting(string _greeting) public {
-                    emit Modified(greeting, _greeting, greeting, _greeting);
-                    greeting = _greeting;
-            }
-            
-            function getMultiGreeting() public view returns(string,string){
-                
-                    return(greeting,greeting);
-            }
-
-            
-
-            /* main function */
-            function greet() public view returns (string) {
-                    return greeting;
-            }
-
-            /* we include indexed events to demonstrate the difference that can be
-            captured versus non-indexed */
-            event Modified(
-                            string indexed oldGreetingIdx, string indexed newGreetingIdx,
-                            string oldGreeting, string newGreeting);
+        function getMultiGreeting() public view returns(string memory,string memory){
+            return(greeting,greeting);
+        }
+    
+        /* main function */
+        function greet() public view returns (string memory) {
+            return greeting;
+        }
+        
+        event showSM3Ret(address msgSender, string orgStr, bytes32 sm3Ret);
+        function getSM3(string calldata orgStr) public
+        {
+            bytes32 sm3byte = sm3(bytes(orgStr));
+            emit showSM3Ret(msg.sender, orgStr, sm3byte);
+        }
+    
+        /* we include indexed events to demonstrate the difference that can be
+        captured versus non-indexed */
+        event Modified(
+            string indexed oldGreetingIdx, string indexed newGreetingIdx,
+            string oldGreeting, string newGreeting);
     }
 
 ------------------------------------------------------------------------------
@@ -421,6 +422,88 @@
                 "0x67bc65b2694b00787b2c2fb7ac32f828b5c1f01c49107edabd382a1dc3a5f86c",
                 "0x67bc65b2694b00787b2c2fb7ac32f828b5c1f01c49107edabd382a1dc3a5f86c"
             ]
+        }
+    }
+
+获取合约历史事件
+=============
+.. code-block:: javascript
+
+    contractObj.getPastEvent(txHashJson, callback);
+
+参数说明
+---------
+
+1. ``txHashJson`` - ``JsonObject`` : 要查询的合约交易哈希值，格式为 ``{txHash:xxx}`` 。
+2. ``callback`` - ``Function`` : 回调函数。
+
+返回值
+--------
+
+返回值包含合约事件指定的监听内容，返回方式通过回调函数返回结果。
+
+1. 正常监听：指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。具体返回内容包括：
+``JsonObject`` : 返回事件内容，具体包含以下字段：
+
+    * ``ContractAddress`` - ``String`` : 合约地址；
+    * ``event`` - ``String`` : 事件函数名称；
+    * ``raw`` - ``JsonObject`` :  事件返回原始十六进制数据，包括data和topic两个字段；
+    * ``returnValues`` - ``JsonObject`` :  按事件定义的返回值顺序以及返回值变量名，给出可读形式的返回值；
+    * ``signature`` - ``String`` : 事件函数签名；
+    * ``type`` - ``String`` : 类型，固定值为"contract_event"。
+
+2. 监听异常：指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。依具体错误形式返回。
+
+示例
+--------
+.. code-block:: javascript
+
+    myContract.getPastEvent({txHash:"04DAE5FCF04DC8B5C471F2BCDF6FB2FA648244B5DF0110A630F32A68E46DF2CF"}, (err, data) =>{
+        err ? console.error(err) : console.log(JSON.stringify(data));
+    });
+    >
+    {
+        "Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+        "ContractAddress":"zx1eNuwaP8YGygi1VPNaZP6ZAJhq3m31Kf",
+        "ContractData":"BDB483A70000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000B68656C6C6F20776F726C64000000000000000000000000000000000000000000",
+        "ContractOpType":2,
+        "ContractValue":"0",
+        "Fee":"12",
+        "Flags":2147483648,
+        "Gas":3000000,
+        "LastLedgerSequence":10,
+        "Sequence":2,
+        "SigningPubKey":"0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
+        "TransactionType":"Contract",
+        "TxnSignature":"304502210099642EC14FC938854A9C2A96620DCA54E436ECDBC3AF8540D542B34A88717A1002204763EA68643621F4D960EDADBE96910B180AE6620A2412CA54824263CE3B5E6C",
+        "date":680926182,
+        "hash":"04DAE5FCF04DC8B5C471F2BCDF6FB2FA648244B5DF0110A630F32A68E46DF2CF",
+        "inLedger":3,
+        "ledger_index":3,
+        "meta_chain":{
+            "ContractChain":{
+                "NextHash":"",
+                "PreviousHash":"180D1BE517E6D365831B42AA5791FF1765069D8A2BE78D591A9CCD81C9996D45"
+            }
+        },
+        "validated":true,
+        "ContractLogs":{
+            "showSM3Ret":{
+                "returnValues":{
+                    "0":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "1":"hello world",
+                    "2":"0x44f0061e69fa6fdfc290c494654a05dc0c053da7e5c52b84ef93a9d67d3fff88",
+                    "msgSender":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "orgStr":"hello world",
+                    "sm3Ret":"0x44f0061e69fa6fdfc290c494654a05dc0c053da7e5c52b84ef93a9d67d3fff88"
+                },
+                "event":"showSM3Ret",
+                "signature":"1CFD41687C0E896AA373DA0F3C85600D2EC4CA978520902116407F0C77EC495E",
+                "raw":{
+                    "data":"000000000000000000000000B5F762798A53D543A014CAF8B297CFF8F2F937E8000000000000000000000000000000000000000000000000000000000000006044F0061E69FA6FDFC290C494654A05DC0C053DA7E5C52B84EF93A9D67D3FFF88000000000000000000000000000000000000000000000000000000000000000B68656C6C6F20776F726C64000000000000000000000000000000000000000000",
+                    "topics":["1CFD41687C0E896AA373DA0F3C85600D2EC4CA978520902116407F0C77EC495E"]
+                }
+            }
         }
     }
 

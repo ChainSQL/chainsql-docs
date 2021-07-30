@@ -38,6 +38,15 @@ Nodejs接口的使用，需要以下准备：
 	// 引入之后使用new创建全局chainsql对象，之后使用chainsql对象进行接口操作
 	const chainsql = new ChainsqlAPI();
 
+-------------------------
+chainsql的nodejs模块对于多密码算法的支持方式
+-------------------------
+nodejs的 :ref:`as <nodejsAS>` 确定nodejs-SDK以何种算法运行:
+
+- 当as了一个secp256k1算法账户时，会使用sha哈希算法，此时能跟同样使用secp256k1的节点进行交互；
+- 当as了一个国密算法账户时，会使用sm3哈希算法，此时能跟同样使用gmalg节点进行交互；
+- SDK使用的算法必须和节点一致
+
 版本变化
 ===========
 nodejs接口在迭代过程中，有几次优化涉及接口使用方式的改变，包括以下方面：
@@ -156,6 +165,8 @@ connect
 	});
 
 ------------------------------------------------------------------------------
+
+.. _nodejsAS:
 
 -----------
 as
@@ -292,7 +303,7 @@ submit
 	
 	* 第三种交易提交共识后出错，主要是数据库入库操作中的错误，``JsonObject`` 中包含以下字段：
 
-		- ``status`` - ``String`` : 错误类型，有以下可能字段：
+		- ``status`` 或者 ``error`` - ``String`` : 错误类型，有以下可能字段：
 
 			- db_error
 			- validate_timeout
@@ -301,7 +312,7 @@ submit
 			- db_noSyncConfig
 			- db_noAutoSync
 		- ``tx_hash`` - ``String`` : 交易哈希值。
-		- ``error_message`` - ``String`` : [**可选**]在错误类型为"db_error"的时候，会额外附加错误信息。
+		- ``error_message`` - ``String`` : [**可选**]在错误类型为"db_error"或者有 ``error`` 字段的时候，会额外附加错误信息。
 
 示例
 -----------

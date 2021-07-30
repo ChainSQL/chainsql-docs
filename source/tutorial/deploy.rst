@@ -64,13 +64,15 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 .. code-block:: json
 
     {
-        "status" : "success",
-        "validation_key" : "TUCK NUDE CORD BERN LARD COCK ENDS ETC GLUM GALE CASK KEG",
-        "validation_public_key" : "n9L9BaBQr3KwGuMoRWisBbqXfVoKfdJg3Nb3H1gjRSiM1arQ4vNg",
-        "validation_seed" : "xxjX5VuTjQKvkTSw6EUyZnahbpgS1"
+        "account_id" : "zJ3xp3rVjXqHRS6kGFKdUBcDbTsroAcUX7",
+        "validation_key" : "SNUB RIDE WRIT SUN WELD LINE LASS BEY NIB NAVY SAD MIKE",
+        "validation_private_key" : "pnKUcQu16dcSXZ6pMUmYFMSKKD1KynBpQiynRAfqr7Pg9ATWs5s",
+        "validation_public_key" : "n94pmxRECPLxwquUNgUtN2ndMvUL8gdJ3GfCwaHHfMwQai8jtspo",
+        "validation_public_key_hex" : "03CB427521F3A733DD43D8087A661D8EFB26A71507FD3A50C8BBC7E1D50C8334EF",
+        "validation_seed" : "xhLLvnGfiNFUDtb1pJ155iVfMatNW"
     }
 
-1-2. 国密sm2算法生成 ``validation_public_key`` 及 ``validation_private_key(等同validation_seed)`` , 输入:
+1-2. 国密算法生成 ``validation_public_key`` 及 ``validation_seed`` , 输入:
 
 .. code-block:: bash
 
@@ -81,8 +83,12 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 .. code-block:: json
 
     {
-        "validation_private_key" : "pcGRX6z6fdGzA58j1uh2xH196JvCMyau9QCZmcLGXGSiBrjT4d9",
-        "validation_public_key" : "pEn2MTzZQc3kCfu19FJoNFExSpKf5U77cMzrh561roCJmQnmGA3XRzhXDuTqkyUugiBpCnLhUc67hooWATktuUN3vQui3ZX3"
+        "account_id" : "zDgj18fzucH1Za25n1aDU8JNZP1XaLqQz",
+        "validation_key" : "BERT RAKE BRIM SAM CAM FREE CUE LAY NEIL LAD WOOL SOFA",
+        "validation_private_key" : "pcwe5zxSw2k6RcztuzFmNSCdo1eynaRYuuscmPidTrBXsPd439i",
+        "validation_public_key" : "pEn7uiRwkgVcEvshFPi44UHYHQvtzQ4HZcNUmDb2hFxqSSTUfTZ1Y6mVNXn53NzK1mkXPLubnSgAzEMkpncwHhwqyXHTPswk",
+        "validation_public_key_hex" : "478EC9C2C4ACDE67085CE9BF9E8D5A07DC8F4282F0134BC5A95B9699FAF975049C0419ED9D5291670418BC67D203108C6026342598B16FAB4222AC7986FE1D0770", 
+        "validation_seed" : "pcwe5zxSw2k6RcztuzFmNSCdo1eynaRYuuscmPidTrBXsPd439i"
     }
 
 
@@ -147,7 +153,7 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 ``[validation_public_key]``
 
-  添加本节点的validation_public_key。此字段可不配置，但方便后续查阅，建议配置。
+  添加本节点的validation_public_key。此字段可不配置，但方便后续查阅，建议配置（国密为必填项）。
 
 例如：
 
@@ -158,7 +164,7 @@ ChainSQL 的节点程序可在 `Github开源仓库 <https://github.com/ChainSQL/
 
 ``[validation_seed]``
 
-  添加本节点的 ``validation_seed`` 。只有验证节点需要配 ``validation_seed`` ，普通节点不需要这一配置。
+  添加本节点的 ``validation_seed`` ，必填项。
 
 例如：
 
@@ -197,14 +203,12 @@ auto_sync配置为1表示开启表自动同步，开启后，在节点正常运�
 
 	[crypto_alg]
 	node_alg_type=secp256k1
-    hash_type=sha
 
 配置格式：
 
 - node_alg_type：	支持值：gmalg/secp256k1
-- hash_type：		支持值：sm3/sha
 
-此配置项可不填，默认使用secp256k1和sha，不填时validation_seed和validation_public_key均需为secp256k1算法生成。
+此配置项可不填，默认使用secp256k1，不填时validation_seed和validation_public_key均需为secp256k1算法生成。
 即node_alg_type的类型必须同validation_seed和validation_public_key生成算法一致。
 
 .. IMPORTANT::

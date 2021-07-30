@@ -20,7 +20,7 @@
 
     ./chainsqld wallet_propose masterpassphrase
 
-1.1.4-pop之后版本,需要指定算法名称，如：``secp256k1``（默认）, ``gmalg`` （国密）
+1.1.4-pop之后版本,需要指定算法名称，具体用法参见 :ref:`wallet_propose <wallet_propose>`
 
 .. code-block:: bash
 
@@ -36,14 +36,14 @@
         "master_seed" : "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb"
     }
 
-- 国密 ``sm2`` 算法根账户的地址及私钥（国密账户中私钥的作用等同于其他算法账户中的种子 ）
+- 国密算法根账户的地址及私钥（国密账户中私钥的作用等同于其他算法账户中的种子 ）
 
 .. code-block:: json
 
     {
         "account_id" : "zN7TwUjJ899xcvNXZkNJ8eFFv2VLKdESsj",
         "public_key" : "pYvWhW4azFwanovo5MhL71j5PyTWSJi2NVurPYUrE9UYaSVLp29RhtxxQB7xeGvFmdjbtKRzBQ4g9bCW5hjBQSeb7LePMwFM",
-        "secret_key" : "p97evg5Rht7ZB7DbEpVqmV3yiSBMxR3pRBKJyLcRWt7SL5gEeBb"
+        "master_seed" : "p97evg5Rht7ZB7DbEpVqmV3yiSBMxR3pRBKJyLcRWt7SL5gEeBb"
     }
 
 1.2 账户的生成与激活
