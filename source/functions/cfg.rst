@@ -209,13 +209,13 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     配置节点组网及共识使用的非对称密码算法和哈希算法。
     
     - node_alg_type配置项可选值：gmalg/secp256k1/ed25519;
-    - hash_type配置项可选值：sm3/sha;
+
+    没有此配置项时，默认使用secp256k1算法。
 
 .. code-block:: bash
 
     [crypto_alg]
     node_alg_type=gmalg
-    hash_type=sm3
 
 
 [database_path]
@@ -514,11 +514,11 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [validation_seed]
 ********************
-    本节点私钥（如不配置，不参与共识，为非共识节点）
+    本节点私钥（必填项）
 
 [validation_public_key]
 ***************************
-    本节点公钥（可选），如果配置了validation_seed，会由 validation_seed 生成节点公钥
+    本节点公钥（国密算法情况下为必填项，其他情况为可选项）
 
 
 [veto_amendments]

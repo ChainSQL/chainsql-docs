@@ -9,7 +9,7 @@
 
 需要注意的有如下几点：
 
-- ``ChainSQL 3.0`` 中不存在之前版本的普通节点（不配置 ``validation_seed`` ），所有网络中的节点都要有身份（ ``validation_publickey`` ）。
+- ``ChainSQL 3.0`` 中验证节点与非验证节点都需要配置 ``validation_seed`` ，因为所有网络中的节点都要有身份（ ``validation_publickey`` ）
 - 子链都存储在主链配置文件中 ``schema_path`` 配置的路径下面，用子链ID进行区分
 
 1. 配置项说明
