@@ -38,9 +38,9 @@ Nodejs接口的使用，需要以下准备：
 	// 引入之后使用new创建全局chainsql对象，之后使用chainsql对象进行接口操作
 	const chainsql = new ChainsqlAPI();
 
--------------------------
+---------------------------------------------
 chainsql的nodejs模块对于多密码算法的支持方式
--------------------------
+---------------------------------------------
 nodejs的 :ref:`as <nodejsAS>` 确定nodejs-SDK以何种算法运行:
 
 - 当as了一个secp256k1算法账户时，会使用sha哈希算法，此时能跟同样使用secp256k1的节点进行交互；
@@ -1149,9 +1149,9 @@ accountSet
 
 ------------------------------------------------------------------------------
 
------------
+-------------
 whitelistSet
------------
+-------------
 .. code-block:: javascript
 
 	chainsql.addWhitelistSet(whiteLists)
@@ -2286,4 +2286,329 @@ unsubscribeTx
 	}).catch(error => {
 		console.error("unsubTx error:" + error);
 	});	
+
+加解密
+===========
+
+---------------
+signFromString
+---------------
+.. code-block:: javascript
+
+	chainsql.signFromString(hexMsg,secret)
+
+| 使用账户私钥对字符串签名。
+
+参数说明
+-----------
+
+1. ``hexMsg`` - ``String`` : 被签名的原数据；
+2. ``secret`` - ``String`` : 账户私钥。
+
+返回值
+-----------
+
+``String`` : 返回签名结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+    var secret = "xnoz9Le8yENN7U3fWxoeMymnT31XD";
+    var hexMsg = Buffer.from("hello world").toString('hex');
+    var signature = c.signFromString(hexMsg,secret);
+
+------------------------------------------------------------------------------
+
+----------------
+verify
+----------------
+.. code-block:: javascript
+
+	chainsql.verify(hexStr,signature,publicKey)
+
+使用账户公钥验证签名正确性。
+
+参数说明
+-----------
+
+1. ``hexStr`` - ``String``    : 被签名的原数据；
+2. ``signature`` - ``String`` : 签名结果；
+3. ``publicKey`` - ``String`` : 账户公钥。
+
+返回值
+-----------
+
+``bool`` : 返回验证的结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+    var secret = "xnoz9Le8yENN7U3fWxoeMymnT31XD";
+    var wallet =  c.generateAddress(secret);
+
+    console.log(wallet);
+    var hexStr = Buffer.from("hello world").toString('hex');
+
+    var signature = "3045022100BDC5E1154B68B6A9FFD7F7CA36CF3B79D0BF0EDF186D09D460E537EAB9BEB31002204F54BCE76918B4F7415319E62B19A2B1F7200234F049FBD524C61EB5DD4965AA";
+
+    var bVerifyOK  = c.verify(hexStr,signature,wallet.publicKey);
+
+------------------------------------------------------------------------------
+
+
+---------------
+sign
+---------------
+.. code-block:: javascript
+
+	chainsql.sign(payment,secret)
+
+| 使用账户私钥对交易签名。
+
+参数说明
+-----------
+
+1. ``payment`` - ``JsonObject`` : 交易内容；
+2. ``secret`` - ``String`` : 账户私钥。
+
+返回值
+-----------
+
+``String`` : 返回签名结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+    let info = await c.api.getAccountInfo("rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh");
+    console.log(info);
+    c.getLedgerVersion(function(err,data){
+    var payment = {
+        "Account": "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
+        "Amount":"1000000000",
+        "Destination": "rBuLBiHmssAMHWQMnEN7nXQXaVj7vhAv6Q",
+        "TransactionType": "Payment",
+        "Sequence": info.sequence,
+        "LastLedgerSequence":data + 5,
+        "Fee":"50"
+    }
+    let signedRet = c.sign(payment,user.secret);
+    console.log(signedRet);
+    c.api.submit(signedRet.signedTransaction).then(function(data){
+        console.log(data);
+    });
+
+------------------------------------------------------------------------------
+
+
+---------------
+encryptText
+---------------
+.. code-block:: javascript
+
+	crypto.encryptText(rawData,listPublic)
+
+| 可以使用多个账户公钥对字段级数据加密。
+
+参数说明
+-----------
+
+1. ``rawData`` - ``String`` : 字段级数据；
+2. ``listPublic`` - ``JsonArray`` : 账户公钥集合。
+
+返回值
+-----------
+
+``String`` : 返回加密结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+	var listPublic = ["cBP7JPfSVPgqGfGXVJVw168sJU5HhQfPbvDRZyriyKNeYjYLVL8M", "cBPaLRSCwtsJbz4Rq4K2NvoiDZWJyL2RnfdGv5CQ2UFWqyJ7ekHM"];
+	var cip = await crypto.encryptText("test",listPublic);
+	console.log("cipher:" + cip);
+
+------------------------------------------------------------------------------
+
+
+
+---------------
+decryptText
+---------------
+.. code-block:: javascript
+
+	crypto.decryptText(cip,secret)
+
+| 使用私钥对字段级数据解密。
+
+参数说明
+-----------
+
+1. ``cip`` - ``String`` : 加密结果；
+2. ``secret`` - ``String`` : 账户私钥。
+
+返回值
+-----------
+
+``String`` : 返回解密结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+	var text = await crypto.decryptText(cip,"xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
+	console.log("plain text:" + text);
+	var text2 = await crypto.decryptText(cip,"xnHAcvtn1eVLDskhxPKNrhTsYKqde");
+	console.log("plain text2:" + text2);
+
+------------------------------------------------------------------------------
+
+
+---------------
+symEncrypt
+---------------
+.. code-block:: javascript
+
+	crypto.symEncrypt(symKey, plaintext, algType)
+
+| 使用密钥对明文进行加密。
+
+参数说明
+-----------
+
+1. ``symKey`` - ``String`` : 加密密钥；
+2. ``plaintext`` - ``String`` : 加密明文；
+3. ``algType`` - ``String`` : 加密算法类型："aes"、"gmAlg"、"softGMAlg"，默认加密算法是"aes"。
+
+返回值
+-----------
+
+``String`` : 加密结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+	//softGMAlg
+	var symCipher = crypto.symEncrypt("abcd","hello,world", "softGMAlg");
+	console.log(symCipher);
+
+	//aes
+	var symCipher = crypto.symEncrypt("abcd","hello,world", "aes");
+	console.log(symCipher);
+
+------------------------------------------------------------------------------
+
+
+---------------
+symDecrypt
+---------------
+.. code-block:: javascript
+
+	crypto.symDecrypt(symKey, encryptedHex, algType)
+
+| 使用密钥对密文进行解密。
+
+参数说明
+-----------
+
+1. ``symKey`` - ``String`` : 解密密钥；
+2. ``encryptedHex`` - ``String`` : 解密密文；
+3. ``algType`` - ``String`` : 加密算法类型："aes"、"gmAlg"、"softGMAlg"，默认加密算法是"aes"。
+
+返回值
+-----------
+
+``String`` : 返回解密后的明文。
+
+示例
+-----------
+.. code-block:: javascript
+
+	//softGMAlg
+	var plainhex = crypto.symDecrypt("abcd",symCipher, "softGMAlg");
+	var symDecrypted = utils.arrayToUtf8(utils.hexToArray(plainhex));
+	console.log(symDecrypted);
+	
+	//aes
+	var symDecrypted = crypto.symDecrypt("abcd",symCipher, "aes");
+	console.log(symDecrypted);
+
+------------------------------------------------------------------------------
+
+
+---------------
+asymEncrypt
+---------------
+.. code-block:: javascript
+
+	crypto.asymEncrypt(plaintext, publicKey, algType)
+
+| 使用公钥对明文进行加密。
+
+参数说明
+-----------
+
+1. ``plaintext`` - ``String`` : 加密明文；
+2. ``publicKey`` - ``String`` : 加密公钥；
+3. ``algType`` - ``String`` : 加密算法类型："ecies"、"gmAlg"、"softGMAlg"，默认加密算法是"ecies"。
+
+返回值
+-----------
+
+``String`` : 返回加密结果。
+
+示例
+-----------
+.. code-block:: javascript
+
+	//softGMAlg
+	var symCipher = crypto.asymEncrypt("hello,world","pYvXDbsUUr5dpumrojYApjG8nLfFMXhu3aDvxq5oxEa4ZSeyjrMzisdPsYjfxyg9eN3ZJsNjtNENbzXPL89st39oiSp5yucU", "softGMAlg");
+	console.log(symCipher);
+
+	//ecies
+	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
+	symCipher = crypto.asymEncrypt("hello,world",keypair.publicKey, "ecies");
+	console.log(symCipher);
+
+------------------------------------------------------------------------------
+
+
+---------------
+asymDecrypt
+---------------
+.. code-block:: javascript
+
+	crypto.asymDecrypt(encryptedHex, privateKey, algType)
+
+| 使用私钥对密文进行解密。
+
+参数说明
+-----------
+
+1. ``encryptedHex`` - ``String`` : 解密密文；
+2. ``privateKey`` - ``String`` : 解密私钥；
+3. ``algType`` - ``String`` : 加密算法类型："ecies"、"gmAlg"、"softGMAlg"，默认加密算法是"ecies"。
+
+返回值
+-----------
+
+``String`` : 返回解密明文。
+
+示例
+-----------
+.. code-block:: javascript
+
+	//softGMAlg
+	var symDecrypted = crypto.asymDecrypt(symCipher,"pwRdHmA4cSUKKtFyo4m2vhiiz5g6ym58Noo9dTsUU97mARNjevj", "softGMAlg");
+	console.log(symDecrypted.toString());
+
+	//ecies
+	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
+	symDecrypted = crypto.asymDecrypt(symCipher,keypair.privateKey, "ecies");
+	console.log(symDecrypted.toString());
+
 
