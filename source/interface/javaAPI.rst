@@ -3857,19 +3857,20 @@ sign
 -------------------
 .. code-block:: javascript
 
-	chainsql.sign(String secret)
+	chainsql.sign(JSONObject tx,String secret)
 
 | 使用账户私钥对交易签名。
 
 参数说明
 -----------
 
-1. ``secret`` - ``String`` : 账户私钥。
+1. ``tx`` - ``JSONObject`` : 交易内容。
+2. ``secret`` - ``String`` : 账户私钥。
 
 返回值
 -----------
 
-``String`` : 返回签名结果。
+``JSONObject`` : 返回签名结果。
 
 示例
 -----------
@@ -3879,7 +3880,7 @@ sign
     JSONObject tx_json = new JSONObject();
     tx_json.put("Account", "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh");
     tx_json.put("Amount", "10000000000");
-    tx_json.put("Destination", "rBuLBiHmssAMHWQMnEN7nXQXaVj7vhAv6Q");
+    tx_json.put("Destination", "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4");
     tx_json.put("TransactionType", "Payment");
     tx_json.put("Sequence", 2);
     obj.put("tx_json", tx_json);
