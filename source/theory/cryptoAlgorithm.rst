@@ -18,10 +18,12 @@ ChainSQL区块链目前在非对称密码算法、哈希算法、对称密码算
 目前ChainSQL支持以下几种算法组合使用方式：
 
 - secp256k1/ed25519 + sha + AES
-节点只需指定node_alg_type为secp256k1或者ed25519即可，SDK需使用secp256k1或者ed25519算法的公私钥账户；
+
+  节点只需指定node_alg_type为secp256k1或者ed25519即可，SDK需使用secp256k1或者ed25519算法的公私钥账户；
 
 - sm2 + sm3 + sm4
-节点只需指定node_alg_type为gmalg即可，SDK需使用国密算法的公私钥账户；
+
+  节点只需指定node_alg_type为gmalg即可，SDK需使用国密算法的公私钥账户；
 
 国密算法
 *****************

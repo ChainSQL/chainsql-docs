@@ -116,7 +116,7 @@
 
 1. ``paramsNeeded`` - ``JsonObject`` : 由以下两个必选字段组成：
 
-    * ``ContractData`` - ``String`` : 智能合约字节码，以0x开头。可通过 `remix.chainsql.net`_ 获取；
+    * ``ContractData`` - ``String`` : 智能合约字节码，以0x开头。可通过 `remix.chainsql.net`_ 获取，也可以通过chainsql-solc的nodejs-npm包进行本地编译；
     * ``arguments`` - ``Array``: 智能合约构造函数的参数作为元素组成的数组，每个元素根据类型填写元素值，没有参数提供一个空数组[]。
 
 2. ``options`` - ``JsonObject`` : 由以下两个字段组成：
@@ -176,6 +176,110 @@
     }).catch(err => {
         console.error(err);
     });
+
+------------------------------------------------------------------------------
+
+.. _contract-deployWithLib:
+
+有依赖库的合约部署
+===================
+
+当合约有依赖第三方库时，编译完的合约bytecode是不能直接进行部署使用的，需要使用合约的bytecode和库合约的地址进行link。
+link功能由chainsql-solc模块提供，这个模块同样可以进行合约的编译；具体使用方法为以下几步：
+
+1. 编译合约及依赖的库合约；
+2. 通过chainsql的SDK部署所有库合约，得到所有库合约地址；
+3. 将合约bytecode及所有库合约地址作为参数传递给chainsql-solc的linkBytecode函数，返回可部署的合约bytecode；
+4. 通过chainsql的SDK部署合约；
+
+
+chainsql-solc的linkBytecode函数参数说明
+--------------------------------------------------------------------
+
+1. ``bytecode`` - ``String`` : 有依赖库的合约的bytecode，十六进制字符串，不用加0x;
+
+2. ``libraryInfo`` - ``JsonObject`` : 由以下两个字段组成：
+
+    * ``libraryName`` - ``String`` : 库合约名称，格式【编译时库合约所在路径/文件名:库合约名】；
+    * ``libraryAddress`` - ``String`` : 部署完的库合约地址。
+
+（详细说明参见npmjs.com网站中chainsql-solc模块的说明）
+
+返回值
+--------
+
+``bytecode`` - ``String`` : 连接完库合约地址的可用于部署的合约bytecode。
+
+示例
+--------
+.. code-block:: javascript
+
+
+    /** 带依赖库合约示例，合约文件ContractWithLib.sol
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.0;
+
+    library libraryA {
+        function add(int a, int b) pure public returns (int) {
+            return a + b;
+        }
+    }
+
+    library libraryB {
+        function multi(int a, int b) pure public returns (int) {
+            return a * b;
+        }
+    }
+
+    contract Test {
+        int intA;
+        int intB;
+        constructor(int a, int b) {
+            intA = a;
+            intB = b;
+        }
+
+        function getSum() view public returns (int) {
+            return libraryA.add(intA, intB);
+        }
+        function getMulti() view public returns (int) {
+            return libraryB.multi(intA, intB);
+        }
+    }
+    **/
+    // nodejs调用代码, 需要安装chainsql和chainsql-solc
+    const linker = require('chainsql-solc/linker');
+
+    const libraryAAbi = '[{"inputs":[{"internalType":"int256","name":"a","type":"int256"},{"internalType":"int256","name":"b","type":"int256"}],"name":"add","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"pure","type":"function","signature":"0xa5f3c23b"}]';
+    const libraryABytecode = "0x60e9610039600b82828239805160001a60731461002c57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063a5f3c23b146038575b600080fd5b60476043366004606a565b6059565b60405190815260200160405180910390f35b600060638284608b565b9392505050565b60008060408385031215607c57600080fd5b50508035926020909101359150565b600080821280156001600160ff1b038490038513161560aa5760aa60c6565b600160ff1b839003841281161560c05760c060c6565b50500190565b634e487b7160e01b600052601160045260246000fdfea164736f6c6343000805000a";
+    const libraryBAbi = '[{"inputs":[{"internalType":"int256","name":"a","type":"int256"},{"internalType":"int256","name":"b","type":"int256"}],"name":"multi","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"pure","type":"function","signature":"0xb1fd5838"}]';
+    const libraryBBytecode = "0x61013c61003a600b82828239805160001a60731461002d57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600436106100355760003560e01c8063b1fd58381461003a575b600080fd5b61004d610048366004610072565b61005f565b60405190815260200160405180910390f35b600061006b8284610094565b9392505050565b6000806040838503121561008557600080fd5b50508035926020909101359150565b60006001600160ff1b03818413828413808216868404861116156100ba576100ba610119565b600160ff1b60008712828116878305891216156100d9576100d9610119565b600087129250878205871284841616156100f5576100f5610119565b8785058712818416161561010b5761010b610119565b505050929093029392505050565b634e487b7160e01b600052601160045260246000fdfea164736f6c6343000805000a";
+    const contractAbi = '[{"inputs":[],"name":"getMulti","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function","signature":"0xf3c66284"},{"inputs":[],"name":"getSum","outputs":[{"internalType":"int256","name":"","type":"int256"}],"stateMutability":"view","type":"function","signature":"0x569c5f6d"},{"inputs":[{"internalType":"int256","name":"a","type":"int256"},{"internalType":"int256","name":"b","type":"int256"}],"stateMutability":"nonpayable","type":"constructor","signature":"constructor"}]';
+    let contractBytecode = "608060405234801561001057600080fd5b506040516101d23803806101d283398101604081905261002f9161003d565b600091909155600155610061565b6000806040838503121561005057600080fd5b505080516020909101519092909150565b610162806100706000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063569c5f6d1461003b578063f3c6628414610055575b600080fd5b61004361005d565b60405190815260200160405180910390f35b6100436100f7565b6000805460015460405163a5f3c23b60e01b815273__$63ad81b819b00bb667992e24d91ef9a087$__9263a5f3c23b926100a292600401918252602082015260400190565b60206040518083038186803b1580156100ba57600080fd5b505af41580156100ce573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906100f2919061013c565b905090565b6000805460015460405163163fab0760e31b815273__$f97a89a10f16b752a7f1e32bb4b266773b$__9263b1fd5838926100a292600401918252602082015260400190565b60006020828403121561014e57600080fd5b505191905056fea164736f6c6343000805000a";
+    let libraryA = chainsql.contract(JSON.parse(libraryAAbi));
+    let libraryB = chainsql.contract(JSON.parse(libraryBAbi));
+    let contractObj = chainsql.contract(JSON.parse(contractAbi));
+	try {
+		let deployARes = await libraryA.deploy({ ContractData : libraryABytecode }).submit({ Gas : 400000 });
+        let deployBRes = await libraryB.deploy({ ContractData : libraryBBytecode }).submit({ Gas : 400000 });
+        let newCtrBytecode = "0x" + linker.linkBytecode(contractBytecode, {
+            "browser/ContractWithLib.sol:libraryA": deployARes.contractAddress,
+            "browser/ContractWithLib.sol:libraryB": deployBRes.contractAddress
+        })
+        let deployRes = await contractObj.deploy({ 
+            ContractData : newCtrBytecode,
+            arguments: [2,16] }).submit({ Gas : 400000 });
+
+		console.log(deployRes);
+	} catch (error) {
+		console.log(error);
+	}
+    >
+    {
+        status:"validate_success"
+        tx_hash:"DD443076A8A4B02B6661261CCD456F2DC7F4031F12EC38EAD35E821782328318"
+        contractAddress:"zPqMARn53PpN2fu8eScac4cEYW6b4w8ZH"
+    }
 
 ------------------------------------------------------------------------------
 
@@ -426,7 +530,7 @@
     }
 
 获取合约历史事件
-=============
+=================
 .. code-block:: javascript
 
     contractObj.getPastEvent(txHashJson, callback);
@@ -534,4 +638,4 @@
 
 `合约调用预编译合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/table/solidity-PreCompiled-TableTxs.sol>`_ 
 
-`测试用例 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testPreCompiledContractTableTxs.js>`_
+`数据库预编译合约测试用例 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testPreCompiledContractTableTxs.js>`_
