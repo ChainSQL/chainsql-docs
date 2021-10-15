@@ -321,10 +321,12 @@ submit
 	====================  ================================================================================
 	db_error               	入库语句执行失败
 	validate_timeout        交易共识超时
-	db_noTableExistInDB 	  要操作的表在数据库中不存在
-	db_noDbConfig        	  未配置数据库
+	db_noTableExistInDB 	要操作的表在数据库中不存在
+	db_noDbConfig        	未配置数据库
 	db_noSyncConfig         加密表未配置解密私钥
 	db_noAutoSync 	        配置文件中auto_sync为0，无法建表
+	db_acctSecretError      加密表解密私钥错误
+	db_notInSync			表不在同步列表中
 	====================  ================================================================================
 
 示例

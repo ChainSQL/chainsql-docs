@@ -391,6 +391,8 @@ connect
 4. ``connectCb`` - ``Callback<Client>``:    已连接节点后的回调
 5. ``disconnectCb`` - ``Callback<Client>``: 与节点断开连接后的回调
 
+.. note:: 如果连接的websocket地址是域名地址，需要注意：按 ``rfc952`` 规范，主机名不可以包含下划线，否则会连接失败
+
 返回值
 --------------------
 
@@ -509,6 +511,8 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
   db_noDbConfig        	  未配置数据库
   db_noSyncConfig         加密表未配置解密私钥
   db_noAutoSync 	        配置文件中auto_sync为0，无法建表
+  db_acctSecretError      加密表解密私钥错误
+	db_notInSync			      表不在同步列表中
   ====================  ================================================================================
 
 示例

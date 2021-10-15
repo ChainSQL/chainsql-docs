@@ -60,6 +60,9 @@ X. tecPATH_DRY
 X1. StackUnderflow
     这个是在部署合约时报的错误，原因一般是代码中合约的 ``bytecode`` 开头没加 ``0x``
 
+X2. JavaAPI连接ws地址失败
+    连接的ws地址是域名地址而不是ip地址，按照 ``rfc952`` 规范，主机名不可以包含下划线
+
 Chainsql节点问题
 **********************
 
