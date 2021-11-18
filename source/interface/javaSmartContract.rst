@@ -145,7 +145,7 @@ deploy方法说明：
 	合约部署方法，共识成功后返回
 	@param chainsql			Chainsql对象
 	@param gasLimit			用户提供的Gas上限
-	@param initialDropsValue	(可选)当合约构造函数被 payable 关键字修饰时，可在合约部署时给合约打系统币（单位为drop)
+	@param initialDropsValue	(可选)当合约构造函数被 payable 关键字修饰时，可在合约部署时给合约打系统数字资产（单位为drop)
 	@param greeting			合约构造函数参数，当参数有多个时，依次向后排列
 	@return 			合约对象
 	*/
@@ -278,7 +278,7 @@ Chainsql中通过fallback函数给合约转账的接口为payToContract:
 .. code-block:: java
 	
 	/**
-	通过fallback函数给合约转账系统币
+	通过fallback函数给合约转账系统数字资产
 	@param contractAddress		合约地址
 	@param value			要转移的ZXC数量，可包含小数
 	@param gasLimit			用户提供的Gas上限

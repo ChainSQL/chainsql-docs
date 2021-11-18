@@ -363,7 +363,7 @@ pay（账户转账）
 
 	chainsql.pay(address, amount[, memos])
 
-ChainSQL区块链中账户之间转账接口，支持系统币与发行的数字资产。
+ChainSQL区块链中账户之间转账接口，支持系统数字资产与配置的数字资产。
 
 .. note::
 
@@ -376,12 +376,12 @@ ChainSQL区块链中账户之间转账接口，支持系统币与发行的数字
 1. ``address`` - ``String`` : 接收转账方地址
 2. ``amount`` - ``any`` : 转账数额，参数有两种提供格式：
 
-	* ``String`` : 字符串格式，只能用于ChainSQL的系统币ZXC，直接提供金额的字符串形式进行转账；
-	* ``JsonObject`` : Json对象，主要针对网关发行的非系统币，系统币ZXC也可以用这种形式，包含以下三个字段：
+	* ``String`` : 字符串格式，只能用于ChainSQL的系统数字资产ZXC，直接提供金额的字符串形式进行转账；
+	* ``JsonObject`` : Json对象，主要针对网关配置的非系统数字资产，系统数字资产ZXC也可以用这种形式，包含以下三个字段：
 
 		- ``value`` - ``String`` : 转账数额；
-		- ``currency`` - ``String`` : 转账币种；
-		- ``issuer`` - ``String`` : 该币种的发行网关地址。
+		- ``currency`` - ``String`` : 转账数字资产类型；
+		- ``issuer`` - ``String`` : 该数字资产的配置网关地址。
 3. ``memos`` - ``JSONArray`` : [**可选**]用于对这笔转账的说明，最后会随该笔转账交易记录到区块链上。``JSONArray`` 中的 ``JsonObject`` ，包含以下三个字段:
 
 	- ``data`` - ``String`` : 任意的字符串，通常包含备忘录的内容；
@@ -539,7 +539,7 @@ getAccountInfo
 1. ``JsonObject`` : 包含账户基本信息。正常返回主要字段如下：
 
 	* ``sequence`` - ``Number`` : 该账户交易次数；
-	* ``zxcBalance`` - ``String`` : 账户ZXC系统币的余额；
+	* ``zxcBalance`` - ``String`` : 账户ZXC系统数字资产的余额；
 	* ``ownerCount`` - ``Number`` : 该账户在链上拥有的对象个数，如与其他账户建立的TrustLine，或者创建的一个表都作为一个对象。
 	* ``previousAffectingTransactionID`` - ``String`` : 上一个对该账户有影响的交易哈希值；
 	* ``previousAffectingTransactionLedgerVersion`` - ``Number`` : 上一个对该账户有影响的区块号。
@@ -1217,11 +1217,11 @@ trustSet
 参数说明
 -----------
 
-1. ``amount`` - ``JsonObject`` : Json对象，主要针对网关发行的非系统币，包含以下三个字段：
+1. ``amount`` - ``JsonObject`` : Json对象，主要针对网关配置的非系统数字资产，包含以下三个字段：
 
 		* ``value`` - ``String`` : 转账数额；
-		* ``currency`` - ``String`` : 转账币种；
-		* ``issuer`` - ``String`` : 该币种的发行网关地址。
+		* ``currency`` - ``String`` : 转账数字资产种类；
+		* ``issuer`` - ``String`` : 该数字资产的配置网关地址。
 
 返回值
 -----------
@@ -1246,11 +1246,11 @@ trustSet
 
 ------------------------------------------------------------------------------
 
----------------------
-pay（网关发行币转账）
----------------------
+--------------------------
+pay（网关数字资产转账）
+-------------------------
 
-网关发行数字资产转账和普通转账接口相同，只是在amount参数处有所不同，具体格式和用法可以参考 :ref:`pay <pay-introduce>`
+网关配置数字资产转账和普通转账接口相同，只是在amount参数处有所不同，具体格式和用法可以参考 :ref:`pay <pay-introduce>`
 
 
 表交易

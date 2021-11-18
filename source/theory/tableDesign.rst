@@ -90,21 +90,21 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
 .. code-block:: bash
 
             [sync_tables]
-            #表的发行帐户地址 表名
+            #表的拥有者帐户地址 表名
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table1
-            #表的发行帐户地址 表名 同步到ledgerSeq2000
+            #表的拥有者帐户地址 表名 同步到ledgerSeq2000
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table1 2000
-            #表的发行帐户地址 表名 同步到2016-12-29 12:00:00
+            #表的拥有者帐户地址 表名 同步到2016-12-29 12:00:00
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table2 2016-12-29_12:00:00
-            #表的发行帐户地址 表名 解密的私钥
+            #表的拥有者帐户地址 表名 解密的私钥
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table3 xxWFBu6veVgMnAqNf6YFRV2UENRd3
-            #表的发行帐户地址 表名 跳过ledgerSeq2000
+            #表的拥有者帐户地址 表名 跳过ledgerSeq2000
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table3 ~2000
-            #表的发行帐户地址 表名 跳过指定的交易hash
+            #表的拥有者帐户地址 表名 跳过指定的交易hash
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 ~860689E0F4A20F4CC0B35804B66486D455DEEFA940666054F780A69F770135C0
-            #表的发行帐户地址 表名 解密的私钥 同步到2016-12-29 12:00:00
+            #表的拥有者帐户地址 表名 解密的私钥 同步到2016-12-29 12:00:00
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 xxWFBu6veVgMnAqNf6YFRV2UENRd3 2016-12-29_12:00:00
-            #表的发行帐户地址 表名 跳过ledgerSeq2000 解密的私钥
+            #表的拥有者帐户地址 表名 跳过ledgerSeq2000 解密的私钥
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs talbe4 ~2000 xxWFBu6veVgMnAqNf6YFRV2UENRd3
 
 ---------------------

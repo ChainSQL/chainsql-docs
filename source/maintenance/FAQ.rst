@@ -28,7 +28,7 @@ Api 调用问题
         t1.LedgerSeq=t2.TxnLedgerSeq where t1.TableNameInDB=t2.TableNameInDB;
 
 5. Insufficient reserve to create offer   
-    众享币不足  需要预留对象+5  查询对象 accountObject
+    ZXC不足  需要预留对象+5  查询对象 accountObject
 
 6. Auth for unclaimed account needs correct master key 
     账户与签名私钥不一致
@@ -50,10 +50,10 @@ Api 调用问题
     1. 同一个账户，没有等上一次的交易成功返回后，继续发送一个新的交易。例如同一个账户准备发送两个交易，发送第一个交易时，Sequence为2；没有等第一个交易成功返回时，继续发送第二个的交易，此时Sequence依然为2。当第二个交易发送到节点时，此时由于第一个交易已经处理成功，账户的Sequence变为了3，而第二个交易中带的Sequence还为2，此时就会出现 **This sequence number has already past** 的错误。
 
 X. tecPATH_DRY  
-    出现这个错误码的场景是：一个持有网关数字资产的账户给另一个信任同样网关同样数字资产的账户转账网关数字资产，但是转币失败。
+    出现这个错误码的场景是：一个持有网关数字资产的账户给另一个信任同样网关同样数字资产的账户转账网关数字资产，但是转数字资产失败。
     引起这个错误的原因可能是：
 
-    1. 对方没有信任网关，导致转币的路径不通（这种情况查一下目标方的 ``AccountLine`` 可确认，解决方法是目标方去信任下网关）
+    1. 对方没有信任网关，导致转数字资产的路径不通（这种情况查一下目标方的 ``AccountLine`` 可确认，解决方法是目标方去信任下网关）
     2. 网关一开始没有开启 ``Rippling`` 设置，在用户信任网关后才去设置的（这种情况要么网关反向信任用户，要么清下环境重来）
     3. 代码写的有问题，导致最终交易中的网关账户错误（这种情况可以通过交易Hash确认）
 

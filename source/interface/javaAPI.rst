@@ -614,11 +614,11 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
 
 ------
 
-.. _pay-系统币:
+.. _pay-系统数字资产:
 
--------------------
-pay(转账系统币)
--------------------
+-----------------------
+pay(转账系统数字资产)
+-----------------------
 
 .. code-block:: java
 
@@ -627,7 +627,7 @@ pay(转账系统币)
 给用户转账,新创建的用户在转账成功之后才能正常使用(激活)。
 
 .. note::
-    这个函数有重载，除了可以转账系统币外，还可以转账发行的数字资产：:ref:`pay(转账数字资产) <pay-数字资产>`
+    这个函数有重载，除了可以转账系统数字资产外，还可以转账配置的数字资产：:ref:`pay(转账数字资产) <pay-数字资产>`
 
 .. warning::
     1.5.1版本之前 pay 方法直接调用就行，现在需要.submit
@@ -1007,7 +1007,7 @@ getAccountInfo
 1. ``JsonObject`` : 包含账户基本信息。正常返回主要字段如下：
 
   * ``Sequence`` - ``Number`` : 该账户交易次数
-  * ``Balance`` - ``String`` : 账户ZXC系统币的余额
+  * ``Balance`` - ``String`` : 账户ZXC系统数字资产的余额
 
 
 示例
@@ -1907,7 +1907,7 @@ accountSet
 
 1. ``nFlag`` - ``int``:                 一般情况下为8，表示asfDefaultRipple，详见 ``AccountSet Flags``
 2. ``bSet`` - ``boolean``:             true:设置nFlag标志 ; false: 取消nFlag标志
-3. ``transferRate`` - ``String``:      网关发行币的转账费率，取值为1.0~2.0；
+3. ``transferRate`` - ``String``:      网关数字资产的转账费率，取值为1.0~2.0；
 4. ``transferFeeMin`` - ``String``:    通过网关进行转账，网关要收取的最小手续费，10进制字符串数字，例如"1"
 5. ``transferFeeMax`` - ``String``:    通过网关进行转账，网关要收取的最大手续费，10进制字符串数字，例如"10"
 
@@ -2002,7 +2002,7 @@ trustSet
 
   public Ripple trustSet(String value, String sCurrency, String sIssuer)
 
-信任网关，参数指定信任某个网关的发行的数字资产额度。从而可分发该网关数字资产。使用时需要接submit提交交易，见示例。
+信任网关，参数指定信任某个网关配置的数字资产额度。从而可分发该网关数字资产。使用时需要接submit提交交易，见示例。
 
 
 参数
@@ -2010,8 +2010,8 @@ trustSet
 
 
 1. ``value`` - ``String``:        信任额度
-2. ``sCurrency`` - ``String``:    发行数字资产名称 ，例如"RMB"
-3. ``sIssuer`` - ``String``:      数字资产的发行网关地址。
+2. ``sCurrency`` - ``String``:    数字资产名称 ，例如"RMB"
+3. ``sIssuer`` - ``String``:      数字资产的配置网关地址。
 
 
 
@@ -2045,7 +2045,7 @@ pay(转账网关数字资产)
 转发数字资产
 
 .. note::
-    这个函数有重载，除了可以转账系统币外，还可以转账发行的数字资产：:ref:`pay(转账系统币) <pay-系统币>`
+    这个函数有重载，除了可以转账系统数字资产外，还可以转账配置的数字资产：:ref:`pay(转账系统数字资产) <pay-系统数字资产>`
 
 
 参数
@@ -2055,7 +2055,7 @@ pay(转账网关数字资产)
 1. ``accountId``   - ``String``:  转账接受地址
 2. ``value``       - ``String``:  转账数字资产的数量 最大值为:1e11.
 3. ``sCurrency``   - ``String``:  数字资产名称 ，例如"RMB"
-4. ``sIssuer``     - ``String``:  数字资产发行网关地址
+4. ``sIssuer``     - ``String``:  数字资产配置网关地址
 
 
 返回值

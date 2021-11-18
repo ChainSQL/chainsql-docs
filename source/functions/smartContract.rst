@@ -5,7 +5,7 @@ ChainSQL目前支持Solidity智能合约形式。
 
 - 支持Solidity合约到版本0.8.5。
 - 智能合约支持数据库表相关操作
-- 智能合约支持数字资产发行
+- 智能合约支持数字资产配置
 
 
 `Solidity合约开发 <https://solidity.readthedocs.io/en/v0.8.5/>`_
@@ -551,7 +551,7 @@ Node.js API的调用
 一. 简介
 ====================
 
-通过扩展Solidity指令，支持在智能合约中进行数字资产发行相关操作。
+通过扩展Solidity指令，支持在智能合约中进行数字资产配置相关操作。
 
 - 对于普通账户，通过数字资产合约接口，只有自己作为交易发起方可以发起数字资产转账接口，并且只能转出自己持有的数字资产
 - 对于合约账户，必须是合约在合约内可以发起数字资产转账，而不能是一个合约内通过编写函数调用另一个合约地址转账数字资产
@@ -723,13 +723,13 @@ JAVA API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Java API智能合约调用 <JavaAPI_SmartContract_call>`
-- 示例代码见  `JAVA 数字资产发行示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
+- 示例代码见  `JAVA 数字资产配置示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
 
 
 Node.js API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Node.js智能合约调用 <contract-newObj>`
-- 示例代码见  `Node.js 数字资产发行示例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
+- 示例代码见  `Node.js 数字资产配置示例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
 
 
