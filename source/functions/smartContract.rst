@@ -5,7 +5,7 @@ ChainSQL目前支持Solidity智能合约形式。
 
 - 支持Solidity合约到版本0.8.5。
 - 智能合约支持数据库表相关操作
-- 智能合约支持代币发行
+- 智能合约支持数字资产发行
 
 
 `Solidity合约开发 <https://solidity.readthedocs.io/en/v0.8.5/>`_
@@ -545,31 +545,31 @@ Node.js API的调用
 
 ----------------
 
-代币接口智能合约开发
+数字资产接口智能合约开发
 ****************************************************
 
 一. 简介
 ====================
 
-通过扩展Solidity指令，支持在智能合约中进行代币发行相关操作。
+通过扩展Solidity指令，支持在智能合约中进行数字资产发行相关操作。
 
-- 对于普通账户，通过代币合约接口，只有自己作为交易发起方可以发起代币转账接口，并且只能转出自己持有的代币
-- 对于合约账户，必须是合约在合约内可以发起代币转账，而不能是一个合约内通过编写函数调用另一个合约地址转账代币
+- 对于普通账户，通过数字资产合约接口，只有自己作为交易发起方可以发起数字资产转账接口，并且只能转出自己持有的数字资产
+- 对于合约账户，必须是合约在合约内可以发起数字资产转账，而不能是一个合约内通过编写函数调用另一个合约地址转账数字资产
 
-二. 代币相关的Solidity指令
+二. 数字资产相关的Solidity指令
 ==============================================
 
-具体指令见 :ref:`代币相关指令 <Gateway_sol_instruction>`
+具体指令见 :ref:`数字资产相关指令 <Gateway_sol_instruction>`
 
 三. 示例
 ==============================================
 
-本文通过一个示例，旨在指引用户如何实现自己的代币操作合约,并通过JAVA以及Node.js实现对代币操作智能合约的调用。
+本文通过一个示例，旨在指引用户如何实现自己的数字资产操作合约,并通过JAVA以及Node.js实现对数字资产操作智能合约的调用。
 
 合约示例
 ++++++++++++++++++++++++++++++++++++++++
 
-提供一个合约示例 ``solidity-GatewayTxs.sol`` ，合约中包括代币操作的相关指令，代码如下:
+提供一个合约示例 ``solidity-GatewayTxs.sol`` ，合约中包括数字资产操作的相关指令，代码如下:
 
 .. code-block:: javascript
 
@@ -594,10 +594,10 @@ Node.js API的调用
         }	
     
         /*
-        *  设置网关交易费用
-        * @param sRate    交易费率。范围为"1.0”- "2.0" 或者"0.0"
-        * @param minFee   网关交易最小花费  字符串转成10进制数后， >=0
-        * @param maxFee   网关交易最大花费	字符串转成10进制数后,  >=0
+        *  设置网关数字资产分发费用
+        * @param sRate    网关数字资产分发费率。范围为"1.0”- "2.0" 或者"0.0"
+        * @param minFee   网关网关数字资产分发最小花费  字符串转成10进制数后， >=0
+        * @param maxFee   网关网关数字资产分发最大花费	字符串转成10进制数后,  >=0
     	* @ 备注 ,以下规则均在字符串转化为10进制数后进行运算
     
     		 1 sRate 为0或者1时，表示取消费率，但是此时的minFee必须等于maxFee。
@@ -611,9 +611,9 @@ Node.js API的调用
         }
 
         /*
-        *   设置信任网关代币以及代币的额度
-        * @param value           代币额度
-        * @param sCurrency       代币名称
+        *   设置信任网关数字资产以及数字资产的额度
+        * @param value           数字资产额度
+        * @param sCurrency       数字资产名称
         * @param gateWay         信任网关地址
         */
         function trustSet(string calldata value,string calldata sCurrency,address gateWay) public {
@@ -621,10 +621,10 @@ Node.js API的调用
         }
 
         /*
-        *   设置信任网关代币以及代币的额度
+        *   设置信任网关数字资产以及数字资产的额度
         * @param contractAddr    合约地址
-        * @param value           代币额度
-        * @param sCurrency       代币名称
+        * @param value           数字资产额度
+        * @param sCurrency       数字资产名称
         * @param gateWay         信任网关地址
         */
         function trustSet(address contractAddr,string calldata value,string calldata sCurrency, address gateWay) public {
@@ -632,11 +632,11 @@ Node.js API的调用
         }
     
         /*
-        *   查询网关的信任代币额度
-        * @param  sCurrency          代币名称
-    	* @param  power              查询参数.代币额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  				
+        *   查询网关的信任数字资产额度
+        * @param  sCurrency          数字资产名称
+    	* @param  power              查询参数.数字资产额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  				
         * @param  gateWay            网关地址
-        * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
+        * @return -1:不存在网关数字资产信任关系; >=0 信任网关数字资产额度
         */
         function trustLimit(string calldata sCurrency,uint64 power,address gateWay)
         public view returns(int256) {
@@ -645,26 +645,26 @@ Node.js API的调用
         }
 
         /*
-        *   查询网关的信任代币额度
+        *   查询网关的信任数字资产额度
         * @param  contractAddr       合约地址
-        * @param  sCurrency          代币名称
-    	* @param  power              查询参数.代币额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  			
+        * @param  sCurrency          数字资产名称
+    	* @param  power              查询参数.数字资产额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  			
         * @param  gateWay            网关地址
-        * @return -1:不存在网关代币信任关系; >=0 信任网关代币额度
+        * @return -1:不存在网关数字资产信任关系; >=0 信任网关数字资产额度
         */
         function trustLimit(address contractAddr,string calldata sCurrency,uint64 power,address gateWay)
         public view returns(int256) {
-            // 合约地址也可查询网关信任代币信息
+            // 合约地址也可查询网关信任数字资产信息
             int256  ret =  (int256)(contractAddr.trustLimit(sCurrency,power,gateWay));
     		return ret;
         }	
     
         /*
-        *   获取网关代币的余额
-        * @param  sCurrency       代币名称
-    	* @param  power           查询参数.代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币余额为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  		
+        *   获取网关数字资产的余额
+        * @param  sCurrency       数字资产名称
+    	* @param  power           查询参数.数字资产余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产余额为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  		
         * @param  gateWay         网关地址
-        * @return -1:不存在该网关代币; >=0 网关代币的余额
+        * @return -1:不存在该网关数字资产; >=0 网关数字资产的余额
         */
         function gatewayBalance(string calldata sCurrency,uint64 power,address gateWay)   public view returns(int256) {
             int256  ret = (int256)(msg.sender.gatewayBalance(sCurrency,power,gateWay));
@@ -672,25 +672,25 @@ Node.js API的调用
         }
 
         /*
-        *   获取网关代币的余额
+        *   获取网关数字资产的余额
         * @param  contractAddr    合约地址
-        * @param  sCurrency       代币名称
-    	* @param  power           查询参数.代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币余额为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  	
+        * @param  sCurrency       数字资产名称
+    	* @param  power           查询参数.数字资产余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产余额为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  	
         * @param  gateWay         网关地址
-        * @return -1:不存在该网关代币; >=0 网关代币的余额
+        * @return -1:不存在该网关数字资产; >=0 网关数字资产的余额
         */
         function gatewayBalance(address contractAddr,string calldata sCurrency,uint64 power,address gateWay) public view returns(int256)  {
-            // 合约地址也可获取网关代币的余额
+            // 合约地址也可获取网关数字资产的余额
             int256  ret = (int256)(contractAddr.gatewayBalance(sCurrency,power,gateWay));
     		return ret;
         }	
     
       /*
-      *   转账代币
+      *   转账数字资产
       * @param accountTo         转入账户
-      * @param value             代币数量
-      * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84
-      * @param sCurrency         代币名称
+      * @param value             数字资产数量
+      * @param sendMax           消耗数字资产的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84
+      * @param sCurrency         数字资产名称
       * @param sGateway          网关地址
       */
         function pay(address accountTo,string calldata value,string calldata sendMax,
@@ -699,12 +699,12 @@ Node.js API的调用
         }
 
         /*
-        *   转账代币
+        *   转账数字资产
         * @param contractAddr      合约地址
         * @param accountTo         转入账户
-        * @param value             代币数量
-        * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84	
-        * @param sCurrency         代币名称
+        * @param value             数字资产数量
+        * @param sendMax           消耗数字资产的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84	
+        * @param sCurrency         数字资产名称
         * @param gateWay           网关地址
         */
         function gatewayPay(address contractAddr,address accountTo,string calldata value,string calldata sendMax,
@@ -723,13 +723,13 @@ JAVA API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Java API智能合约调用 <JavaAPI_SmartContract_call>`
-- 示例代码见  `JAVA 代币发行示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
+- 示例代码见  `JAVA 数字资产发行示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractGatewayTxs.java>`_
 
 
 Node.js API 的调用
 ++++++++++++++++++++++++++++++++++++++++
 
 - 详细的调用流程见  :ref:`Node.js智能合约调用 <contract-newObj>`
-- 示例代码见  `Node.js 代币发行示例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
+- 示例代码见  `Node.js 数字资产发行示例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
 
 

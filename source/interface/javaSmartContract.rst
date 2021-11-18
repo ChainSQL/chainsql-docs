@@ -298,11 +298,11 @@ Chainsql中通过fallback函数给合约转账的接口为payToContract:
 
 .. _SmartContract_Gateway_call:
 
-7.合约中调用新增的代币接口相关指令
-----------------------------------
-`代币合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
+7.合约中调用新增的数字资产接口相关指令
+-------------------------------------------
+`数字资产合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
 
-`代币合约对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/master/chainsql/src/test/java/com/peersafe/example/contract/GatewayTest.java>`_ 
+`数字资产合约对应的java类文件 <https://github.com/ChainSQL/java-chainsql-api/tree/master/chainsql/src/test/java/com/peersafe/example/contract/GatewayTest.java>`_ 
 
 `java测试用例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/test/java/com/peersafe/example/contract/TestContractTableTxs.java>`_
 

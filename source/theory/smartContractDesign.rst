@@ -15,35 +15,12 @@
 基于以下技术实现：
 
  * ChainSQL 的区块链技术实现
- * 以太坊客户端\ `C++实现 <https://github.com/ethereum/aleth>`_
- * 以太坊虚拟机EVM
+ * Ethereum客户端\ `C++实现 <https://github.com/ethereum/aleth>`_
+ * 虚拟机EVM
  * llvm框架
 
 总体说明
 *************************************
-
-阶段目标
-+++++++++++++++++++++++++++++++++++++
-
- 1. 一期实现对以太坊智能合约的支持，兼容用solidity语言编写的智能合约。
- 2. 二期：
-
-    i.  实现在智能合约中支持Chainsql对表的操作；
-    ii. 支持在智能合约中操作通过网关发行的代币，支持在智能合约中发行网关代币及相关操作。
-
-修改方案
-+++++++++++++++++++++++++++++++++++++
-
-一期修改（已实现）：
-
- * 底层：在ChainSQL最新源码基础上添加对以太坊智能合约的支持，集成evm中JIT的实现模块，llvm编译模块，并添加新的交易类型与虚拟机进行交互，最终实现可通过交易完成合约的发布、调用。
- * 上层：上层提供Node.js与Java版本的api，在原chainsql api的基础上增加对智能合约的支持。
-
-二期修改（已实现）：
-
-* 修改solidity工程，添加对表相关操作指令的扩展指令、发行代币相关功能指令
-* 修改ChainSQL节点工程，支持扩展指令
-
 
 系统架构
 +++++++++++++++++++++++++++++++++++++
@@ -86,7 +63,7 @@
 Gas
 +++++++++++++++++++++++++++++++++++++
 
- * Chainsql中的智能合约执行也是消耗\ ``Gas``\ 的，\ ``Gas``\ 计算规则与以太坊中的一致。
+ * Chainsql中的智能合约执行是需要消耗\ ``Gas``\ 的。
  * Chainsql中用户不可以设置\ ``GasPrice``\ ，只可以设置\ ``GasLimit``\ ，交易出现排队时，根据交易中\ ``Fee``\ 字段的值排列优先级。
  * Chainsql中的\ ``GasPrice``\ 由系统决定，并且会随当前网络负载而变化。
  * GasPrice初始值为10drop(1e-5 ZXC)，最大值为20drop。
@@ -96,10 +73,10 @@ Gas
 
  * 支持在智能合约中进行表的各种操作。
 
-支持网关发行代币、代币流通。
+支持网关发行数字资产、数字资产流通。
 +++++++++++++++++++++++++++++++++++++
 
- * 支持智能合约中进行网关设置、信任网关、代币的转账等。
+ * 支持智能合约中进行网关设置、信任网关、数字资产的转账等。
 
 性能指标
 *************************************
@@ -349,14 +326,14 @@ Websocket接口
 
 .. _Gateway_sol_instruction:
 
-代币接口
+数字资产接口
 *************************************
 
 - 说明：
-    - 添加了合约中对网关设置，信任，转账网关代币，查询信任额度，查询网关代币余额功能的支持
-    - 函数中涉及到给合约地址转账网关代币的操作，需要添加payable修饰符。
+    - 添加了合约中对网关设置，信任，转账网关数字资产，查询信任额度，查询网关数字资产余额功能的支持
+    - 函数中涉及到给合约地址转账网关数字资产的操作，需要添加payable修饰符。
     - solidity本身没有提供获取合约地址的指令，需要通过接口传入。
-    - 无信任关系时，查询信任额度，查询网关代币余额返回-1
+    - 无信任关系时，查询信任额度，查询网关数字资产余额返回-1
     - 为支持查询浮点类型的值，trustLimit和gatewayBalance指令返回的是查询值。查询值和实际值的换算公式为:   查询值  = 实际值 * 10 ^(power) , power 为查询参数。详见相关函数注释。
 
 网关的accoutSet属性设置
@@ -402,15 +379,15 @@ Websocket接口
 
 
 
-设置信任网关代币以及代币的额度
+设置信任网关数字资产以及数字资产的额度
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: javascript
 
     /*
-    *   设置信任网关代币以及代币的额度
-    * @param value           代币额度
-    * @param sCurrency       代币名称
+    *   设置信任网关数字资产以及数字资产的额度
+    * @param value           数字资产额度
+    * @param sCurrency       数字资产名称
     * @param gateway         信任网关地址
     */
     function trustSet(string value,string sCurrency,address gateway) public {
@@ -419,10 +396,10 @@ Websocket接口
     }
 
     /*
-    *   设置信任网关代币以及代币的额度
+    *   设置信任网关数字资产以及数字资产的额度
     * @param contractAddr    合约地址
-    * @param value           代币额度
-    * @param sCurrency       代币名称
+    * @param value           数字资产额度
+    * @param sCurrency       数字资产名称
     * @param gateway         信任网关地址
     */
     function trustSet(address contractAddr,string value,string sCurrency, address gateway) public {
@@ -431,17 +408,17 @@ Websocket接口
         contractAddr.trustSet(value,sCurrency,gateway);
     }
 
-查询网关的信任代币信息
+查询网关的信任数字资产信息
 +++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: javascript
 
     /*
-    *   查询网关的信任代币额度.
-    * @param  sCurrency          代币名称
-    * @param  power              查询参数.代币额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  
+    *   查询网关的信任数字资产额度.
+    * @param  sCurrency          数字资产名称
+    * @param  power              查询参数.数字资产额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产额度为100.5时,如果该参数为1,函数返回值为1005 = 100.5*10^1  
     * @param  gateway            网关地址
-    * @return -1:不存在网关代币信任关系; >=0 信任网关代币查询额度
+    * @return -1:不存在网关数字资产信任关系; >=0 信任网关数字资产查询额度
     */
     function trustLimit(string sCurrency,uint64 power,address gateway)
     public view returns(int256) {
@@ -451,31 +428,31 @@ Websocket接口
 
 
     /*
-    *   查询网关的信任代币信息.目前版本代币余额返回仅支持整数类型，下一版本会支持浮点类型。
+    *   查询网关的信任数字资产信息.目前版本数字资产余额返回仅支持整数类型，下一版本会支持浮点类型。
     * @param  contractAddr       合约地址
-    * @param  sCurrency          代币名称
-    * @param  power              查询参数.代币额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币额度为100.5时,如果该参数为1
+    * @param  sCurrency          数字资产名称
+    * @param  power              查询参数.数字资产额度为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产额度为100.5时,如果该参数为1
     * @param  gateWay            网关地址
-    * @return -1:不存在网关代币信任关系; >=0 信任网关代币查询额度
+    * @return -1:不存在网关数字资产信任关系; >=0 信任网关数字资产查询额度
     */
     function trustLimit(address contractAddr,string sCurrency,uint64 power,address gateway)
     public view returns(int256) {
-        // 合约地址也可查询网关信任代币信息
+        // 合约地址也可查询网关信任数字资产信息
         return contractAddr.trustLimit(sCurrency,power,gateway);
 
     }
 
-查询网关代币余额
+查询网关数字资产余额
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: javascript
 
     /*
-    *   获取网关代币的余额
-    * @param  sCurrency       代币名称
-    * @param  power           查询参数.代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；代币余额为100.5时,如果该参数为1
+    *   获取网关数字资产的余额
+    * @param  sCurrency       数字资产名称
+    * @param  power           查询参数.数字资产余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；数字资产余额为100.5时,如果该参数为1
     * @param  gateway         网关地址
-    * @return -1:不存在该网关代币; >=0 网关代币的查询余额
+    * @return -1:不存在该网关数字资产; >=0 网关数字资产的查询余额
     */
     function gatewayBalance(string sCurrency,uint64 power,address gateway) public view returns(int256)  {
 
@@ -484,30 +461,30 @@ Websocket接口
 
 
     /*
-    *   获取网关代币的余额
+    *   获取网关数字资产的余额
     * @param  contractAddr    合约地址
-    * @param  sCurrency       代币名称
-    * @param  power           查询精度.例如实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；实际代币余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2
+    * @param  sCurrency       数字资产名称
+    * @param  power           查询精度.例如实际数字资产余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2；实际数字资产余额为100时，如果该参数为2，函数返回值为10000 = 100*10^2
     * @param  gateway         网关地址
-    * @return -1:不存在该网关代币; >=0 网关代币的查询余额
+    * @return -1:不存在该网关数字资产; >=0 网关数字资产的查询余额
     */
     function gatewayBalance(address contractAddr,string sCurrency,uint64 power,address gateway) public view  returns(int256) {
-        // 合约地址也可获取网关代币的余额
+        // 合约地址也可获取网关数字资产的余额
         return contractAddr.gatewayBalance(sCurrency,power,gateway);
     }
 
 
-代币转账接口
+数字资产转账接口
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. code-block:: javascript
 
     /*
-    *   转账代币
+    *   转账数字资产
     * @param accountTo         转入账户
-    * @param value             代币数量
-    * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84    
-    * @param sCurrency         代币名称
+    * @param value             数字资产数量
+    * @param sendMax           消耗数字资产的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84    
+    * @param sCurrency         数字资产名称
     * @param gateway           网关地址
     */
     function pay(address accountTo,string value,string sendMax,
@@ -517,16 +494,16 @@ Websocket接口
     }
 
     /*
-    *   转账代币
+    *   转账数字资产
     * @param contractAddr      合约地址
     * @param accountTo         转入账户
-    * @param value             代币数量
-    * @param sendMax           消耗代币的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84        
-    * @param sCurrency         代币名称
+    * @param value             数字资产数量
+    * @param sendMax           消耗数字资产的最大值，具体计算规则见http://docs.chainsql.net/interface/javaAPI.html#id84        
+    * @param sCurrency         数字资产名称
     * @param gateway           网关地址
     */
     function pay(address contractAddr,address accountTo,string value,string sendMax,string sCurrency,address gateway) public {
     
-        // 合约地址也可转账代币
+        // 合约地址也可转账数字资产
         contractAddr.pay(accountTo,value,sendMax,sCurrency,gateway);
     }	

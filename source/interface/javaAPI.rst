@@ -105,7 +105,7 @@ Java-SDK的 :ref:`as <javaAS>` 确定Java-SDK以何种算法运行：
 ----------
 1.5.2
 ----------
-    - 对应 ``Chainsqld`` 版本 ``0.30.4`` ，支持智能合约对代币指令的扩展，支持费用调节功能
+    - 对应 ``Chainsqld`` 版本 ``0.30.4`` ，支持智能合约对数字资产指令的扩展，支持费用调节功能
     - 1.5.2版本增加新添对多线程并发的支持类：   :ref:`ChainsqlPool <chainsql_pool>`  ，并提供了示例代码。
 
 ------------------------
@@ -627,7 +627,7 @@ pay(转账系统币)
 给用户转账,新创建的用户在转账成功之后才能正常使用(激活)。
 
 .. note::
-    这个函数有重载，除了可以转账系统币外，还可以转账发行的代币：:ref:`pay(转账代币) <pay-代币>`
+    这个函数有重载，除了可以转账系统币外，还可以转账发行的数字资产：:ref:`pay(转账数字资产) <pay-数字资产>`
 
 .. warning::
     1.5.1版本之前 pay 方法直接调用就行，现在需要.submit
@@ -2002,7 +2002,7 @@ trustSet
 
   public Ripple trustSet(String value, String sCurrency, String sIssuer)
 
-信任网关，参数指定信任某个网关的发行的货币额度。从而可以交易该货币。使用时需要接submit提交交易，见示例。
+信任网关，参数指定信任某个网关的发行的数字资产额度。从而可分发该网关数字资产。使用时需要接submit提交交易，见示例。
 
 
 参数
@@ -2010,8 +2010,8 @@ trustSet
 
 
 1. ``value`` - ``String``:        信任额度
-2. ``sCurrency`` - ``String``:    发行货币名称 ，例如"RMB"
-3. ``sIssuer`` - ``String``:      货币的发行网关地址。
+2. ``sCurrency`` - ``String``:    发行数字资产名称 ，例如"RMB"
+3. ``sIssuer`` - ``String``:      数字资产的发行网关地址。
 
 
 
@@ -2032,20 +2032,20 @@ trustSet
 
 ------
 
-.. _pay-代币:
+.. _pay-数字资产:
 
--------------------
-pay(转账网关代币)
--------------------
+----------------------------
+pay(转账网关数字资产)
+---------------------------
 
 .. code-block:: java
 
    public  Ripple pay(String accountId, String value, String sCurrency, String sIssuer);
 
-转发代币
+转发数字资产
 
 .. note::
-    这个函数有重载，除了可以转账系统币外，还可以转账发行的代币：:ref:`pay(转账系统币) <pay-系统币>`
+    这个函数有重载，除了可以转账系统币外，还可以转账发行的数字资产：:ref:`pay(转账系统币) <pay-系统币>`
 
 
 参数
@@ -2053,9 +2053,9 @@ pay(转账网关代币)
 
 
 1. ``accountId``   - ``String``:  转账接受地址
-2. ``value``       - ``String``:  转账货币的数量 最大值为:1e11.
-3. ``sCurrency``   - ``String``:  货币名称 ，例如"RMB"
-4. ``sIssuer``     - ``String``:  货币发行网关地址
+2. ``value``       - ``String``:  转账数字资产的数量 最大值为:1e11.
+3. ``sCurrency``   - ``String``:  数字资产名称 ，例如"RMB"
+4. ``sIssuer``     - ``String``:  数字资产发行网关地址
 
 
 返回值
@@ -2113,7 +2113,7 @@ getAccountBalance
   public JSONArray getAccountBalance(String address);
   public JSONObject getAccountBalance(String address, String gateWay, String currency);
 
-查询货币余额和ZXC余额
+查询数字资产余额和ZXC余额
 
 
 参数
@@ -2121,8 +2121,8 @@ getAccountBalance
 
 
 1. ``address`` - ``String``:      账户地址
-2. ``gateWay`` - ``String``:      货币的发行网关地址
-3. ``currency`` - ``String``:     货币。
+2. ``gateWay`` - ``String``:      数字资产的发行网关地址
+3. ``currency`` - ``String``:     数字资产。
 
 
 
@@ -2136,7 +2136,7 @@ getAccountBalance
 
 .. code-block:: java
 
-    //获取该账户地址的所有代币余额和ZXC余额
+    //获取该账户地址的所有数字资产余额和ZXC余额
     JSONArray jsonArry = c.getAccountBalance("z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs");
     System.out.println(jsonArry);
 

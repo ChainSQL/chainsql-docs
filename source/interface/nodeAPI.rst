@@ -363,7 +363,7 @@ pay（账户转账）
 
 	chainsql.pay(address, amount[, memos])
 
-ChainSQL区块链中账户之间转账接口，支持系统币与发行的代币。
+ChainSQL区块链中账户之间转账接口，支持系统币与发行的数字资产。
 
 .. note::
 
@@ -1129,8 +1129,8 @@ accountSet
 
 1. ``option`` - ``JsonObject`` : 账户设置的可选属性，有一下几个：
 
-	* ``enableRippling`` - ``Boolean`` : 是否开启网关的rippling功能，即信任同一网关同一货币的账户之间是否可以转账；
-	* ``rate`` - ``Number`` : 信任同一网关同一货币的账户之间转账费率，取值为1.0~2.0；
+	* ``enableRippling`` - ``Boolean`` : 是否开启网关的rippling功能，即信任同一网关同一数字资产的账户之间是否可以转账；
+	* ``rate`` - ``Number`` : 信任同一网关同一数字资产的账户之间转账费率，取值为1.0~2.0；
 	* ``min`` - ``Number`` : 根据rate计算出转账手续费后如果小于min值，则取min值；
 	* ``max`` - ``Number`` : 根据rate计算出转账手续费后如果大于max值，则取max值
 
@@ -1212,7 +1212,7 @@ trustSet
 
 	chainsql.trustSet(amount)
 
-信任网关，参数指定信任某个网关的某货币数量。从而可以交易该货币。为交易类型，需要调用submit提交交易。
+信任网关，参数指定信任某个网关的某数字资产数量。从而可以交易该数字资产。为交易类型，需要调用submit提交交易。
 
 参数说明
 -----------
@@ -1250,7 +1250,7 @@ trustSet
 pay（网关发行币转账）
 ---------------------
 
-网关发行货币转账和普通转账接口相同，只是在amount参数处有所不同，具体格式和用法可以参考 :ref:`pay <pay-introduce>`
+网关发行数字资产转账和普通转账接口相同，只是在amount参数处有所不同，具体格式和用法可以参考 :ref:`pay <pay-introduce>`
 
 
 表交易

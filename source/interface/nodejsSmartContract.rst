@@ -622,10 +622,10 @@ chainsql-solc的linkBytecode函数参数说明
 `测试用例 <https://github.com/ChainSQL/node-chainsql-api/blob/master/test/testContractTableTxs.js>`_
 
 
-合约中调用新增的代币接口相关指令
+合约中调用新增的数字资产接口相关指令
 =================================================
 
-`代币合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
+`数字资产合约示例 <https://github.com/ChainSQL/java-chainsql-api/blob/master/chainsql/src/main/resources/solidity/gateway/solidity-GatewayTxs.sol>`_ 
 
 
 `node.js测试用例 <https://github.com/ChainSQL/node-chainsql-api/tree/master/test/testContractGatewayTxs.js>`_
