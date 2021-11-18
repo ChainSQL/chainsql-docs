@@ -2121,7 +2121,7 @@ getAccountBalance
 
 
 1. ``address`` - ``String``:      账户地址
-2. ``gateWay`` - ``String``:      数字资产的发行网关地址
+2. ``gateWay`` - ``String``:      数字资产的配置网关地址
 3. ``currency`` - ``String``:     数字资产。
 
 
