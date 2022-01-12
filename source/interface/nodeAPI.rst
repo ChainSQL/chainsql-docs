@@ -2585,8 +2585,7 @@ asymEncrypt
 	console.log(symCipher);
 
 	//ecies
-	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-	symCipher = chainsql.asymEncrypt("hello,world",keypair.publicKey, "ecies");
+	symCipher = chainsql.asymEncrypt("hello,world","cB4MLVsyn5MnoYHhApEyGtPCuEf9PAGDopmpB7yFwTbhUtzrjRRT");
 	console.log(symCipher);
 
 ------------------------------------------------------------------------------
@@ -2622,7 +2621,6 @@ asymDecrypt
 	console.log(symDecrypted.toString());
 
 	//ecies
-	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-	symDecrypted = chainsql.asymDecrypt(symCipher,keypair.privateKey, "ecies");
+	symDecrypted = chainsql.asymDecrypt(symCipher,"xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
 	console.log(symDecrypted.toString());
 
