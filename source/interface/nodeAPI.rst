@@ -2423,7 +2423,7 @@ encryptText
 ---------------
 .. code-block:: javascript
 
-	crypto.encryptText(rawData,listPublic)
+	chainsql.encryptText(rawData,listPublic)
 
 | 可以使用多个账户公钥对字段级数据加密。
 
@@ -2443,7 +2443,7 @@ encryptText
 .. code-block:: javascript
 
 	var listPublic = ["cBP7JPfSVPgqGfGXVJVw168sJU5HhQfPbvDRZyriyKNeYjYLVL8M", "cBPaLRSCwtsJbz4Rq4K2NvoiDZWJyL2RnfdGv5CQ2UFWqyJ7ekHM"];
-	var cip = await crypto.encryptText("test",listPublic);
+	var cip = await chainsql.encryptText("test",listPublic);
 	console.log("cipher:" + cip);
 
 ------------------------------------------------------------------------------
@@ -2455,7 +2455,7 @@ decryptText
 ---------------
 .. code-block:: javascript
 
-	crypto.decryptText(cip,secret)
+	chainsql.decryptText(cip,secret)
 
 | 使用私钥对字段级数据解密。
 
@@ -2474,9 +2474,9 @@ decryptText
 -----------
 .. code-block:: javascript
 
-	var text = await crypto.decryptText(cip,"xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
+	var text = await chainsql.decryptText(cip,"xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
 	console.log("plain text:" + text);
-	var text2 = await crypto.decryptText(cip,"xnHAcvtn1eVLDskhxPKNrhTsYKqde");
+	var text2 = await chainsql.decryptText(cip,"xnHAcvtn1eVLDskhxPKNrhTsYKqde");
 	console.log("plain text2:" + text2);
 
 ------------------------------------------------------------------------------
@@ -2487,7 +2487,7 @@ symEncrypt
 ---------------
 .. code-block:: javascript
 
-	crypto.symEncrypt(symKey, plaintext, algType)
+	chainsql.symEncrypt(symKey, plaintext, algType)
 
 | 使用密钥对明文进行加密。
 
@@ -2508,11 +2508,11 @@ symEncrypt
 .. code-block:: javascript
 
 	//softGMAlg
-	var symCipher = crypto.symEncrypt("abcd","hello,world", "softGMAlg");
+	var symCipher = chainsql.symEncrypt("abcd","hello,world", "softGMAlg");
 	console.log(symCipher);
 
 	//aes
-	var symCipher = crypto.symEncrypt("abcd","hello,world", "aes");
+	var symCipher = chainsql.symEncrypt("abcd","hello,world", "aes");
 	console.log(symCipher);
 
 ------------------------------------------------------------------------------
@@ -2523,7 +2523,7 @@ symDecrypt
 ---------------
 .. code-block:: javascript
 
-	crypto.symDecrypt(symKey, encryptedHex, algType)
+	chainsql.symDecrypt(symKey, encryptedHex, algType)
 
 | 使用密钥对密文进行解密。
 
@@ -2544,12 +2544,12 @@ symDecrypt
 .. code-block:: javascript
 
 	//softGMAlg
-	var plainhex = crypto.symDecrypt("abcd",symCipher, "softGMAlg");
+	var plainhex = chainsql.symDecrypt("abcd",symCipher, "softGMAlg");
 	var symDecrypted = utils.arrayToUtf8(utils.hexToArray(plainhex));
 	console.log(symDecrypted);
 	
 	//aes
-	var symDecrypted = crypto.symDecrypt("abcd",symCipher, "aes");
+	var symDecrypted = chainsql.symDecrypt("abcd",symCipher, "aes");
 	console.log(symDecrypted);
 
 ------------------------------------------------------------------------------
@@ -2560,7 +2560,7 @@ asymEncrypt
 ---------------
 .. code-block:: javascript
 
-	crypto.asymEncrypt(plaintext, publicKey, algType)
+	chainsql.asymEncrypt(plaintext, publicKey, algType)
 
 | 使用公钥对明文进行加密。
 
@@ -2581,12 +2581,12 @@ asymEncrypt
 .. code-block:: javascript
 
 	//softGMAlg
-	var symCipher = crypto.asymEncrypt("hello,world","pYvXDbsUUr5dpumrojYApjG8nLfFMXhu3aDvxq5oxEa4ZSeyjrMzisdPsYjfxyg9eN3ZJsNjtNENbzXPL89st39oiSp5yucU", "softGMAlg");
+	var symCipher = chainsql.asymEncrypt("hello,world","pYvXDbsUUr5dpumrojYApjG8nLfFMXhu3aDvxq5oxEa4ZSeyjrMzisdPsYjfxyg9eN3ZJsNjtNENbzXPL89st39oiSp5yucU", "softGMAlg");
 	console.log(symCipher);
 
 	//ecies
 	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-	symCipher = crypto.asymEncrypt("hello,world",keypair.publicKey, "ecies");
+	symCipher = chainsql.asymEncrypt("hello,world",keypair.publicKey, "ecies");
 	console.log(symCipher);
 
 ------------------------------------------------------------------------------
@@ -2597,7 +2597,7 @@ asymDecrypt
 ---------------
 .. code-block:: javascript
 
-	crypto.asymDecrypt(encryptedHex, privateKey, algType)
+	chainsql.asymDecrypt(encryptedHex, privateKey, algType)
 
 | 使用私钥对密文进行解密。
 
@@ -2618,12 +2618,11 @@ asymDecrypt
 .. code-block:: javascript
 
 	//softGMAlg
-	var symDecrypted = crypto.asymDecrypt(symCipher,"pwRdHmA4cSUKKtFyo4m2vhiiz5g6ym58Noo9dTsUU97mARNjevj", "softGMAlg");
+	var symDecrypted = chainsql.asymDecrypt(symCipher,"pwRdHmA4cSUKKtFyo4m2vhiiz5g6ym58Noo9dTsUU97mARNjevj", "softGMAlg");
 	console.log(symDecrypted.toString());
 
 	//ecies
 	var keypair = keypairs.deriveKeypair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-	symDecrypted = crypto.asymDecrypt(symCipher,keypair.privateKey, "ecies");
+	symDecrypted = chainsql.asymDecrypt(symCipher,keypair.privateKey, "ecies");
 	console.log(symDecrypted.toString());
-
 
