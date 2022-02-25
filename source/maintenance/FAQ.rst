@@ -18,7 +18,7 @@ Api 调用问题
     原因：不在交易中填写Fee会自己去算，而负载高时，算出来的Fee比较大，>100时，会报这个错误。所以建议自己在交易中填上Fee的值。
 
 4. 对表进行操作，无论什么交易都是db_timeout
-    原因：表的某个区块没有同步到，由于某种原因被跳过了，然后后面的交易，PreviousTxnLgrSeq总是无法与当前的对上
+    原因：表的某个区块没有同步到，由于某种原因被跳过了，然后后面的交易PreviousTxnLgrSeq总是无法与当前的对上
     目前暂未发现导致的根本原因，只能把LedgerSeq重新置为TxnLedgerSeq:
 
     .. code-block:: sql
@@ -37,7 +37,7 @@ Api 调用问题
     用户没有信任这个数字资产
 
 8. Ledger sequence too high / tefMAX_LEDGER
-    这个是因为发送交易的时候，用API发送交易时，会在交易中带一个LastLedgerSequence，当交易发送至节点时，发到节点的时候，发现当前区块号已经大于LastLedgerSequence，就会报这个错误。
+    这个是因为发送交易的时候，用API发送交易时，会在交易中带一个LastLedgerSequence，当交易发送至节点时，发现当前区块号已经大于LastLedgerSequence，就会报这个错误。
     引起这个错误的原因可能是：
 
     1. 一般是客户端调试导致发送时间太长

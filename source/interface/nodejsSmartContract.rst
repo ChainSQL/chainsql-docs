@@ -131,13 +131,13 @@
 
 ``JsonObject`` - 智能合约的部署成功或失败的结果。返回方式取决于是否指定回调函数。
 
-1. 部署成功 - 指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。 ``JsonObject`` 包含以下字段：
+1. 部署成功 - 指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象。 ``JsonObject`` 包含以下字段：
 
 	* ``status`` - ``String`` : 表示部署状态，成功则为固定值:"validate_success"；
 	* ``tx_hash`` - ``String`` : 部署合约的交易hash值；
 	* ``contractAddress`` - ``String`` : 部署成功的合约地址。
 	
-2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。 ``JsonObject`` 内容依具体错误形式返回。
+2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。 ``JsonObject`` 内容依具体错误形式返回。
 
 示例
 --------
@@ -315,12 +315,12 @@ chainsql-solc的linkBytecode函数参数说明
 
 ``JsonObject`` : 合约函数执行成功或失败的结果。返回方式取决于是否指定回调函数。
 
-1. 调用成功 - 指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。 ``JsonObject`` 包含以下字段：
+1. 调用成功 - 指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象。 ``JsonObject`` 包含以下字段：
 
 	* ``status`` - ``String`` : 表示合约函数执行状态，其值由调用时的expect决定；
 	* ``tx_hash`` - ``String`` : 合约函数的交易hash值。
 	
-2. 调用失败 - 指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。 ``JsonObject`` 内容依具体错误形式返回。
+2. 调用失败 - 指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。 ``JsonObject`` 内容依具体错误形式返回。
 
 示例
 --------
@@ -370,8 +370,8 @@ chainsql-solc的linkBytecode函数参数说明
 
 返回值由合约本身的函数规定的返回值个数及类型决定，个数为1时，直接返回该值，个数大于1时，构造为一个JsonObject返回。返回方式取决于是否指定回调函数。
 
-1. 调用成功时，指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象；
-2. 调用失败时，指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。依具体错误形式返回。
+1. 调用成功时，指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象；
+2. 调用失败时，指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。依具体错误形式返回。
 
 示例
 --------
@@ -484,7 +484,7 @@ chainsql-solc的linkBytecode函数参数说明
 
 返回值包含合约事件指定的监听内容，返回方式由是否指定回调函数决定。
 
-1. 正常监听：指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。具体返回内容包括：
+1. 正常监听：指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象。具体返回内容包括：
 ``JsonObject`` : 返回事件内容，具体包含以下字段：
 
     * ``ContractAddress`` - ``String`` : 合约地址；
@@ -494,7 +494,7 @@ chainsql-solc的linkBytecode函数参数说明
     * ``signature`` - ``String`` : 事件函数签名；
     * ``type`` - ``String`` : 类型，固定值为"contract_event"。
 
-2. 监听异常：指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。依具体错误形式返回。
+2. 监听异常：指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。依具体错误形式返回。
 
 示例
 --------
@@ -546,7 +546,7 @@ chainsql-solc的linkBytecode函数参数说明
 
 返回值包含合约事件指定的监听内容，返回方式通过回调函数返回结果。
 
-1. 正常监听：指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。具体返回内容包括：
+1. 正常监听：指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象。具体返回内容包括：
 ``JsonObject`` : 返回事件内容，具体包含以下字段：
 
     * ``ContractAddress`` - ``String`` : 合约地址；
@@ -556,7 +556,7 @@ chainsql-solc的linkBytecode函数参数说明
     * ``signature`` - ``String`` : 事件函数签名；
     * ``type`` - ``String`` : 类型，固定值为"contract_event"。
 
-2. 监听异常：指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。依具体错误形式返回。
+2. 监听异常：指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。依具体错误形式返回。
 
 示例
 --------

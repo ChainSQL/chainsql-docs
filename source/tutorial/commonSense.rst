@@ -159,6 +159,8 @@ Chainsql类型的交易 ``（TableListSet,SQLStatement,SQLTransaction）`` 基�
 
 Chainsql类型交易费用 = ``0.00101(ZXC)`` + 交易中 ``Raw`` 字段字节数/ ``1024(ZXC)``
 
+即交易费用分为基础交易费用0.00101ZXC，以及处理数据的费用，每有1kb数据就需要支付1ZXC。
+
 比如我要建一张表，建表的rpc命令如下：
 
 .. code-block:: json
@@ -201,7 +203,7 @@ Chainsql类型交易费用 = ``0.00101(ZXC)`` + 交易中 ``Raw`` 字段字节�
 
 Chainsql类型交易费用 = ``0.00101(ZXC)`` + 交易中 ``Raw`` 字段字节数 *  drops_per_byte / ``10^6(ZXC)``
 
-例如： 上述建表操作中 ``Raw`` 字段较小，假设只有 ``100`` ，drops_per_byte = 2000 上述建表交易的交易费用为
+例如： 上述建表操作中 ``Raw`` 字段较小，假设只有 ``100``bytes，drops_per_byte = 2000 上述建表交易的交易费用为
 
 ``0.00101 + 100 * 2000 /10^6 = 0.20101(zxc)``
 

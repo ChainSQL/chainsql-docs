@@ -1607,7 +1607,7 @@ getTableNameInDB
 
     public JSONObject getTableNameInDB(String owner,String tableName);
 
-查询表在数据库中的记录的名字，在外定义的表名，经过ChainSQL会进行格式转换，此接口查询转换之后的名字。
+查询表在数据库中的记录的名字，在外定义的表名经过ChainSQL会进行格式转换，此接口查询转换之后的名字。
 
 
 参数
@@ -2765,7 +2765,7 @@ setNeedVerify
 ==============
 
 .. note::
-	现在查询无论数据库有多少内容，get接口一次最多返回200条结果，如果数据较多，可以结合 ``limit`` 接口做分页查询。
+	现在无论查询到数据库多少内容，get接口一次最多返回200条结果，如果数据较多，可以结合 ``limit`` 接口做分页查询。
 
 .. _get_Java:
 

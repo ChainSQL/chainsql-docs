@@ -136,14 +136,14 @@ connect
 
 ``JsonObject`` - 通过提供的websocket地址与节点连接的结果。返回方式取决于是否指定回调函数。
 
-1. 连接成功 - 指定回调函数，则通过回调函数返回，否则返回返回一个resolve的Promise对象。 主要内容在返回值resObj的 ``resObj.api.connect`` 中，为一个 ``JsonObject``, 包括以下字段：
+1. 连接成功 - 指定回调函数，则通过回调函数返回，否则返回一个resolve的Promise对象。 主要内容在返回值resObj的 ``resObj.api.connect`` 中，为一个 ``JsonObject``, 包括以下字段：
 	
 	* ``_fee_base`` - ``Number`` : 节点的基础交易手续费；
 	* ``_ledgerVersion`` - ``Number`` : 当前节点区块高度；
 	* ``_maxListeners`` - ``Number`` : 节点的最大连接数。
 	* ``_url`` - ``String`` : 目前与节点连接使用的websocket地址
 	
-2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回返回一个reject的Promise对象。 ``JsonObject`` 主要包含以下字段：
+2. 部署失败 - 指定回调函数，则通过回调函数返回，否则返回一个reject的Promise对象。 ``JsonObject`` 主要包含以下字段：
 
 	* ``message`` - ``String`` : 返回与指定ws地址链接失败："connect ECONNREFUSED wsAddr"；
 	* ``name`` - ``String`` : 固定值："NotConnectedError"；
@@ -915,7 +915,7 @@ getTableNameInDB
 
 	chainsql.getTableNameInDB(address, tableName);
 
-查询表在数据库中的记录的名字，在外定义的表名，经过ChainSQL会进行格式转换，此接口查询转换之后的名字。
+查询表在数据库中的记录的名字，在外定义的表名经过ChainSQL会进行格式转换，此接口查询转换之后的名字。
 
 参数说明
 -----------
@@ -1836,7 +1836,7 @@ getBySqlAdmin
 
 	chainsql.getBySqlAdmin(sql)
 
-直接传入SQL语句进行数据库查询操作，因为直接操作数据库中的表，所有需要配合getTableNameInDB接口获取表在数据库中的真实表名。
+直接传入SQL语句进行数据库查询操作，因为直接操作数据库中的表，所以需要配合getTableNameInDB接口获取表在数据库中的真实表名。
 
 .. note::
 

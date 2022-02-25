@@ -6,7 +6,7 @@ Jdk1.8
 
 调用流程
 ==============
-#.	使用智能合约编译工具(solc或remix)编译合约脚本得到bin与abi
+#.	使用智能合约编译工具(solc或remix)编译合约脚本得到bin与abi文件
 #.	调用codegen_chainsql工具生成java类
 #.	将Java类导入到工程中，进行合约部署/调用
 
