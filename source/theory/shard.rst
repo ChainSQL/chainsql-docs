@@ -28,7 +28,7 @@
 ============================
 
 .. image:: ../../images/ShardDataflow.png
-        :width: 600px
+        :width: 700px
         :alt: Dataflow
         :align: center
 
