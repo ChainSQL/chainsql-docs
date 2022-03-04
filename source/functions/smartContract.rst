@@ -274,6 +274,7 @@ Node.js API的调用
     abstract contract TableOperation{
     function createTable(string memory tableName,string memory raw) public virtual;
 	
+    // 注：通过合约建表需要用户有对应的预留费用，默认配置下建一个表需要合约有1个ZXC（合约地址不需要账户基础预留费）
     function createByContract(string memory tableName,string memory raw) public virtual;
 	
     function dropTable(string memory tableName) public virtual;
