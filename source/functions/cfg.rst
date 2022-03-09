@@ -293,7 +293,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 ******************************
     ``transaction.db`` 存储交易相关配置，``1.1.5-pop`` 及以上版本支持
 
-    - ``use_tx_tables`` 是否向 ``transaction.db`` 中存储交易信息，配置为0表示存储，节点不能对外提供查询交易的服务，默认值为1
+    - ``use_tx_tables`` 是否向 ``transaction.db`` 中存储交易信息，配置为0表示不存储，节点不能对外提供查询交易的服务，默认值为1
     - ``use_trace_table`` 是否使用 ``TraceTransactions`` 表(提供查询上一个，下一个交易功能，以及记录与表/合约相关的交易有哪些)，默认值为1
 
 .. code-block:: bash
