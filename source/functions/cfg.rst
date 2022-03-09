@@ -47,7 +47,7 @@
     [node_size]
     medium
 
-    # 区块数据存储配置，windows下用 ``NuDB`` ,Linux/Mac下用 ``RocksDB`` 或 ``NuDB`` 
+    # 区块数据存储配置，windows下用 ``NuDB`` ，Linux/Mac下用 ``RocksDB`` 或 ``NuDB`` 
     [node_db]
     type=RocksDB
     path=./rocksdb
@@ -130,7 +130,7 @@
 版本变化
 ----------------
     
-    - 3.0.0 版本增加配置项 :ref:`schema <Schema>` , :ref:`consensus <Consensus>`
+    - 3.0.0 版本增加配置项 :ref:`schema <Schema>`, :ref:`consensus <Consensus>`
     - 1.0.1-pop版本之后，新添配置选项 :ref:`crypto_alg <crypto_alg>`
     - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
     - 0.30.5版本以后，新添加配置选项 :ref:`x509_crt_path <X509CrtPath>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`ca_certs_sites <CACertsSites>`
@@ -145,7 +145,7 @@
 
 .. important:: 
 
-    auto_sync只影响表的创建，如auto_sync为0，在创建新表的交易共识过后，不会在数据库中建表。但是如果表已经存在，这时向表中插入数据，是不受auto_sync值影响的。
+    auto_sync只影响表的创建，如auto_sync为0，在创建新表的交易共识过后，不会在数据库中建表。但是如果表已经存在，这时向表中插入数据，是不受auto_sync值影响的
 
 
 [ca_certs_keys]
@@ -206,11 +206,11 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [crypto_alg]
 ******************************
-    配置节点组网及共识使用的非对称密码算法和哈希算法。
+    配置节点组网及共识使用的非对称密码算法和哈希算法
     
     - node_alg_type配置项可选值：gmalg/secp256k1/ed25519;
 
-    没有此配置项时，默认使用secp256k1算法。
+    没有此配置项时，默认使用secp256k1算法
 
 .. code-block:: bash
 
@@ -239,11 +239,11 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 .. important:: 
 
-    为了保证与低版本的API的兼容性，drops_per_byte的默认值为976(10^6 /1024),表示1KB数据消耗1 ZXC。drops_per_byte不配置或者配置为默认值，保持与老版本API的向下兼容性；如果该值配置为非默认值，那么与老版本的API都不兼容，无法发起表交易。
+    为了保证与低版本的API的兼容性，drops_per_byte的默认值为976(10^6 /1024)，表示1KB数据消耗1 ZXC。drops_per_byte不配置或者配置为默认值，保持与老版本API的向下兼容性；如果该值配置为非默认值，那么与老版本的API都不兼容，无法发起表交易。
 
 [features]
 **************
-    要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ,这里不再赘述。
+    要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ，这里不再赘述
 
 .. _ips:
 
@@ -255,7 +255,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 [ledger_history]
 *****************
 - 节点要维护的最小历史区块数量
-- 若不想维护历史区块，则设置为 ``none`` ,若想维护全部历史区块（全节点），则设置为 ``full`` 还可以设置为一个数字
+- 若不想维护历史区块，则设置为 ``none``，若想维护全部历史区块（全节点），则设置为 ``full`` 还可以设置为一个数字
 - 默认值为256，如果 [node_db]中有 ``online_delete`` 配置项，[ledger_history] 的值必须 <= ``online_delete`` 的值
 
 **配置非全节点的示例** :
@@ -280,7 +280,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [ledger_acquire]
 ******************************
-    同步区块相关的配置。
+    同步区块相关的配置
 
     - skip_blocks 表示同步区块时要跳过的区块，也就是缺失的区块，用逗号分隔多个缺失的域。示例：skip_blocks=5000-6000,8000,9000-10000
 
@@ -306,7 +306,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [missing_hashes]
 ******************************
-    手动配置节点获取不到区块哈希的区块，每一行配置一个对应的区块号和区块哈希，用冒号分隔区块号和区块哈希。
+    手动配置节点获取不到区块哈希的区块，每一行配置一个对应的区块号和区块哈希，用冒号分隔区块号和区块哈希
 
 .. code-block:: bash
 
@@ -317,8 +317,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [node_size]
 **************
-    | 缓存大小，可设置的值有 "tiny", "small", "medium", "large","huge"，我们建议一开始设置一个默认值，如果运行一段时间发现还有内存空余，则将缓存增大。
-    | 默认值为"tiny"。
+    | 缓存大小，可设置的值有 "tiny", "small", "medium", "large", "huge"，我们建议一开始设置一个默认值，如果运行一段时间发现还有内存空余，则将缓存增大
+    | 默认值为"tiny"
 
 .. _node_db:
 
@@ -344,7 +344,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 可选配置项（用于开启非全节点）：
 
 - ``online_delete`` 最小值为256，节点最小维持的区块数量，这个值不能小于 ``ledger_history`` 配置项的值
-- ``advisory_delete`` 0为禁用，1为启用。如果启用了，需要调用admin权限接口 ``can_delete`` 来开启区块的在线删除功能。
+- ``advisory_delete`` 0为禁用，1为启用。如果启用了，需要调用admin权限接口 ``can_delete`` 来开启区块的在线删除功能
 
 
 [rpc_startup]
@@ -377,7 +377,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 配置项说明：
 
-- ``schema_path`` 子链数据存储路径，节点作为子链节点的配置文件，schema_path文件夹示例如下 ：
+- ``schema_path`` 子链数据存储路径，节点作为子链节点的配置文件，schema_path文件夹示例如下：
 
 .. code-block:: bash
 
@@ -405,13 +405,13 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 .. note::
 
-    当节点配置 ``validation_seed`` 去同步主链区块时，因为POP/HotStuff共识的原因会导致同步区块失败，所以增加只参与子链而不参与主链的配置
+    当节点配置 ``validation_seed`` 去同步主链区块时，因为POP/HotStuff共识的原因会导致同步区块失败，所以增加只参与子链而不参与主链的配置。
 
 .. _SelectLimit:
 
 [select_limit]
 ********************* 
-    配置表查询相关接口返回的最大查询条数，默认值为200。
+    配置表查询相关接口返回的最大查询条数，默认值为200
 
 .. code-block:: bash
 
@@ -421,7 +421,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 [server]
 ************
 
-- 端口列表，chainsqld 会查找文件中具有与列表项相同名称的配置项，并用这些配置荐创建监听端口。
+- 端口列表，chainsqld 会查找文件中具有与列表项相同名称的配置项，并用这些配置荐创建监听端口
 - 列表中配置项的名称不会影响功配置功能
 
 单个配置项示例如下：
@@ -439,7 +439,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     - ``port`` 配置端口
     - ``ip`` 哪些ip可以连接这一端口，如果有多个，以逗号（,）进行分隔， ``0.0.0.0`` 代表任意ip可以连接这一端口
     - ``admin`` chainsql中有一些命令（如peers,t_dump,t_audit）只有拥有admin权限的ip才能调用，配置方法与 ip 相同
-    - ``protocol`` 协议名称，chainsql中支持协议有 http,https,ws,wss,peer
+    - ``protocol`` 协议名称，chainsql中支持协议有 http, https, ws, wss, peer
 
 
 [sntp_servers]
@@ -448,13 +448,13 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 .. important:: 
 
-    在内网环境中，公网的时间服务器连不上，这时必须配置内网的时间服务器或手动将节点的时间调节一致，不然会出现节点发现不了，或者达不成共识等各种 问题
+    在内网环境中，公网的时间服务器连不上，这时必须配置内网的时间服务器或手动将节点的时间调节一致，不然会出现节点发现不了，或者达不成共识等各种问题。
 
 [sqlite]
 ******************
     sqlite存储相关配置
 
-- synchronous 磁盘的同步模式，该模式控制积极的 SQLite 如何将数据写入物理存储，可配置值包括 ``off, normal, full, extra`` ，详见 https://www.runoob.com/sqlite/sqlite-pragma.html
+- synchronous 磁盘的同步模式，该模式控制积极的 SQLite 如何将数据写入物理存储，可配置值包括 ``off, normal, full, extra``，详见 https://www.runoob.com/sqlite/sqlite-pragma.html
 
 .. code-block:: bash
 
@@ -465,7 +465,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 [sync_db]
 *****************
-    配置同步表相关交易用的数据库，原生支持mysql,sqlite，可通过 mycat 支持其它数据库，示例如下:
+    配置同步表相关交易用的数据库，原生支持mysql, sqlite，可通过 mycat 支持其它数据库，示例如下:
 
 .. code-block:: bash
     
@@ -485,8 +485,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     db=chainsql
 
 配置项说明：
-    - ``type`` 数据库类型，这里支持sqlite,mysql,mycat，配置mysql等同于mycat
-    - ``host`` 连接数据库用的主机,localhost或127.0.0.1表示本机
+    - ``type`` 数据库类型，这里支持sqlite, mysql, mycat，配置mysql等同于mycat
+    - ``host`` 连接数据库用的主机, localhost或127.0.0.1表示本机
     - ``port`` 数据库端口
     - ``user`` 登录数据库的用户名
     - ``pass`` 登录数据库的密码
@@ -494,7 +494,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     - ``first_storage`` 是否开启先入库，0为不开启，1为开启，默认为0
     - ``charset`` 数据库编码
     - ``unix_socket`` 
-        | 使用localhost连接时，会默认使用 sock 方式连接，默认sock路径是 /var/run/mysqld/mysqld.sock。
+        | 使用localhost连接时，会默认使用 sock 方式连接，默认sock路径是 /var/run/mysqld/mysqld.sock
         | 在非ubuntu系统中，这个路径是不对的，会导致连接数据库失败，需要用 unix_socket 选项来指定 sock 路径
         | 如果host写为ip（如127.0.0.1）去连接，会使用 tcp 方式连接，就不会有这个问题
 
@@ -539,9 +539,9 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 配置项说明：
 
-    - account_reserve 账户预留费用，指的是激活一个账户所需要的最小系统数字资产（ZXC）数量，也是一个账户的余额要保留的最小值，单位为drop，上面的配置表示账户预留费用为10ZXC。
-    - owner_reserve 增加一个对象，要增加的预留费用，这里的对象指的是要占用链上存储的对象，如账户与网关之间的trustline,账户新建的表等，上面的值表示每增加一个对象，账户的预留费用要增加1ZXC。
-    - gas_price 合约在执行过程中需要消耗，这里是 GasPrice的设置，默认值是10drops。
+    - account_reserve 账户预留费用，指的是激活一个账户所需要的最小系统数字资产（ZXC）数量，也是一个账户的余额要保留的最小值，单位为drop，上面的配置表示账户预留费用为10ZXC
+    - owner_reserve 增加一个对象，要增加的预留费用，这里的对象指的是要占用链上存储的对象，如账户与网关之间的trustline，账户新建的表等，上面的值表示每增加一个对象，账户的预留费用要增加1ZXC
+    - gas_price 合约在执行过程中需要消耗，这里是 GasPrice的设置，默认值是10drops
 
 .. _X509CrtPath:
 

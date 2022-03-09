@@ -7,7 +7,7 @@ Api 调用问题
 **********************
 
 1. 两笔挂单，分别是买单与卖单，兑换比例一致，但未成交
-    原因：网关未开启 
+    原因：网关未开启。
 
 2. Insufficient reserve to create offer
     原因：挂单时Zxc余额不满足保留费用要求，需要最终满足::
@@ -31,17 +31,17 @@ Api 调用问题
     ZXC不足  需要预留对象+5  查询对象 accountObject
 
 6. Auth for unclaimed account needs correct master key 
-    账户与签名私钥不一致
+    账户与签名私钥不一致。
 
 7. Current user doesn\'t have this auth   
-    用户没有信任这个数字资产
+    用户没有信任这个数字资产。
 
 8. Ledger sequence too high / tefMAX_LEDGER
     这个是因为发送交易的时候，用API发送交易时，会在交易中带一个LastLedgerSequence，当交易发送至节点时，发现当前区块号已经大于LastLedgerSequence，就会报这个错误。
     引起这个错误的原因可能是：
 
-    1. 一般是客户端调试导致发送时间太长
-    2. node.js api客户端执行了同步操作，并且同步操作的时间太长，导致订阅的ledgerVersion得不到更新，在准备交易时取到的是旧的ledgerVersion，虽然最后对ledgerVersion+3作为 LastLedgerSequence的值，但是到节点那里仍然发生tefMAX_LEDGER错误
+    1. 一般是客户端调试导致发送时间太长；
+    2. node.js api客户端执行了同步操作，并且同步操作的时间太长，导致订阅的ledgerVersion得不到更新，在准备交易时取到的是旧的ledgerVersion，虽然最后对ledgerVersion+3作为 LastLedgerSequence的值，但是到节点那里仍然发生tefMAX_LEDGER错误。
 
 9. This sequence number has already past.
     这个是因为用API发送交易时，会在交易中带一个交易账户的Sequence,当交易发送至节点时，发现账户的Sequence已经大于交易中带的Sequence时，就会报这个错误。
@@ -53,15 +53,15 @@ X. tecPATH_DRY
     出现这个错误码的场景是：一个持有网关数字资产的账户给另一个信任同样网关同样数字资产的账户转账网关数字资产，但是转数字资产失败。
     引起这个错误的原因可能是：
 
-    1. 对方没有信任网关，导致转数字资产的路径不通（这种情况查一下目标方的 ``AccountLine`` 可确认，解决方法是目标方去信任下网关）
-    2. 网关一开始没有开启 ``Rippling`` 设置，在用户信任网关后才去设置的（这种情况要么网关反向信任用户，要么清下环境重来）
-    3. 代码写的有问题，导致最终交易中的网关账户错误（这种情况可以通过交易Hash确认）
+    1. 对方没有信任网关，导致转数字资产的路径不通（这种情况查一下目标方的 ``AccountLine`` 可确认，解决方法是目标方去信任下网关）；
+    2. 网关一开始没有开启 ``Rippling`` 设置，在用户信任网关后才去设置的（这种情况要么网关反向信任用户，要么清下环境重来）；
+    3. 代码写的有问题，导致最终交易中的网关账户错误（这种情况可以通过交易Hash确认）。
 
 X1. StackUnderflow
-    这个是在部署合约时报的错误，原因一般是代码中合约的 ``bytecode`` 开头没加 ``0x``
+    这个是在部署合约时报的错误，原因一般是代码中合约的 ``bytecode`` 开头没加 ``0x``。
 
 X2. JavaAPI连接ws地址失败
-    连接的ws地址是域名地址而不是ip地址，按照 ``rfc952`` 规范，主机名不可以包含下划线
+    连接的ws地址是域名地址而不是ip地址，按照 ``rfc952`` 规范，主机名不可以包含下划线。
 
 Chainsql节点问题
 **********************
@@ -89,35 +89,35 @@ Chainsql节点问题
     然后重启节点
 
 2. 启动节点报：make db backends error,please check cfg!
-    数据库连接失败，请检查配置文件中数据库(sync_db)的配置
+    数据库连接失败，请检查配置文件中数据库(sync_db)的配置。
 
 3. cfg文件中配置项不起作用
-    注释只能写在开头，中间写注释会导致配置项不起作用（#）
+    注释只能写在开头，中间写注释会导致配置项不起作用（#）。
 
 4. 如何升级chainsql节点
     一般升级chainsql节点只需要挨个节点替换重启即可，步骤如下：
 
-    1. 停掉一个正在运行的节点（先用 ``./chainsqld stop`` 命令，如果停不掉再用 ``kill`` 命令杀进程）
-    2. 替换新的chainsqld可执行程序
-    3. 启动chainsqld进程
-    4. 查看 ``server_info``，直到 ``completed_ledgers`` 正常出块
-    5. 依次对所有节点执行1-4过程
+    1. 停掉一个正在运行的节点（先用 ``./chainsqld stop`` 命令，如果停不掉再用 ``kill`` 命令杀进程）；
+    2. 替换新的chainsqld可执行程序；
+    3. 启动chainsqld进程；
+    4. 查看 ``server_info``，直到 ``completed_ledgers`` 正常出块；
+    5. 依次对所有节点执行1-4过程。
 
 5. 节点全部挂掉，找不到原因
     | 使用secureCRT或者Xshell连接服务器，退出时，直接关闭对话窗口，会将nohup后台运行的进程杀死。
-    | 应该使用 ``exit`` 命令退出 ssh 工具终端
+    | 应该使用 ``exit`` 命令退出 ssh 工具终端。
 
 6. peers命令看不到其它节点，节点日志报：Clock for is off by ...
     节点间时间不一致导致的，一般发生在内网，有两种解决方式：
     
-    1. 手动将时间调整到一致（相关不超过20秒即可）
-    2. 在[sntp_servers]中配置内网的时间服务器地址（推荐用这一种方式）
+    1. 手动将时间调整到一致（相关不超过20秒即可）；
+    2. 在[sntp_servers]中配置内网的时间服务器地址（推荐用这一种方式）。
 
 7. 执行./chainsqld peers 命令报 internal error 403
     这是因为peers命令是一个admin权限的命令，节点配置文件中的http协议配置中，admin肯定不包含本机，解决方法：
 
-    1. 在http协议配置中admin配置加上127.0.0.1
-    2. 将admin配置为0.0.0.0（表示所有调用http命令的ip都是admin，不推荐这种做法）
+    1. 在http协议配置中admin配置加上127.0.0.1；
+    2. 将admin配置为0.0.0.0（表示所有调用http命令的ip都是admin，不推荐这种做法）。
 
     .. code-block:: ini
 
@@ -130,7 +130,7 @@ Chainsql节点问题
 8. peers命令看不到其它节点，配置没问题，telnet peer端口能通，不是问题6的情况
     可能原因：
 
-    1. ``db/peerfinder.sqlite`` 与 ``db/wallet.db`` 会缓存之前的连接ip，会影响节点发现，将这两个文件删除再重启
+    1. ``db/peerfinder.sqlite`` 与 ``db/wallet.db`` 会缓存之前的连接ip，会影响节点发现，将这两个文件删除再重启。
 
 9. 节点启动时突然退出，日志最后几行没有错误信息
     在日志中查找有没有 ``FTL`` 字样的信息，如：
@@ -140,7 +140,7 @@ Chainsql节点问题
         2019-Dec-19 03:21:07 Application:FTL Invalid seed specified in [validation_seed]
         2019-Dec-19 03:21:07 JobQueue:NFO Auto-tuning to 6 validation/transaction/proposal threads.
 
-    ``FTL`` 是 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出
+    ``FTL`` 是 ``fatal`` 的缩写，上面的日志说明是 ``[validation_seed]`` 字段配置有问题导致 ``fatal`` 级别错误。发出 ``fatal`` 错误信号后节点过一会儿自动退出。
 
 表同步问题
 **********************

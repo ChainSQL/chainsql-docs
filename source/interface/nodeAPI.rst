@@ -1268,8 +1268,8 @@ createTable
 参数说明
 -----------
 
-1. ``tableName`` - ``String`` : 新建表的表名
-2. ``raw`` - ``Array`` : 对新建表的属性设定，详细格式及内容可参看  :ref:`建表raw字段说明 <create-table>`
+1. ``tableName`` - ``String`` : 新建表的表名；
+2. ``raw`` - ``Array`` : 对新建表的属性设定，详细格式及内容可参看  :ref:`建表raw字段说明 <create-table>`；
 3. ``option`` - ``JsonObject`` : [**可选**]是否创建加密表及是否开启行及控制，字段如下：
 
 	* ``confidential`` - ``Boolean`` : [**可选**]是否创建加密表，不传该值或者为false时，创建非加密表；
@@ -1847,7 +1847,7 @@ getBySqlAdmin
 参数说明
 -----------
 
-1. ``sql`` - ``String`` : SQL语句，用于查询
+1. ``sql`` - ``String`` : SQL语句，用于查询。
 
 返回值
 -----------
@@ -1948,11 +1948,11 @@ createSchema
 
 参数为创建子链的信息，Json结构为：
 
-1. ``SchemaName``       - ``String``:    子链名称;
-2. ``WithState``        - ``String``:    是否继承主链状态;
-3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash
-4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表
-5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表
+1. ``SchemaName``       - ``String``:    子链名称；
+2. ``WithState``        - ``String``:    是否继承主链状态；
+3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash；
+4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表；
+5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表。
 
 返回值
 ---------
@@ -2020,10 +2020,10 @@ modifySchema
 
   schemaInfo 结构为：
   
-  1. ``SchemaID``         - ``String``:    子链ID;
-  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表
-  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表
-  4. ``ModifyType``		  - ``String``:	   修改子链类型，可取值为 ``schema_add`` 或 ``schema_del``
+  1. ``SchemaID``         - ``String``:    子链ID；
+  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表；
+  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表；
+  4. ``ModifyType``		  - ``String``:	   修改子链类型，可取值为 ``schema_add`` 或 ``schema_del``。
   
 返回值
 ------------
@@ -2069,8 +2069,8 @@ getSchemaList
   
   参数有两个可选项，均为过滤条件，不填则查询链上所有子链
 
-  1. ``account``  - ``String``：  可选，建链账户地址
-  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链
+  1. ``account``  - ``String``：  可选，建链账户地址；
+  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链。
    
 返回值
 ---------------
@@ -2103,7 +2103,7 @@ getSchemaInfo
 参数说明
 -------------
 
-  1. ``schemaID``  - ``String``：  子链ID
+  1. ``schemaID``  - ``String``：  子链ID。
    
 返回值
 ------------
@@ -2136,7 +2136,7 @@ setSchema
 -------------
   
 
-  1. ``schemaID``  - ``String``：  子链ID
+  1. ``schemaID``  - ``String``：  子链ID。
     
 返回值
 ------------
@@ -2284,7 +2284,7 @@ unsubscribeTx
 参数说明
 -----------
 
-1. ``txHash`` - ``String`` : 被订阅的交易哈希值；
+1. ``txHash`` - ``String`` : 被订阅的交易哈希值。
 
 返回值
 -----------

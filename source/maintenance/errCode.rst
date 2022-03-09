@@ -12,11 +12,11 @@
 
 普通请求错误码
 ===================
-普通请求指的是 ``非交易类`` 请求，一般用于查询链上数据
+普通请求指的是 ``非交易类`` 请求，一般用于查询链上数据。
 
 请求返回示例
 ---------------------
-普通请求成功返回示例(RPC):
+普通请求成功返回示例(RPC)：
 
 .. code-block:: json
 
@@ -42,7 +42,7 @@
         }
     }
 
-普通请求失败返回示例(RPC):
+普通请求失败返回示例(RPC)：
 
 .. code-block:: json
 
@@ -67,7 +67,7 @@
 
 错误码列表：
 -------------------------
-| 普通请求错误码git源码: `ErrorCodes.cpp <https://github.com/ChainSQL/chainsqld/blob/master/src/ripple/protocol/impl/ErrorCodes.cpp>`_
+| 普通请求错误码git源码：`ErrorCodes.cpp <https://github.com/ChainSQL/chainsqld/blob/master/src/ripple/protocol/impl/ErrorCodes.cpp>`_
 | 错误码列表：
 
 ========================	=====================================================================

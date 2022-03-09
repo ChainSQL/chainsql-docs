@@ -1,7 +1,7 @@
 Raw字段解析
 =======================
 
- -  Chainsql表相关操作中，一般用Raw字段来表示实际操作内容，用到Raw字段的操作包括：建表、授权、插入、更新、删除、查询。
+ -  Chainsql表相关操作中，一般用Raw字段来表示实际操作内容，用到Raw字段的操作包括：建表、授权、插入、更新、删除、查询
  -  这里只是解析Raw字段的写法，针对各个操作的具体使用方法还需要参考 :ref:`Java <JavaAPI_entry>` 与  :ref:`Node.js <NodeAPI_entry>` api使用文档
   
   下面针对各个操作，对Raw字段进行解析。
@@ -129,7 +129,7 @@ Raw字段解析
 说明
 **********
 - 授权交易的Raw字段比较容易理解，分别表示对各个操作的授权或取消授权。
-- 权限包括：insert,update,delete,select四种
+- 权限包括：insert, update, delete, select四种
 - 可以四种都写全，也可以只写一部分（没写的部分继承之前的权限）
 
 .. _insert-table:
@@ -360,7 +360,7 @@ Raw字段解析
 对查询结果进行排序
 ******************************
   | 对应API中的 ``order`` 方法。
-  | 对结果排序需在查询条件中指定
+  | 对结果排序需在查询条件中指定。
     
   示例如下：
 
@@ -386,8 +386,8 @@ Raw字段解析
 
 分页查询
 ******************************
-  | 对应API中的 ``limit`` 方法
-  | 在查询条件中使用limit关键字来指定返回查询结果的起始下标，以及返回的数量限制
+  | 对应API中的 ``limit`` 方法。
+  | 在查询条件中使用limit关键字来指定返回查询结果的起始下标，以及返回的数量限制。
 
   示例如下：
 
@@ -487,7 +487,7 @@ $or           	逻辑或                {$or:[{express1},{express2},...,{express
 
 .. code-block:: javascript
 
-  where name = 'peersafe' or name = 'zongxiang'
+  where name = 'peersafe' or name = 'zhongxiang'
   //对应 json 对象
   {
     $or: [
@@ -495,14 +495,14 @@ $or           	逻辑或                {$or:[{express1},{express2},...,{express
         name: {$eq:'peersafe'}
       },
       {
-        name: {$eq:zongxiang}
+        name: {$eq:zhongxiang}
       }
     ]
   }
 
 .. code-block:: javascript
 
-  where (id > 10 and name = 'peersafe') or name = 'zongxiang'
+  where (id > 10 and name = 'peersafe') or name = 'zhongxiang'
   //对应 json 对象
   {
     $or: [
@@ -516,7 +516,7 @@ $or           	逻辑或                {$or:[{express1},{express2},...,{express
           }]
       },
       {
-        name:'zongxiang'
+        name:'zhongxiang'
       }
     ]
   }

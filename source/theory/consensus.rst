@@ -109,5 +109,5 @@ POP共识算法是一种确定性出块的共识，包含3阶段两轮异步投�
 4. 其它
 ****************************
 
-1. HotStuff共识算法由算法核心类 ``Hotstuff`` 来驱动共识并管理共识轮次。 ``HottsuffConsensus`` 引擎负责启动 ``Hotstuff`` ，不关心核心的共识轮次，作为 ``Hotstuff`` 核心的接口类并管理外部账本的高度变化。
+1. HotStuff共识算法由算法核心类 ``Hotstuff`` 来驱动共识并管理共识轮次。 ``HotsuffConsensus`` 引擎负责启动 ``Hotstuff`` ，不关心核心的共识轮次，作为 ``Hotstuff`` 核心的接口类并管理外部账本的高度变化。
 2. 在flag区块所有共识算法都需要通过提交validation来对 ``FeeVote`` 和 ``Amendments`` 进行投票。

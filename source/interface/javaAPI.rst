@@ -114,9 +114,9 @@ Java-SDK的 :ref:`as <javaAS>` 确定Java-SDK以何种算法运行：
 1.5.1
 ----------
     - 对应 ``Chainsqld`` 版本 ``0.30.3``
-    - 1.5.1版本之前的版本对多线程的支持不好,新版本支持多线程中调用。
+    - 1.5.1版本之前的版本对多线程的支持不好，新版本支持多线程中调用。
     - 1.5.1版本之前 ``pay`` 方法直接调会返回交易提交结果，而新版本需要在方法后接 ``.submit`` 指定是否共识成功返回。具体示例见 :ref:`示例 <my-reference-pay-sample>`.
-    - 1.5.1版本之前对象可以使用Chainsql静态对象： ``Chainsql c = Chainsql.c`` ,现在删除了静态对象，需要用户自己调用 ``new`` ，例如
+    - 1.5.1版本之前对象可以使用Chainsql静态对象： ``Chainsql c = Chainsql.c`` ，现在删除了静态对象，需要用户自己调用 ``new`` ，例如
       ``Chainsql c = new Chainsql();``
 
 ------------------------
@@ -309,8 +309,8 @@ as
 --------
 
 
-1. ``address``  - ``String``: 账户地址.
-2. ``secret``  - ``String``: 账户私钥
+1. ``address``  - ``String``: 账户地址；
+2. ``secret``  - ``String``: 账户私钥。
 
 
 返回值
@@ -363,7 +363,7 @@ use接口主要使用场景是针对ChainSQL的表操作，为其提供表的 **
 
 ------
 
-.. note:: 进行表操作前必须调用use,来指定表的所有者。因为不同用户可能存在同名的表名
+.. note:: 进行表操作前必须调用use，来指定表的所有者。因为不同用户可能存在同名的表名
 
 -------------------
 connect
@@ -385,7 +385,7 @@ connect
 -------------------
 
 
-1. ``url`` - ``String``: 节点的websocket访问地址,格式为:"ws://127.0.0.1:5006".
+1. ``url`` - ``String``: 节点的websocket访问地址，格式为:"ws://127.0.0.1:5006".
 2. ``serverCertPath`` - ``String``: 认证路径.
 3. ``storePass`` - ``String``: 认证密码
 4. ``connectCb`` - ``Callback<Client>``:    已连接节点后的回调
@@ -406,7 +406,7 @@ connect
 .. code-block:: java
 
     // 同步连接
-    // 如果无法建立连接,会抛出java.net.ConnectException;
+    // 如果无法建立连接，会抛出java.net.ConnectException;
     String url = "ws://192.168.0.162:6006";
     c.connect(url);
 
@@ -451,8 +451,8 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
 -------------------
 
 
-1. ``cb``   - ``Callback``: 异步接口，参数为 回调函数
-2. ``cond`` - ``SyncCond``: 同步接口，参数为 枚举类型;
+1. ``cb``   - ``Callback``: 异步接口，参数为 回调函数；
+2. ``cond`` - ``SyncCond``: 同步接口，参数为 枚举类型。
 
 .. code-block:: java
 
@@ -624,7 +624,7 @@ pay(转账系统数字资产)
 
   public Ripple pay(String accountId, String value);
 
-给用户转账,新创建的用户在转账成功之后才能正常使用(激活)。
+给用户转账，新创建的用户在转账成功之后才能正常使用(激活)。
 
 .. note::
     这个函数有重载，除了可以转账系统数字资产外，还可以转账配置的数字资产：:ref:`pay(转账数字资产) <pay-数字资产>`
@@ -638,14 +638,14 @@ pay(转账系统数字资产)
 
 
 1. ``accountId``   - ``String``: 接收转账方地址
-2. ``value``       - ``String``: 转账金额（单位:ZXC）,默认情况下，最少需要5个ZXC才能激活一个账户
+2. ``value``       - ``String``: 转账金额（单位:ZXC），默认情况下，最少需要5个ZXC才能激活一个账户
 
 
 返回值
 ----------
 
 
-``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
 
 
 .. _my-reference-pay-sample:
@@ -686,9 +686,9 @@ generateAddress
 
 
 1. ``secret``  - ``String``: 账户私钥
-2. ``options`` - ``JSONObject``: : 指定算法类型或账户私钥,字段如下：
+2. ``options`` - ``JSONObject``: : 指定算法类型或账户私钥，字段如下：
 
-	* ``algorithm`` - ``String`` : 算法类型包括 ed25519 , secp256k1 , softGMAlg
+	* ``algorithm`` - ``String`` : 算法类型包括 ed25519, secp256k1, softGMAlg
 	* ``secret`` - ``String`` : 账户私钥
 
 返回值
@@ -756,7 +756,7 @@ validationCreate
 
 
 1. ``count`` - ``int``: 生成的key的个数
-2. ``options`` - ``JSONObject``: : 指定算法类型或验证key的私钥,字段如下：
+2. ``options`` - ``JSONObject``: : 指定算法类型或验证key的私钥，字段如下：
 
 	* ``algorithm`` - ``String`` : 算法类型包括 softGMAlg
 	* ``secret`` - ``String`` : 验证key的私钥
@@ -765,7 +765,7 @@ validationCreate
 ----------
 
 
-1. ``JSONObject`` -  一个有效的key,结构为{"seed":xxx,"publickey":xxx}
+1. ``JSONObject`` -  一个有效的key，结构为{"seed":xxx,"publickey":xxx}
 2. ``JSONArray``  -  一个或多个有效的key，每个key的结构同上
 
 
@@ -957,7 +957,7 @@ getUnlList
 ----------
 
 
-``JSONObject`` - 信任公钥列表,详细字段见示例
+``JSONObject`` - 信任公钥列表，详细字段见示例
 
 
 示例
@@ -1229,13 +1229,13 @@ getLedgerTxs
 参数
 ----------
 
-1. ``ledgerSeq`` - ``Integer``: 账本索引
+1. ``ledgerSeq`` - ``Integer``: 账本索引；
 
-2. ``bIncludeSuccess`` - ``boolean``: 是否要获取所有成功交易的哈希
+2. ``bIncludeSuccess`` - ``boolean``: 是否要获取所有成功交易的哈希；
 
-3. ``bIncludefailure`` - ``boolean``: 是否要获取所有失败交易的哈希和错误码
+3. ``bIncludefailure`` - ``boolean``: 是否要获取所有失败交易的哈希和错误码；
 
-4. ``cb`` - ``Callback`` : 异步接口，参数为 回调函数
+4. ``cb`` - ``Callback`` : 异步接口，参数为 回调函数。
 
 返回值
 ----------
@@ -1290,9 +1290,9 @@ getAccountTransactions
 ----------
 
 
-1. ``address`` - ``String``: 查询交易的账户地址;
-2. ``limit``   - ``int``: 获取的最大的交易数量;
-3. ``cb``      - ``Callback`` : 异步接口，参数为 回调函数
+1. ``address`` - ``String``: 查询交易的账户地址；
+2. ``limit``   - ``int``: 获取的最大的交易数量；
+3. ``cb``      - ``Callback`` : 异步接口，参数为 回调函数。
 
 
 返回值
@@ -1614,7 +1614,7 @@ getTableNameInDB
 ----------
 
 
-1. ``owner`` - ``String``: 账户地址,表的拥有者；
+1. ``owner`` - ``String``: 账户地址，表的拥有者；
 2. ``tableName`` - ``String``:  原始表名
 
 
@@ -1852,14 +1852,14 @@ memos
 1. ``memosInfo`` - ``JSONObject`` : 备忘录信息，包含以下三个字段:
 
 	- ``data`` - ``String`` : 16进制字符串，通常包含备忘录的内容；
-	- ``format`` - ``String`` : [**可选**] 16进制字符串,备忘录内容的格式，例如 ``MIME 类型`` ；
-	- ``type`` - ``String`` : [**可选**] 16进制字符串, 定义了此备忘录的格式（遵从协议 ``RFC 3986`` ）。
+	- ``format`` - ``String`` : [**可选**] 16进制字符串，备忘录内容的格式，例如 ``MIME 类型`` ；
+	- ``type`` - ``String`` : [**可选**] 16进制字符串，定义了此备忘录的格式（遵从协议 ``RFC 3986`` ）。
 
 
 返回值
 ----------
 
-``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
 
 
 示例
@@ -1906,7 +1906,7 @@ accountSet
 
 
 1. ``nFlag`` - ``int``:                 一般情况下为8，表示asfDefaultRipple，详见 ``AccountSet Flags``
-2. ``bSet`` - ``boolean``:             true:设置nFlag标志 ; false: 取消nFlag标志
+2. ``bSet`` - ``boolean``:             true:设置nFlag标志；false: 取消nFlag标志
 3. ``transferRate`` - ``String``:      网关数字资产的转账费率，取值为1.0~2.0；
 4. ``transferFeeMin`` - ``String``:    通过网关进行转账，网关要收取的最小手续费，10进制字符串数字，例如"1"
 5. ``transferFeeMax`` - ``String``:    通过网关进行转账，网关要收取的最大手续费，10进制字符串数字，例如"10"
@@ -1914,16 +1914,16 @@ accountSet
 
 .. note::
 
-	* 关于费率：可取消设置，min/max=0,rate=1.0为取消设置。
+	* 关于费率：可取消设置，min/max=0, rate=1.0为取消设置。
 	* 每次设置都是重新设置，之前的设置会被替代。
-	* min,max可只设置一个，但这时要同时设置rate。
-	* 如果只设置rate，默认为取消设置min,max。
-	* 如果只设置min与rate，max会被取消设置,同理只设置max与rate，min会被取消设置。
+	* min, max可只设置一个，但这时要同时设置rate。
+	* 如果只设置rate，默认为取消设置min, max。
+	* 如果只设置min与rate，max会被取消设置，同理只设置max与rate，min会被取消设置。
 
 返回值
 ----------
 
-``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
 
 
 示例
@@ -2019,7 +2019,7 @@ trustSet
 ----------
 
 
-``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
 
 
 示例
@@ -2062,7 +2062,7 @@ pay(转账网关数字资产)
 ----------
 
 
-``Ripple`` - Ripple对象,后面一般接submit进行连续操作,如示例。
+``Ripple`` - Ripple对象，后面一般接submit进行连续操作，如示例。
 
 
 备注
@@ -2113,7 +2113,7 @@ getAccountBalance
   public JSONArray getAccountBalance(String address);
   public JSONObject getAccountBalance(String address, String gateWay, String currency);
 
-查询数字资产余额和ZXC余额
+查询数字资产余额和ZXC余额。
 
 
 参数
@@ -2122,7 +2122,7 @@ getAccountBalance
 
 1. ``address`` - ``String``:      账户地址
 2. ``gateWay`` - ``String``:      数字资产的配置网关地址
-3. ``currency`` - ``String``:     数字资产。
+3. ``currency`` - ``String``:     数字资产
 
 
 
@@ -2167,7 +2167,7 @@ createTable
 
 
 1. ``name``   - ``String``: 所创建表名，创建表不支持自增型;
-2. ``raw`` - ``List``: 创建表的字段名称必须为Json格式数据,详细格式及内容可参看  :ref:`建表raw字段说明 <create-table>`;例如：
+2. ``raw`` - ``List``: 创建表的字段名称必须为Json格式数据，详细格式及内容可参看  :ref:`建表raw字段说明 <create-table>`;例如：
 
 .. code-block:: javascript
 
@@ -2176,7 +2176,7 @@ createTable
   {'field':'age','type':'int'}
 
 
-3. ``confidential``  - ``boolean``:    表示创建的表是否为加密的表,true:创建加密表;如果不写,默认为false;
+3. ``confidential``  - ``boolean``:    表示创建的表是否为加密的表，true:创建加密表;如果不写，默认为false;
 4. ``operationRule`` - ``JSONObject``: 行级控制规则，不能与confidential一起使用。格式及内容可查看 :ref:`行级控制规则 <recordLevel>` 。
 
 .. _my-reference-chainsql:
@@ -2186,10 +2186,10 @@ createTable
 ----------
 
 
-1. ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作,如示例。
+1. ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作，如示例。
 
 
-示例
+示例。
 
 
 .. code-block:: java
@@ -2218,7 +2218,7 @@ renameTable
 
   public Chainsql renameTable(String oldName, String newName);
 
-修改数据库中表的名字
+修改数据库中表的名字。
 
 
 参数
@@ -2226,7 +2226,7 @@ renameTable
 
 
 1. ``oldName`` - ``String``:  旧的表名
-2. ``newName`` - ``String``: 新的表名;两个名字都不能为空；
+2. ``newName`` - ``String``: 新的表名；两个名字都不能为空
 
 
 返回值
@@ -2263,7 +2263,7 @@ dropTable
 
   public Chainsql dropTable(String tableName);
 
-从数据库删除一个表。表和它的所有数据将被删除;
+从数据库删除一个表。表和它的所有数据将被删除。
 
 
 参数
@@ -2302,7 +2302,7 @@ table
 
   public Table table(String tableName);
 
-创建一个table对象
+创建一个table对象。
 
 
 参数
@@ -2369,7 +2369,7 @@ insert
 ----------
 
 1. ``raw``    - ``List``:  raw类型必须是示例中json格式的数据类型，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ;
-2. ``autoFillField``  - ``String``: 插入操作支持将每次插入交易的哈希值作为字段信息同步插入到数据库中。使用该功能时，需要在建表时指定一个字段为存储交易哈希,并将该字段名作为参数传递给insert;
+2. ``autoFillField``  - ``String``: 插入操作支持将每次插入交易的哈希值作为字段信息同步插入到数据库中。使用该功能时，需要在建表时指定一个字段为存储交易哈希，并将该字段名作为参数传递给insert;
 3. ``txsHashFillField``  - ``String``:  该参数的功能与 ``autoFillField`` 类似，可配合update实现存储历史哈希列表的功能，具体使用见 :ref:`update  <UpdateJava>` ; 
 
 .. IMPORTANT::
@@ -2443,7 +2443,7 @@ update
 
 1. ``raw``  - ``List``:  raw类型必须都是示例中的json格式的数据类型，详细格式和内容可参看 :ref:`更新raw字段说明 <update-table>`;
 2. ``autoFillField``  - ``String``: 更新操作支持将每次更新交易的哈希值作为字段信息同步更新到数据库中。使用该功能时，需要在建表时指定一个字段存储交易哈希,并将该字段名作为参数传递给update; 
-3. ``txsHashFillField``  - ``String``: 该参数的功能与 ``autoFillField`` 类似,区别在于该参数指定的字段可存储历史交易哈希信息列表，将单条表记录的多次更新操作可汇集成一个hash值列表插入 ``txsHashFillField`` 字段中，并以 ``,`` 分割符分割哈希值，具体使用见示例3; 
+3. ``txsHashFillField``  - ``String``: 该参数的功能与 ``autoFillField`` 类似，区别在于该参数指定的字段可存储历史交易哈希信息列表，将单条表记录的多次更新操作可汇集成一个hash值列表插入 ``txsHashFillField`` 字段中，并以 ``,`` 分割符分割哈希值，具体使用见示例3; 
 
 返回值
 ----------
@@ -2603,8 +2603,8 @@ commit
 ----------
 
 
-1. ``cond`` - ``SyncCond``: 同步接口，参数为 枚举类型;
-2. ``cb``   - ``Callback``: 异步接口，参数为 回调函数
+1. ``cond`` - ``SyncCond``: 同步接口，参数为 枚举类型；
+2. ``cb``   - ``Callback``: 异步接口，参数为 回调函数。
 
 
 返回值
@@ -2777,7 +2777,7 @@ get
 
    public  Table get(List<String> args);
 
-从数据库查询数据,后面可以进行其他操作，例如update、delete等;
+从数据库查询数据，后面可以进行其他操作，例如update、delete等；
 通过指定查询的内容作为raw参数传入，raw的详细格式及内容可参看 :ref:`Raw字段详解 <查询Raw详解>`
 
 
@@ -2963,7 +2963,7 @@ withFields
 
   public Table withFields(String  orgs);
 
-从数据库查询数据,并返回指定字段,必须与get配合使用;
+从数据库查询数据，并返回指定字段，必须与get配合使用;
 
 
 参数
@@ -3053,7 +3053,7 @@ getBySqlAdmin
 
 1. ``JSONObject`` :主要参数说明(格式见示例输出)   
 
-      * ``final_result``   -  true，查询成功;false,查询失败。
+      * ``final_result``   -  true，查询成功；false，查询失败。
       * ``diff``           -  当前区块序号与被查询表数据库同步到的区块序号的差值，如果有多个表，取最大差值。
       * ``lines``          -  返回查询的sql结果。
       * ``error_message``  -  错误返回时，显示错误信息。
@@ -3164,7 +3164,7 @@ getBySqlUser
 
 1. ``JSONObject`` :主要参数说明(格式见示例输出)   
 
-      * ``final_result``   -  true，查询成功;false,查询失败。
+      * ``final_result``   -  true，查询成功;false，查询失败。
       * ``diff``           -  当前区块序号与被查询表数据库同步到的区块序号的差值，如果有多个表，取最大差值。
       * ``lines``          -  返回查询的sql结果。
       * ``error_message``  -  错误返回时，显示错误信息。
@@ -3267,16 +3267,16 @@ createSchema
 
 参数为创建子链的信息，Json结构为：
 
-1. ``SchemaName``       - ``String``:    子链名称;
-2. ``WithState``        - ``String``:    是否继承主链状态;
-3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash
-4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表
-5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表
+1. ``SchemaName``       - ``String``:    子链名称；
+2. ``WithState``        - ``String``:    是否继承主链状态；
+3. ``AnchorLedgerHash`` - ``String``:     继承主链的区块Hash；
+4. ``Validators``       - ``JSONArray`` : 子链节点共识公钥列表；
+5. ``PeerList``         - ``JSONArray`` : 子链节点P2P连接方式列表。
 
 返回值
 ----------
 
-``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作,如示例。
+``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作，如示例。
 
 
 示例
@@ -3335,14 +3335,14 @@ modifySchema
 
   schemaInfo 结构为：
   
-  1. ``SchemaID``         - ``String``:    子链ID;
-  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表
-  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表
+  1. ``SchemaID``         - ``String``:    子链ID；
+  2. ``Validators``       - ``JSONArray`` : 要增删的子链节点共识公钥列表；
+  3. ``PeerList``         - ``JSONArray`` : 要增删的子链节点P2P连接方式列表。
   
 返回值
 ----------
   
-  ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作,如示例。
+  ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作，如示例。
   
   示例
   
@@ -3385,8 +3385,8 @@ getSchemaList
   
   参数有两个可选项，均为过滤条件，不填则查询链上所有子链
 
-  1. ``account``  - ``String``：  可选，建链账户地址
-  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链
+  1. ``account``  - ``String``：  可选，建链账户地址；
+  2. ``running``  - ``bool``  :   可选，是否当前节点正运行中的子链。
    
 返回值
 ----------
@@ -3487,9 +3487,9 @@ subscribeTable
 ----------
 
 
-1. ``name``    - ``String``:    表名;
-2. ``owner``   - ``String``:    为表的所有者地址;
-3. ``cb``      - ``Callback`` : 回调函数
+1. ``name``    - ``String``:    表名；
+2. ``owner``   - ``String``:    为表的所有者地址；
+3. ``cb``      - ``Callback`` : 回调函数。
 
 
 返回值
@@ -3530,7 +3530,7 @@ unsubcribeTable
 
 1. ``name``  - ``String``:  被订阅的数据库表名；
 2. ``owner``      - ``String``:  被订阅的表拥有者地址；
-3. ``cb``         - ``Callback``: 异步接口回调
+3. ``cb``         - ``Callback``: 异步接口回调。
 
 
 返回值

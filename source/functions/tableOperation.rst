@@ -30,9 +30,9 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 2 具体功能
 *************************
 
-本节通过一个示例，旨在指引用户如何实现对自己的数据库的表操作,并通过RPC,JAVA API以及Node.js API实现对数据库表的操作
+本节通过一个示例，旨在指引用户如何实现对自己的数据库的表操作，并通过RPC，JAVA API以及Node.js API实现对数据库表的操作
 
-数据库表的表名为 ``table_test`` ,表的结构如下:
+数据库表的表名为 ``table_test`` ，表的结构如下:
 
 .. list-table::
 
@@ -133,7 +133,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
           try{
 
               var tableRaw = [
-                  { 'field': 'id', 'type': 'int','PK':1,'NN':1,'UQ':1 },
+                  { 'field': 'id', 'type': 'int', 'PK':1, 'NN':1, 'UQ':1 },
                   { 'field': 'name', 'type': 'varchar', 'length': 50 },
                   { 'field': 'age', 'type': 'int', 'length': 11 }
                 ];
@@ -240,7 +240,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 2.3 数据库表的更新
 =============================================
 
-更新数据库表  ``table_test`` 数据, 规则为 当  ``id=1`` 时，设置 ``age=11`` 
+更新数据库表  ``table_test`` 数据，规则为 当  ``id=1`` 时，设置 ``age=11`` 
 
 
 .. code-block:: json
@@ -314,7 +314,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 2.4 重命名数据库表
 =============================================
 
-重命名数据库表,表名  ``table_test`` 修改为  ``table_test_new``
+重命名数据库表，表名  ``table_test`` 修改为  ``table_test_new``
 
 .. code-block:: json
 
@@ -643,7 +643,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
     try{
 
         var tableRaw = [
-            { 'field': 'id', 'type': 'int','PK':1,'NN':1,'UQ':1 },
+            { 'field': 'id', 'type': 'int', 'PK':1, 'NN':1, 'UQ':1 },
             { 'field': 'name', 'type': 'varchar', 'length': 50 },
             { 'field': 'age', 'type': 'int', 'length': 11 }
           ];
@@ -652,7 +652,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
               confidential: true
           };
           
-          let ret = await  c.createTable("table_test", tableRaw,option).submit({expect:'db_success'});
+          let ret = await  c.createTable("table_test", tableRaw, option).submit({expect:'db_success'});
 
           console.log("    table_create_confidential  :", ret);
 

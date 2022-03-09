@@ -3,7 +3,7 @@
 
 ChainSQL目前支持Solidity智能合约形式。
 
-- 支持Solidity合约到版本0.8.5。
+- 支持Solidity合约到版本0.8.5
 - 智能合约支持数据库表相关操作
 - 智能合约支持数字资产配置
 
@@ -33,7 +33,7 @@ ChainSQL目前支持Solidity智能合约形式。
 三. 示例
 ==============================================
 
-本文通过一个示例，旨在指引用户如何实现自己的数据库操作合约,并通过JAVA API以及Node.js API实现对数据库操作合约的调用。
+本文通过一个示例，旨在指引用户如何实现自己的数据库操作合约，并通过JAVA API以及Node.js API实现对数据库操作合约的调用。
 
 合约示例
 ++++++++++++++++++++++++++++++++++++++++
@@ -260,7 +260,7 @@ Node.js API的调用
 三. 示例
 ==============================================
 
-本文通过一个示例，旨在指引用户如何实现自己的数据库操作合约,并通过JAVA API以及Node.js API实现对数据库操作合约的调用。
+本文通过一个示例，旨在指引用户如何实现自己的数据库操作合约，并通过JAVA API以及Node.js API实现对数据库操作合约的调用。
 
 预编译合约
 ++++++++++++++++++++++++++++++++++++++++
@@ -313,7 +313,7 @@ Node.js API的调用
 合约示例
 ++++++++++++++++++++++++++++++++++++++++
 
-提供一个合约示例 ``solidity-PreCompiled-TableTxs .sol``，合约中包括通过调用预编译合约对表的增删改查以及在合约部署时创建表等操作的指令。合约中代码带有"ByContract"的方法是对合约地址表的操作。代码如下:
+提供一个合约示例 ``solidity-PreCompiled-TableTxs.sol``，合约中包括通过调用预编译合约对表的增删改查以及在合约部署时创建表等操作的指令。合约中代码带有"ByContract"的方法是对合约地址表的操作。代码如下:
 
 .. code-block:: javascript
 
@@ -488,7 +488,7 @@ Node.js API的调用
 
     function get(address owner, string memory tableName, string memory raw, string memory field) public pure returns(string memory) {
         uint256 handle = op_.getDataHandle(owner, tableName, raw);
-        require(handle != uint256(0), "Get table data failed,maybe user not authorized!");
+        require(handle != uint256(0), "Get table data failed, maybe user not authorized!");
         uint row = db.getRowSize(handle);
         bytes memory xxx = "";
         for(uint i=0; i<row; i++)
@@ -502,7 +502,7 @@ Node.js API的调用
 
    function getByContract(address owner, string memory tableName, string memory raw, string memory field) public view returns(string memory) {
         uint256 handle = op_.getDataHandleByContract(owner, tableName, raw);
-        require(handle != uint256(0), "Get table data failed,maybe user not authorized!");
+        require(handle != uint256(0), "Get table data failed, maybe user not authorized!");
         uint row = db.getRowSize(handle);
         bytes memory xxx = "";
         for(uint i=0; i<row; i++)
@@ -564,7 +564,7 @@ Node.js API的调用
 三. 示例
 ==============================================
 
-本文通过一个示例，旨在指引用户如何实现自己的数字资产操作合约,并通过JAVA以及Node.js实现对数字资产操作智能合约的调用。
+本文通过一个示例，旨在指引用户如何实现自己的数字资产操作合约，并通过JAVA以及Node.js实现对数字资产操作智能合约的调用。
 
 合约示例
 ++++++++++++++++++++++++++++++++++++++++
@@ -597,7 +597,7 @@ Node.js API的调用
         *  设置网关数字资产分发费用
         * @param sRate    网关数字资产分发费率。范围为"1.0”- "2.0" 或者"0.0"
         * @param minFee   网关网关数字资产分发最小花费  字符串转成10进制数后， >=0
-        * @param maxFee   网关网关数字资产分发最大花费	字符串转成10进制数后,  >=0
+        * @param maxFee   网关网关数字资产分发最大花费	字符串转成10进制数后，  >=0
     	* @ 备注 ,以下规则均在字符串转化为10进制数后进行运算
     
     		 1 sRate 为0或者1时，表示取消费率，但是此时的minFee必须等于maxFee。
