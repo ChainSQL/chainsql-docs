@@ -1497,14 +1497,14 @@ sign
 
   JSONObject obj = new JSONObject();
   JSONObject tx_json = new JSONObject();
-  tx_json.put("Account", "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh");
+  tx_json.put("Account", "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh");
   tx_json.put("Amount", "10000000000");
-  tx_json.put("Destination", "rBuLBiHmssAMHWQMnEN7nXQXaVj7vhAv6Q");
+  tx_json.put("Destination", "zKQwdkkzpUQC9haHFEe2EwUsKHvvwwPHsv");
   tx_json.put("TransactionType", "Payment");
   tx_json.put("Sequence", 2);
   obj.put("tx_json", tx_json);
 
-  JSONObject res = c.sign(obj, "snoPBrXtMeMyMHUVTgbuqAfg1SUTb");
+  JSONObject res = c.sign(obj, "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb");
   System.out.println(res);
 
 
@@ -3882,14 +3882,14 @@ sign
 
     JSONObject obj = new JSONObject();
     JSONObject tx_json = new JSONObject();
-    tx_json.put("Account", "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh");
+    tx_json.put("Account", "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh");
     tx_json.put("Amount", "10000000000");
     tx_json.put("Destination", "zpMZ2H58HFPB5QTycMGWSXUeF47eA8jyd4");
     tx_json.put("TransactionType", "Payment");
     tx_json.put("Sequence", 2);
     obj.put("tx_json", tx_json);
 		
-    JSONObject res = c.sign(obj, "snoPBrXtMeMyMHUVTgbuqAfg1SUTb");
+    JSONObject res = c.sign(obj, "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb");
     System.out.println("sign payment result:" + res);
 
 ------------------------------------------------------------------------------
@@ -3966,28 +3966,28 @@ symEncrypt
 -------------------
 .. code-block:: javascript
 
-	EncryptCommon.symEncrypt(byte[] plainBytes,byte[] password,boolean bSM)
+	c.symEncrypt(String plainText, byte[] password, boolean bSM)
 
 | 使用密钥对明文进行加密。
 
 参数说明
 -----------
 
-1. ``plainBytes`` - ``String`` : 加密明文；
-2. ``password`` - ``String`` : 加密密钥；
+1. ``plainText`` - ``String`` : 加密明文；
+2. ``password`` - ``byte[]`` : 加密密钥；
 3. ``bSM`` - ``boolean`` : 是否使用国密算法。如果使用国密算法，注意密钥是16位。
 
 返回值
 -----------
 
-``byte[]`` : 加密结果。
+``String`` : 加密结果。
 
 示例
 -----------
 .. code-block:: javascript
 
     byte[] password = Util.getRandomBytes(16);
-    byte[] rawBytes = EncryptCommon.symEncrypt("test".getBytes(),password, true);
+    String cipherText = c.symEncrypt("test",password, true);
 
 ------------------------------------------------------------------------------
 
@@ -3997,7 +3997,7 @@ symDecrypt
 -------------------
 .. code-block:: javascript
 
-	EncryptCommon.symDecrypt(byte[] cipherText, byte[] password, boolean bSM)
+	c.symDecrypt(String cipherText, byte[] password, boolean bSM)
 
 | 使用密钥对密文进行解密。
 
@@ -4005,20 +4005,20 @@ symDecrypt
 -----------
 
 1. ``cipherText`` - ``String`` : 解密密文；
-2. ``password`` - ``String`` : 解密密钥；
+2. ``password`` - ``byte[]`` : 解密密钥；
 3. ``bSM`` - ``boolean`` : 是否使用国密算法。如果使用国密算法，注意密钥是16位。
 
 返回值
 -----------
 
-``byte[]`` : 返回解密后的明文。
+``String`` : 返回解密后的明文。
 
 示例
 -----------
 .. code-block:: javascript
 
-    byte[] newBytes = EncryptCommon.symDecrypt(rawBytes, password, true);
-    System.out.println("解密后的明文为 : " +  new String(newBytes));
+    String plain  = c.symDecrypt(cipherText, password, true);
+    System.out.println("解密后的明文为 : " +  plain);
 
 ------------------------------------------------------------------------------
 
@@ -4027,32 +4027,33 @@ asymEncrypt
 -------------------
 .. code-block:: javascript
 
-	EncryptCommon.asymEncrypt(byte[] plainBytes,byte[] publicKey)
+	c.asymEncrypt(String plainText, String publicKey, boolean bSM)
 
 | 使用公钥对明文进行加密。
 
 参数说明
 -----------
 
-1. ``plainBytes`` - ``String`` : 加密明文；
+1. ``plainText`` - ``String`` : 加密明文；
 2. ``publicKey`` - ``String`` : 加密公钥；
+3.  ``bSM`` - ``boolean`` : 是否使用国密算法;
 
 返回值
 -----------
 
-``byte[]`` : 返回加密结果。
+``String`` : 返回加密结果。
 
 示例
 -----------
 .. code-block:: javascript
 
     //SM
-    byte [] pubBytes = getB58IdentiferCodecs().decode("pYvXDbsUUr5dpumrojYApjG8nLfFMXhu3aDvxq5oxEa4ZSeyjrMzisdPsYjfxyg9eN3ZJsNjtNENbzXPL89st39oiSp5yucU", B58IdentiferCodecs.VER_ACCOUNT_PUBLIC);
-    byte[] rawBytes = EncryptCommon.asymEncrypt("test".getBytes(),pubBytes);
+    String pubKey = "pYvXDbsUUr5dpumrojYApjG8nLfFMXhu3aDvxq5oxEa4ZSeyjrMzisdPsYjfxyg9eN3ZJsNjtNENbzXPL89st39oiSp5yucU";
+    String cipherText = c.asymEncrypt("test",pubKey, true);
 
     //ecies
-    IKeyPair keyPair = Seed.getKeyPair("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-    rawBytes = EncryptCommon.asymEncrypt("test".getBytes(),keyPair.canonicalPubBytes());
+    pubKey = "cB4vvJpFQHUiWiiJz46fG7ogC9qdsQ1hskZ6KdGuYqGTVLZWXSzK";
+    cipherText = c.asymEncrypt("test",pubKey, false);
 
 ------------------------------------------------------------------------------
 
@@ -4061,33 +4062,33 @@ asymDecrypt
 -------------------
 .. code-block:: javascript
 
-	EncryptCommon.asymDecrypt(byte[] cipher,byte[] privateKey,boolean bSM)
+	c.asymDecrypt(String cipher, String privateKey, boolean bSM)
 
 | 使用私钥对密文进行解密。
 
 参数说明
 -----------
 
-1. ``cipher`` - ``byte[]`` : 解密密文；
-2. ``privateKey`` - ``byte[]`` : 解密私钥；
+1. ``cipher`` - ``String`` : 解密密文；
+2. ``privateKey`` - ``String`` : 解密私钥；
 3. ``bSM`` - ``boolean`` : 是否使用国密算法。
 
 返回值
 -----------
 
-``byte[]`` : 返回解密明文。
+``String`` : 返回解密明文。
 
 示例
 -----------
 .. code-block:: javascript
 
     //SM
-    byte[] seedBytes   = getB58IdentiferCodecs().decodeAccountPrivate("pwRdHmA4cSUKKtFyo4m2vhiiz5g6ym58Noo9dTsUU97mARNjevj");
-    byte[] newBytes = EncryptCommon.asymDecrypt(rawBytes, seedBytes, true);
-    System.out.println("解密后的明文为 : " +  new String(newBytes));
+    String seed  = "pwRdHmA4cSUKKtFyo4m2vhiiz5g6ym58Noo9dTsUU97mARNjevj";
+    String plain = c.asymDecrypt(cipherText, seed, true);
+    System.out.println("解密后的明文为 : " +  plain);
 
     //ecies
-    seedBytes   = getB58IdentiferCodecs().decodeFamilySeed("xpvPjSRCtmQ3G99Pfu1VMDMd9ET3W");
-    newBytes = EncryptCommon.asymDecrypt(rawBytes, seedBytes, false);
-    System.out.println("解密后的明文为 : " +  new String(newBytes));
+    seed  = "xhJz3kketmLvY6SR6vVnuuxj15D13";
+    plain = c.asymDecrypt(cipherText, seed, false);
+    System.out.println("解密后的明文为 : " +  plain);
 

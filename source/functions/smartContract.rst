@@ -296,19 +296,44 @@ Node.js API的调用
     function insertWithHashByContract(address owner, string memory tableName, string memory raw,string memory autoFillField) public virtual;
 	
     function insertByContract(address owner, string memory tableName, string memory raw) public virtual;
-    
+	
     function update(address owner,string memory tableName,string memory raw,string memory updateRaw) public virtual;
 	
     function updateByContract(address owner,string memory tableName,string memory raw,string memory updateRaw) public virtual;
+    
+    function update(address owner,string memory tableName,string memory raw) public virtual;
+
+    function updateByContract(address owner,string memory tableName,string memory raw) public virtual;
     
     function deleteData(address owner,string memory tableName,string memory raw)public virtual;
 	
     function deleteByContract(address owner,string memory tableName,string memory raw)public virtual;
 	
+    function addFields(string memory tableName,string memory raw)public virtual;
+	
+    function addFieldsByContract(string memory tableName,string memory raw)public virtual;
+	
+    function deleteFields(string memory tableName,string memory raw)public virtual;
+	
+    function deleteFieldsByContract(string memory tableName,string memory raw)public virtual;
+	
+    function modifyFields(string memory tableName,string memory raw)public virtual;
+	
+    function modifyFieldsByContract(string memory tableName,string memory raw)public virtual;
+	
+    function createIndex(string memory tableName,string memory raw)public virtual;
+	
+    function createIndexByContract(string memory tableName,string memory raw)public virtual;
+	
+    function deleteIndex(string memory tableName,string memory raw)public virtual;
+	
+    function deleteIndexByContract(string memory tableName,string memory raw)public virtual;
+	
     function getDataHandle(address owner,string memory tableName,string memory raw)public view virtual returns(uint256);
 	
     function getDataHandleByContract(address owner,string memory tableName,string memory raw)public view virtual returns(uint256);
-   }
+    }
+
 
 
 合约示例
@@ -320,24 +345,28 @@ Node.js API的调用
 
     pragma solidity ^0.8.5;
 
-     contract DBTest {
-     //合约部署时创建属于合约地址的表
-     TableOperation op_;
-     constructor(string memory tableName, string memory raw) payable{
-     // TableOperation对象的初始化
+    contract DBTest {
+    //合约部署时创建属于合约地址的表
+    TableOperation op_;
+    constructor(string memory tableName, string memory raw) payable{
+        // TableOperation对象的初始化
         op_ = TableOperation(address(0x1001));
         op_.createByContract(tableName,raw);
     }
+
+    fallback () payable external {}
+    receive () payable external {}
+    
     /*
     * @param tableName eg: "test1"
     * @param raw eg: "[{\"field\":\"id\", \"type\" : \"int\", \"length\" : 11, \"PK\" : 1, \"NN\" : 1, \"UQ\" : 1}, { \"field\":\"account\", \"type\" : \"varchar\" }, { \"field\":\"age\", \"type\" : \"int\" }]"
     */
     
-     function create(string memory tableName, string memory raw) public{
-       op_.createTable(tableName,raw);
+    function create(string memory tableName, string memory raw) public{
+        op_.createTable(tableName,raw);
     }
-     function createByContract(string memory tableName, string memory raw) public{
-       op_.createByContract(tableName,raw);
+    function createByContract(string memory tableName, string memory raw) public{
+        op_.createByContract(tableName,raw);
     }
     /*
     * @param tableName eg: "test1"
@@ -356,22 +385,22 @@ Node.js API的调用
         //owner.insert(tableName, raw);
         op_.insertByContract(owner,tableName,raw);
     }
-  
-   function insertHash(address owner, string memory tableName, string memory raw,string memory autoFillField) public {
+
+    function insertHash(address owner, string memory tableName, string memory raw,string memory autoFillField) public {
         op_.insertWithHash(owner,tableName,raw,autoFillField);
-   }
-  
-   function insertHashByContract(address owner, string memory tableName, string memory raw,string memory autoFillField) public {
+    }
+
+    function insertHashByContract(address owner, string memory tableName, string memory raw,string memory autoFillField) public {
         op_.insertWithHashByContract(owner,tableName,raw,autoFillField);
-   }
-  /*
+    }
+    /*
     * @param tableName eg: "test1"
     */
-   function drop(string memory tableName) public{
+    function drop(string memory tableName) public{
         op_.dropTable(tableName);
     }
   
-   function dropByContract(string memory tableName) public{
+    function dropByContract(string memory tableName) public{
         op_.dropTableByContract(tableName);
     }
     /*
@@ -384,7 +413,7 @@ Node.js API的调用
     }
 
     function deletexByContract(address owner, string memory tableName, string memory raw) public {
-         op_.deleteByContract(owner, tableName, raw);
+        op_.deleteByContract(owner, tableName, raw);
     }
 
     /*
@@ -394,12 +423,26 @@ Node.js API的调用
     * @param rawGet eg: "{\"id\": 2}"
     */
     function update(address owner, string memory tableName, string memory rawUpdate, string memory rawGet) public{
-         op_.update(owner, tableName, rawUpdate, rawGet);
+        op_.update(owner, tableName, rawUpdate, rawGet);
     }
 
     function updateByContract(address owner, string memory tableName, string memory rawUpdate, string memory rawGet) public{
         op_.updateByContract(owner, tableName, rawUpdate, rawGet);
     }
+
+    /*
+    * @param owner table's owner'
+    * @param tableName eg: "test1"
+    * @param raw eg: "[{\"age\":15},{\"id\": 2}]"
+    */
+    function update(address owner, string memory tableName, string memory raw) public{
+        op_.update(owner, tableName, raw);
+    }
+
+    function updateByContract(address owner, string memory tableName, string memory raw) public{
+        op_.updateByContract(owner, tableName, raw);
+    }
+
 
     /*
     * @param tableName eg: "test1"
@@ -424,6 +467,65 @@ Node.js API的调用
     function grantByContract(address toWho, string memory tableName, string memory raw) public{
         return op_.grantByContract(toWho, tableName, raw);
     }
+
+    /* @param tableName eg: "test1"
+     * @param raw [{\"field\":\"num\",\"type\":\"int\"}]
+     */
+    function addFields(string memory tableName, string memory raw) public{
+        return op_.addFields(tableName, raw);
+    }
+
+   
+    function addFieldsByContract(string memory tableName, string memory raw) public{
+        return op_.addFieldsByContract(tableName, raw);
+    }
+
+    /* @param tableName eg: "test1"
+     * @param raw [{\"field\":\"num\"}]
+     */
+    function deleteFields(string memory tableName, string memory raw) public{
+        return op_.deleteFields(tableName, raw);
+    }
+
+    function deleteFieldsByContract(string memory tableName, string memory raw) public{
+        return op_.deleteFieldsByContract(tableName, raw);
+    }
+    
+    /*@param tableName eg: "test1"
+    * @param raw [{\"field\":\"age\",\"type\":\"varchar\",\"length\":10,\"NN\":1}]
+    */
+
+    function modifyFields(string memory tableName, string memory raw) public{
+        return op_.modifyFields(tableName, raw);
+    }
+
+    function modifyFieldsByContract(string memory tableName, string memory raw) public{
+        return op_.modifyFieldsByContract(tableName, raw);
+    }
+
+    
+    /*@param tableName eg: "test1"
+    * @param raw [{\"index\":\"AcctLgrIndex\"},{\"field\":\"age\"},{\"field\":\"Account\"}]
+    */
+    function createIndex(string memory tableName, string memory raw) public{
+        return op_.createIndex(tableName, raw);
+    }
+
+    function createIndexByContract(string memory tableName, string memory raw) public{
+        return op_.createIndexByContract(tableName, raw);
+    }
+
+    /*@param tableName eg: "test1"
+    * @param raw [{\"index\":\"AcctLgrIndex\"}]
+    */
+    function deleteIndex(string memory tableName, string memory raw) public{
+        return op_.deleteIndex(tableName, raw);
+    }
+
+    function deleteIndexByContract(string memory tableName, string memory raw) public{
+        return op_.deleteIndexByContract(tableName, raw);
+    }
+
 
     function sqlTransaction(string memory tableName) public{
         db.beginTrans();
@@ -480,16 +582,16 @@ Node.js API的调用
         }
         return string(xxx);
     }
-        /*
+    /*
     * @param owner table's owner'
     * @param tableName eg: "test1"
     * @param raw eg: ""
     * @param field eg: "id"
     */
 
-    function get(address owner, string memory tableName, string memory raw, string memory field) public pure returns(string memory) {
+    function get(address owner, string memory tableName, string memory raw, string memory field) public view returns(string memory) {
         uint256 handle = op_.getDataHandle(owner, tableName, raw);
-        require(handle != uint256(0), "Get table data failed, maybe user not authorized!");
+        require(handle != uint256(0), "Get table data failed,maybe user not authorized!");
         uint row = db.getRowSize(handle);
         bytes memory xxx = "";
         for(uint i=0; i<row; i++)
@@ -501,9 +603,9 @@ Node.js API的调用
         return string(xxx);
     }
 
-   function getByContract(address owner, string memory tableName, string memory raw, string memory field) public view returns(string memory) {
+    function getByContract(address owner, string memory tableName, string memory raw, string memory field) public view returns(string memory) {
         uint256 handle = op_.getDataHandleByContract(owner, tableName, raw);
-        require(handle != uint256(0), "Get table data failed, maybe user not authorized!");
+        require(handle != uint256(0), "Get table data failed,maybe user not authorized!");
         uint row = db.getRowSize(handle);
         bytes memory xxx = "";
         for(uint i=0; i<row; i++)
@@ -513,8 +615,8 @@ Node.js API的调用
             xxx = bytes.concat(xxx, ";");
         }
         return string(xxx);
-    }
-   }
+    }}
+
 
 .. note::
 
