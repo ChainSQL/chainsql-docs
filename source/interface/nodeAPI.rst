@@ -303,14 +303,7 @@ submit
 	
 	* 第三种交易提交共识后出错，主要是数据库入库操作中的错误，``JsonObject`` 中包含以下字段：
 
-		- ``status`` 或者 ``error`` - ``String`` : 错误类型，有以下可能字段：
-
-			- db_error
-			- validate_timeout
-			- db_noTableExistInDB
-			- db_noDbConfig
-			- db_noSyncConfig
-			- db_noAutoSync
+		- ``status`` 或者 ``error`` - ``String`` : 错误类型，详情见下面的表格
 		- ``tx_hash`` - ``String`` : 交易哈希值。
 		- ``error_message`` - ``String`` : [**可选**]在错误类型为"db_error"或者有 ``error`` 字段的时候，会额外附加错误信息。
 
@@ -327,6 +320,7 @@ submit
 	db_noAutoSync 	        配置文件中auto_sync为0，无法建表
 	db_acctSecretError      加密表解密私钥错误
 	db_notInSync			表不在同步列表中
+	db_noSyncTable          sync_tales中没有找到此加密表相关配置
 	====================  ================================================================================
 
 示例
@@ -1248,7 +1242,7 @@ trustSet
 
 --------------------------
 pay（网关数字资产转账）
--------------------------
+--------------------------
 
 网关配置数字资产转账和普通转账接口相同，只是在amount参数处有所不同，具体格式和用法可以参考 :ref:`pay <pay-introduce>`
 

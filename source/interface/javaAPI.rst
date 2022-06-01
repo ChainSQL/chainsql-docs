@@ -488,15 +488,7 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
 
   * 第三种交易提交共识后出错，主要是数据库入库操作中的错误，``JsonObject`` 中包含以下字段：
 
-    - ``status`` - ``String`` : 错误类型，有以下可能字段：
-
-      - db_error
-      - validate_timeout
-      - db_noTableExistInDB
-      - db_noDbConfig
-      - db_noSyncConfig
-      - db_noAutoSync
-
+    - ``status`` - ``String`` : 错误类型，详情见下面的表格
     - ``tx_hash`` - ``String`` : 交易哈希值。
     - ``error_message`` - ``String`` : [**可选**]在错误类型为 **db_error** 的时候，会额外附加错误信息。
 
@@ -505,14 +497,16 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
   ====================  ================================================================================
   字段    	              解释
   ====================  ================================================================================
-  db_error               	入库语句执行失败
+  validate_error          交易共识失败
   validate_timeout        交易共识超时
+  db_error               	入库语句执行失败
   db_noTableExistInDB 	  要操作的表在数据库中不存在
   db_noDbConfig        	  未配置数据库
   db_noSyncConfig         加密表未配置解密私钥
   db_noAutoSync 	        配置文件中auto_sync为0，无法建表
   db_acctSecretError      加密表解密私钥错误
 	db_notInSync			      表不在同步列表中
+  db_noSyncTable          sync_tales中没有找到此加密表相关配置
   ====================  ================================================================================
 
 示例
@@ -2036,7 +2030,7 @@ trustSet
 
 ----------------------------
 pay(转账网关数字资产)
----------------------------
+----------------------------
 
 .. code-block:: java
 
@@ -2195,7 +2189,7 @@ createTable
 .. code-block:: java
 
   // 创建表 "dc_universe"
-  JSONObject obj = c.createTable("dc_universe", c.array(
+  JSONObject obj = c.createTable("dc_universe", Util.array(
   "{'field':'id','type':'int','length':11,'PK':1,'NN':1,'UQ':1}",
   "{'field':'name','type':'varchar','length':50,'default':null}",
   "{'field':'age','type':'int'}"),
@@ -2327,7 +2321,7 @@ table
 .. code-block:: java
 
   String sTableName = "n12356";
-  JSONObject obj = c.table(sTableName).insert(c.array("{id: 1, 'name': 'peera','age': 22}", "{id: 2, 'name': 'peerb','age': 21}"))
+  JSONObject obj = c.table(sTableName).insert(Util.array("{id: 1, 'name': 'peera','age': 22}", "{id: 2, 'name': 'peerb','age': 21}"))
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
@@ -2338,7 +2332,7 @@ table
 
 
   JSONObject obj = c.table(sTableName)
-  .get(c.array("{'id': 1}"))
+  .get(Util.array("{'id': 1}"))
   .update("{'age':52,'name':'Jack'}")
   .submit(SyncCond.db_success);
 
@@ -2389,7 +2383,7 @@ insert
 
   String sTableName = "n12356";
   // 向表sTableName中插入一条记录.
-  JSONObject obj =  c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"))
+  JSONObject obj =  c.table(sTableName).insert(Util.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"))
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
@@ -2406,7 +2400,7 @@ insert
 
   String sTableName = "n12356";
   // 向表sTableName中插入一条记录,并将该条交易的hash填充到该表的 tx_hash 字段中
-  JSONObject obj =  c.table(sTableName).insert(c.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"),"tx_hash")
+  JSONObject obj =  c.table(sTableName).insert(Util.array("{id: 1, 'name': 'Jack','age': 22}", "{id: 2, 'name': 'Rose','age': 21}"),"tx_hash")
   .submit(SyncCond.db_success);
 
   if(obj.has("error_message")){
@@ -2458,7 +2452,7 @@ update
   String sTableName = "n12356";
   // 更新 id 等于 1 的记录
   JSONObject obj = c.table(sTableName)
-  .get(c.array("{'id': 1}"))
+  .get(Util.array("{'id': 1}"))
   .update("{'age':52,'name':'Jack'}")
   .submit(SyncCond.db_success);
 
@@ -2477,7 +2471,7 @@ update
   String sTableName = "n12356";
   // 更新 id 等于 1 的记录, 并将该条交易的hash填充到该表的 tx_hash 字段中
   JSONObject obj = c.table(sTableName)
-  .get(c.array("{'id': 1}"))
+  .get(Util.array("{'id': 1}"))
   .update("{'age':52,'name':'Jack'}","tx_hash")
   .submit(SyncCond.db_success);
 
@@ -2564,7 +2558,7 @@ delete
   String sTableName = "n12356";
   // 删除 id 等于 1 的记录.
   JSONObject obj =  c.table(sTableName)
-  .get(c.array("{'id': 1}"))
+  .get(Util.array("{'id': 1}"))
   .delete()
   .submit(SyncCond.db_success);
 
@@ -2620,9 +2614,9 @@ commit
   String sTableName = "n12356";
   c.beginTran();
 
-  c.table(sTableName).insert(c.array("{'name': 'Rose','age': 22}","{'name': 'Jack','age': 21}"));
-  c.table("posts").get(c.array("{'id': 1}")).update("{'age':52,'name':'Rose'}");
-  c.table(sTableName).get(c.array("{'id': 1}")).delete();
+  c.table(sTableName).insert(Util.array("{'name': 'Rose','age': 22}","{'name': 'Jack','age': 21}"));
+  c.table("posts").get(Util.array("{'id': 1}")).update("{'age':52,'name':'Rose'}");
+  c.table(sTableName).get(Util.array("{'id': 1}")).delete();
 
   // 1、
   System.out.println(c.commit());
@@ -2802,7 +2796,7 @@ get
 
   String sTableName = "n12356";
   //查询 name 等于 hello 的记录.
-  JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).submit();
+  JSONObject obj  = c.table(sTableName).get(Util.array("{'name': 'hello'}")).submit();
 
   System.out.println(obj);
 
@@ -2866,7 +2860,7 @@ limit
 
   String sTableName = "n12356";
   //查询 name 等于 hello 的前10条记录
-  JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).limit("{index:0,total:10}").submit();
+  JSONObject obj  = c.table(sTableName).get(Util.array("{'name': 'hello'}")).limit("{index:0,total:10}").submit();
   System.out.println(obj);
 
 
@@ -2928,7 +2922,7 @@ order
 
   String sTableName = "n12356";
   // 按 id 升序，name 的降序排序
-  JSONObject obj = c.table(sTableName).get(c.array("{'name': 'hello'}")).order(c.array("{id:1}", "{name:-1}")).submit();
+  JSONObject obj = c.table(sTableName).get(Util.array("{'name': 'hello'}")).order(Util.array("{id:1}", "{name:-1}")).submit();
   System.out.println(obj);
 
 输出
@@ -2987,7 +2981,7 @@ withFields
 
   String sTableName = "n12356";
   // 查询 name 等于 hello 的记录.取name以及id字段
-  JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'hello'}")).withFields("['name','id']").submit();
+  JSONObject obj  = c.table(sTableName).get(Util.array("{'name': 'hello'}")).withFields("['name','id']").submit();
   System.out.println(obj);
 
 输出

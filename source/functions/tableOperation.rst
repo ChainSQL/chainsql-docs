@@ -534,7 +534,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
   
     String sTableName = "table_test";
     //查询 name 等于 alice 的记录.
-    JSONObject obj  = c.table(sTableName).get(c.array("{'name': 'alice'}")).submit();
+    JSONObject obj  = c.table(sTableName).get(Util.array("{'name': 'alice'}")).submit();
 
     System.out.println(obj);
 
