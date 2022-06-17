@@ -38,6 +38,10 @@ Nodejs接口的使用，需要以下准备：
 	// 引入之后使用new创建全局chainsql对象，之后使用chainsql对象进行接口操作
 	const chainsql = new ChainsqlAPI();
 
+.. IMPORTANT::
+
+    ChainsqlAPI不支持并发操作，如果需要并发发交易，需要在各并发任务中构造各自的ChainsqlAPI对象 。
+
 ---------------------------------------------
 chainsql的nodejs模块对于多密码算法的支持方式
 ---------------------------------------------

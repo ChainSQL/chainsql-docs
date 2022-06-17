@@ -51,6 +51,10 @@ ChainSQL提供JAVA-API与节点进行交互。实现ChainSQL区块链的基础�
     // 引入之后使用new创建chainsql对象，之后使用chainsql对象进行接口操作
     Chainsql c = new Chainsql();
 
+.. IMPORTANT::
+
+    Chainsql对象不是线程安全的，不同的线程中必须用不同的Chainsql对象，具体用法可以参考：:ref:`并发支持 <chainsql_pool>` 。
+
 ------
 
 ------------------------------------------
