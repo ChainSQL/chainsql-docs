@@ -25,7 +25,7 @@ Api 调用问题
 
         update SyncTableState as t1,(select * from SyncTableState where 
         Owner='zDmdwbqbtcxPcj9ytzuKyQLPQi2DuWXmgk' and deleted=0) as t2 set 
-        t1.LedgerSeq=t2.TxnLedgerSeq and t1.LedgerHash=t2.TxnLedgerHash where t1.TableNameInDB=t2.TableNameInDB;
+        t1.LedgerSeq=t2.TxnLedgerSeq,t1.LedgerHash=t2.TxnLedgerHash where t1.TableNameInDB=t2.TableNameInDB;
 
 5. Insufficient reserve to create offer   
     ZXC不足  需要预留对象+5  查询对象 accountObject
