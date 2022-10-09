@@ -1110,6 +1110,36 @@ useCert
 ------
 
 
+---------------------------------
+getTransactionResult
+---------------------------------
+
+.. code-block:: javascript
+
+  chainsql.getTransactionResult(hash)
+
+查询交易结果。
+
+
+参数说明
+-----------
+
+1. ``hash``  - ``String``: 交易哈希.
+
+返回值
+-----------
+可参考 \ :ref:`tx_result <cmdtx_result>`\  接口说明
+
+示例
+-----------
+
+.. code-block:: javascript
+
+	let rs = await c.getTransactionResult("3C6A343D64BDEF0E45C38AFCB8D9574391EEEA61397E5FFA2D61C18CDD635032");
+	console.log( "tx_result: " , JSON.stringify( rs )) ;
+
+------
+
 网关交易
 ===========
 
@@ -1405,7 +1435,7 @@ insert
 -----------
 .. code-block:: javascript
 
-	tableObj.insert(raw[, feild])
+	tableObj.insert(raw[, txHashField][,txsHashField][,optFields])
 
 | 对表进行插入操作，tableObj是由chainsql.table接口创建的。
 | 此接口为交易类型，单独使用需要调用submit接口，事务中不需要。
@@ -1414,7 +1444,9 @@ insert
 -----------
 
 1. ``raw`` - ``Array`` : 插入操作的raw，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ；
-2. ``field`` - ``String`` : [**可选**] 插入操作支持将每次执行插入交易的哈希值作为字段同步插入到数据库中。需要提前在建表的时候指定一个字段为存储交易哈希，然后将该字段名作为参数传递给insert即可。
+2. ``txHashField`` - ``String`` : [**可选**] 插入操作支持将每次执行插入交易的哈希值作为字段同步插入到数据库中，需要提前在建表的时候指定一个字段为存储交易哈希。
+3. ``txsHashField`` - ``String`` : [**可选**] 插入操作支持将操作该记录的交易hash以逗号分隔插入到数据库中，需要提前在建表的时候指定一个字段为存储交易哈希。
+4. ``optFields`` - ``String`` : [**可选**] 与 ``txHashField``、 ``txsHashField`` 类似的自动填充字段，可扩展，目前支持 ``ledgerSeqField`` 与 ``ledgerTimeField``，分别代表区块号与区块生成时间。
 
 返回值
 -----------
@@ -1435,6 +1467,14 @@ insert
 		console.error(err);
 	});
 
+	//自填充字段，注意，表结构中需要有txhash,txhashes,createTime,seq等字段
+	var opt = {
+		ledgerTimeField:"createTime",
+		ledgerSeqField:"seq"
+	}
+	var rs = await c.table(sTableName).insert(raw,'txhash','txhashes',opt).submit({expect:'send_success'});
+	console.log("testInsert ",rs);	
+
 ------------------------------------------------------------------------------
 
 -----------
@@ -1442,7 +1482,7 @@ update
 -----------
 .. code-block:: javascript
 
-	tableObj.update(raw)
+	tableObj.update(raw[, txHashField][,txsHashField][,optFields])
 
 | 对表内容进行更新操作，tableObj是由chainsql.table接口创建的。
 | 此接口为交易类型，单独使用需要调用submit接口，事务中不需要。
@@ -1454,6 +1494,9 @@ update
 -----------
 
 1. ``raw`` - ``Array`` : 插入操作的raw，详细格式和内容可参看 :ref:`更新raw字段说明 <update-table>` 。
+2. ``txHashField`` - ``String`` : [**可选**] 更新操作支持将每次执行更新交易的哈希值作为字段同步插入到数据库中，需要提前在建表的时候指定一个字段为存储交易哈希。
+3. ``txsHashField`` - ``String`` : [**可选**] 更新操作支持将操作该记录的交易hash以逗号分隔插入到数据库中，需要提前在建表的时候指定一个字段为存储交易哈希。
+4. ``optFields`` - ``String`` : [**可选**] 与 ``txHashField``、 ``txsHashField`` 类似的自动填充字段，可扩展，目前支持 ``ledgerSeqField`` 与 ``ledgerTimeField``，分别代表区块号与区块生成时间。
 
 返回值
 -----------
@@ -1470,6 +1513,13 @@ update
 	}).catch(err => {
 		console.error(err);
 	});
+
+	//自填充字段，注意，表结构中需要有txhash,txhashes,updateTime等字段
+	var opt = {
+		ledgerTimeField:"updateTime"
+	}
+	var rs = await c.table(sTableName).get({'id': 7}).update({'name':"28"},"txhash","txhashes",opt).submit({expect:'db_success'});
+	console.log("testUpdate",rs);
 
 ------------------------------------------------------------------------------
 

@@ -52,6 +52,18 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
 
+3.1.0
+---------------------
+- 增加tx_result接口，只获取交易在链上的共识结果
+- 增加 :ref:`ledger_tx_tables<cfgledger_tx_tables>`\ 配置项，可配置节点是否写Transactions表
+- 修改 :ref:`sync_tables<表同步设置>`\ 配置项，支持同步某账户下所有表
+- 新增一张表一个SLE的特性 ``TableSLEChange`` ，新特性下一个账户下不再有只能建100张表的限制
+- 新增预编译合约功能，以及表的预编译合约接口
+- 增加对交易时间、交易所在区块号自填充字段的支持，详见 ``JavaSdk`` 或 ``NodeSDK`` 的 ``insert/update`` 接口
+- 智能合约交易，合约执行过程中的异常可以在交易结果中返回
+- 建表时对多个字段创建索引，之前是创建联合索引，现改为为每个加 `index` 关键字的字段单独创建一个索引
+- 共识算法优化
+
 3.0.0
 ---------------------
 - 支持 `主子链架构 <theory/schema.html>`_
@@ -100,7 +112,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 0.30.6
 --------------------
 - 调整区块缓存时间以及数量的默认值 
-- 新增加命令行接口:  :ref:`ledger_objects <LedgerObjects>`   , :ref:`node_size <NodeSize>`  , :ref:`malloc_trim <MallocTrim>`
+- 新增加命令行接口:  :ref:`ledger_objects <LedgerObjects>`   , :ref:`node_size <NodeSize>` 
 - 新添配置选项  :ref:`ledger_acquire <LedgerAcquire>`   ,   :ref:`missing_hashes <MissingHashes>`
 - 其它
 

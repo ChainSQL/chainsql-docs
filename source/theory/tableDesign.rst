@@ -80,6 +80,7 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
 3.4 选择要同步的表
 -------------------
 
+        - 可配置同步某账户下所有表
         - 节点默认不主动同步自定义表的数据，需要节点在配置文件中指定要同步的表。只要知道表的所有者地址及表名即可同步。
         - 如果创建表时选择了加密 ``Raw`` 字段，则此处在表名后需要添加拥有同步权限的账户的私钥。
         - 如有需要，可以配置同步条件，意为只符合同步条件之前的数据。目前同步条件支持两种，同步到指定条件之前或者同步过程中跳过指定条件。
@@ -90,6 +91,10 @@ TableEntry      TableList中TableEntries数据中元素，记录数据库表中�
 .. code-block:: bash
 
             [sync_tables]
+            #表的发行帐户地址(只同步账户下所有非加密表)
+            z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs 
+            #表的发行帐户地址 解密的私钥（账户下加密表与非加密表都同步）
+            z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs xxWFBu6veVgMnAqNf6YFRV2UENRd3
             #表的拥有者帐户地址 表名
             z9VF7yQPLcKgUoHwMbzmQBjvPsyMy19ubs table1
             #表的拥有者帐户地址 表名 同步到ledgerSeq2000

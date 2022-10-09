@@ -78,7 +78,7 @@ Raw字段解析
       - 列名。
     * - type
       - 字符串
-      - 列的数据类型，可选值有int/float/double/decimal/varchar/blob/text/datetime
+      - 列的数据类型，可选值有int/float/double/decimal/char/varchar/blob/text/datetime
     * - length
       - 整数
       - 列的数据长度。

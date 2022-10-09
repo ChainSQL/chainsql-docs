@@ -1880,6 +1880,35 @@ memos
 
 ------
 
+---------------------------------
+getTransactionResult
+---------------------------------
+
+.. code-block:: java
+
+  public JSONObject getTransactionResult(String txHash)
+
+查询交易结果。
+
+
+参数说明
+-----------
+
+1. ``txHash``  - ``String``: 交易哈希.
+
+返回值
+-----------
+可参考 \ :ref:`tx_result <cmdtx_result>`\  接口说明
+
+示例
+-----------
+
+.. code-block:: javascript
+
+	JSONObject rs = c.getTransactionResult("3C6A343D64BDEF0E45C38AFCB8D9574391EEEA61397E5FFA2D61C18CDD635032");
+	System.out.println(rs);
+
+------
 
 
 网关交易
@@ -2358,7 +2387,8 @@ insert
 
   public Table insert(List<String> raw);
   public Table insert(List<String> raw,String autoFillField);
-  public Table insert(List<String> orgs,String autoFillField,String txsHashFillField);
+  public Table insert(List<String> raw,String autoFillField,String txsHashFillField);
+  public Table insert(List<String> raw, JSONObject autoFields);
 
 向数据库中插入数据。
 
@@ -2369,10 +2399,29 @@ insert
 1. ``raw``    - ``List``:  raw类型必须是示例中json格式的数据类型，详细格式和内容可参看 :ref:`插入raw字段说明 <insert-table>` ;
 2. ``autoFillField``  - ``String``: 插入操作支持将每次插入交易的哈希值作为字段信息同步插入到数据库中。使用该功能时，需要在建表时指定一个字段为存储交易哈希，并将该字段名作为参数传递给insert;
 3. ``txsHashFillField``  - ``String``:  该参数的功能与 ``autoFillField`` 类似，可配合update实现存储历史哈希列表的功能，具体使用见 :ref:`update  <UpdateJava>` ; 
+4. ``autoFields`` - ``JSONObject`` : 自填充字段，目前支持以下字段：
+  
+.. list-table::
+
+    * - **字段**
+      - **类型**
+      - **描述**
+    * - TxHashField
+      - 字符串
+      - 插入当前记录的交易哈希。
+    * - TxHashHistoryField
+      - 字符串
+      - 交易哈希历史，哈希之间以逗号分隔。
+    * - LedgerSeqField
+      - 字符串
+      - 交易所在区块的区块号。
+    * - LedgerTimeField
+      - 字符串
+      - 交易所在区块的出块时间。
 
 .. IMPORTANT::
 
-  如果要用 ``txsHashFillField`` 功能，在插入时就需要用第三种重载，不然后面再对记录进行修改，交易hash会记录不全
+  如果要用 ``txsHashFillField`` 功能，在插入时就需要用第三种或第四种重载，不然后面再对记录进行修改，交易hash会记录不全
 
 返回值
 ----------
@@ -2427,6 +2476,7 @@ update
   public Table update(String raw);
   public Table update(String raw,String autoFillField);
   public Table update(String raw,String autoFillField,String txsHashFillField);
+  public Table insert(String raw, JSONObject autoFields);
 
 更新表中数据。
 
@@ -2442,6 +2492,25 @@ update
 1. ``raw``  - ``List``:  raw类型必须都是示例中的json格式的数据类型，详细格式和内容可参看 :ref:`更新raw字段说明 <update-table>`;
 2. ``autoFillField``  - ``String``: 更新操作支持将每次更新交易的哈希值作为字段信息同步更新到数据库中。使用该功能时，需要在建表时指定一个字段存储交易哈希,并将该字段名作为参数传递给update; 
 3. ``txsHashFillField``  - ``String``: 该参数的功能与 ``autoFillField`` 类似，区别在于该参数指定的字段可存储历史交易哈希信息列表，将单条表记录的多次更新操作可汇集成一个hash值列表插入 ``txsHashFillField`` 字段中，并以 ``,`` 分割符分割哈希值，具体使用见示例3; 
+4. ``autoFields`` - ``JSONObject`` : 自填充字段，目前支持以下字段：
+
+.. list-table::
+
+    * - **字段**
+      - **类型**
+      - **描述**
+    * - TxHashField
+      - 字符串
+      - 更新当前记录的交易哈希。
+    * - TxHashHistoryField
+      - 字符串
+      - 交易哈希历史，哈希之间以逗号分隔。
+    * - LedgerSeqField
+      - 字符串
+      - 交易所在区块的区块号。
+    * - LedgerTimeField
+      - 字符串
+      - 交易所在区块的出块时间
 
 返回值
 ----------

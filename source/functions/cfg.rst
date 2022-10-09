@@ -298,6 +298,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     [ledger_acquire]
     skip_blocks=5000-6000,8000,9000-10000
 
+.. _cfgledger_tx_tables:
+
 [ledger_tx_tables] 
 ******************************
     ``transaction.db`` 存储交易相关配置，``1.1.5-pop`` 及以上版本支持
