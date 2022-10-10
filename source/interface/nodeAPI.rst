@@ -763,7 +763,7 @@ getTransaction
 ---------------
 .. code-block:: javascript
 
-	chainsql.getTransaction(txHash[, callback])
+	chainsql.getTransaction(txHash[,meta][,meta_chain][, callback])
 
 获取指定交易哈希值的交易详情
 
@@ -771,7 +771,9 @@ getTransaction
 -----------
 
 1. ``txHash`` - ``String`` : 交易的哈希值
-2. ``callback`` - ``Function`` : [**可选**]回调函数，如果指定，则通过指定回调函数返回结果，否则返回一个promise对象。
+2. ``meta`` - ``String`` : [**可选**]是否查询交易影响的链上状态信息
+3. ``meta_chain`` - ``String`` : [**可选**]对于表交易是否查询修改表的上一条、下一条交易哈希
+4. ``callback`` - ``Function`` : [**可选**]回调函数，如果指定，则通过指定回调函数返回结果，否则返回一个promise对象。
 
 返回值
 -----------
@@ -784,9 +786,9 @@ getTransaction
 
 	//use the callback
 	const txHash = "F1C0981FDFA67CB60A30BD6373029662EC0BBCF3FC50BB02C98812726369B3F9";
-	chainsql.getTransaction(txHash, function(err, res) {
-		err ? console.error(err) : console.log(res);
-	});
+	var ret = await chainsql.getTransaction(txHash);
+	console.log(ret)
+	
 	>
 	{
 		"type":"payment",

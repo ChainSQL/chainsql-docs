@@ -1362,6 +1362,7 @@ getTransaction
 
    public JSONObject getTransaction (String hash);     //同步
    public void getTransaction(String hash,Callback cb);//异步
+   public JSONObject getTransaction(JSONObject txInfo);//同步，带查询选项
 
 查询某个hash下的交易信息
 
@@ -1372,6 +1373,7 @@ getTransaction
 
 1. ``hash``    - ``String``:  交易哈希值;
 2. ``cb``   - ``Callback`` : 异步接口，参数为一回调函数
+3. ``txInfo`` - ``JSONObject`` : 同步接口，可设置 ``hash`` (必填) 、 ``meta`` (选填)、 ``meta_chain`` (选填)等选项
 
 
 返回值
@@ -1383,6 +1385,18 @@ getTransaction
 
 示例
 
+.. code-block:: java
+
+  JSONObject  obj = c.getTransaction("B168F7FC87EC5D435F85885B21DEA3C55B98C9390CA9FDB75F14571E451BD1B3");
+  System.out.println(obj);
+
+  //只查询交易基础信息
+  JSONObject opt = new JSONObject();
+  opt.put("hash","B168F7FC87EC5D435F85885B21DEA3C55B98C9390CA9FDB75F14571E451BD1B3");
+  opt.put("meta",false);
+  opt.put("meta_chain",false);
+  obj = c.getTransaction("B168F7FC87EC5D435F85885B21DEA3C55B98C9390CA9FDB75F14571E451BD1B3");
+  System.out.println(obj);
 
 成功
 
