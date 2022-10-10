@@ -469,8 +469,3 @@ ChainSQL 节点的 Docker 镜像地址 为  ``docker pull peersafes/chainsql:v3.
 
 	# 通过 server_info 查看网络状态 , 返回字段server_status为normal时表示ChainSQL网络正常运行
 	docker exec -it node1 /opt/chainsql/chainsqld server_info
-
-四、 在线交互式部署教程
-==============================================================
-
-参考 https://www.katacoda.com/chainsql/courses
