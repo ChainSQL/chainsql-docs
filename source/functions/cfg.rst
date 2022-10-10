@@ -138,7 +138,8 @@
 
 版本变化
 ----------------
-    
+    - 3.2.0 版本增加配置项 ``[prometheus]``, ``[govenance]`` 等
+    - 3.1.0 版本增加配置项 :ref:`cfgledger_tx_tables`
     - 3.0.0 版本增加配置项 :ref:`schema <Schema>`, :ref:`consensus <Consensus>`
     - 1.0.1-pop版本之后，新添配置选项 :ref:`crypto_alg <crypto_alg>`
     - 0.30.6版本以后, 新添配置选项   :ref:`ledger_acquire <LedgerAcquire>`   , :ref:`ca_certs_keys <CACertsKeys>`  , :ref:`missing_hashes <MissingHashes>`
@@ -254,6 +255,16 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 **************
     要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ，这里不再赘述
 
+[govenance]
+**************
+    治理相关配置，目前支持配置超级管理员地址、是否默认开启账户授权
+
+.. code-block:: bash
+
+    [govenance]
+    admin=xxx
+    default_authority_enabled=0
+
 .. _ips:
 
 [ips]
@@ -357,6 +368,41 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 - ``online_delete`` 最小值为256，节点最小维持的区块数量，这个值不能小于 ``ledger_history`` 配置项的值
 - ``advisory_delete`` 0为禁用，1为启用。如果启用了，需要调用admin权限接口 ``can_delete`` 来开启区块的在线删除功能
 
+[peer_x509_root_path]
+**************************
+    配置信任的根证书，用于在建立p2p连接的过程中验证对等节点的子证书
+
+.. code-block:: bash
+
+    [peer_x509_root_path]
+    ./ca.cert  
+
+[peer_x509_cred_path]
+**************************
+    配置节点自身的子证书文件
+    
+.. code-block:: bash
+
+    [peer_x509_cred_path]
+    ./peer1.cert  
+
+[prometheus]
+*****************
+    Prometheus监控对外提供的http访问端口
+
+.. code-block:: bash
+
+    [prometheus]
+    7007
+
+[remote_sync]
+******************
+表同步是否支持远程同步，默认支持，配置为0表示只走本地同步
+
+.. code-block:: bash
+
+    [remote_sync]
+    0
 
 [rpc_startup]
 *****************
@@ -445,13 +491,25 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     admin = 127.0.0.1
     protocol = http
 
+    [port_wss_admin_local]
+    port = 6006
+    ip = 0.0.0.0
+    admin = 127.0.0.1
+    protocol = wss
+    ssl_key = /Users/lascion/lcworkspace/cafile/server/server.key
+    ssl_cert = /Users/lascion/lcworkspace/cafile/server/server.crt
+    ssl_verify = 1
+
+
 每个配置项包含如下内容：
 
     - ``port`` 配置端口
     - ``ip`` 哪些ip可以连接这一端口，如果有多个，以逗号（,）进行分隔， ``0.0.0.0`` 代表任意ip可以连接这一端口
     - ``admin`` chainsql中有一些命令（如peers,t_dump,t_audit）只有拥有admin权限的ip才能调用，配置方法与 ip 相同
     - ``protocol`` 协议名称，chainsql中支持协议有 http, https, ws, wss, peer
-
+    - ``ssl_key`` 节点ssl服务证书密钥文件路径
+    - ``ssl_cert`` 节点ssl服务证书文件路径
+    - ``ssl_verify`` 是否开启双向认证，配置为1开启，0为不开启，默认为0，开启双向认证需配合配置项 ``[trusted_ca_list]`` 使用
 
 [sntp_servers]
 ******************
@@ -516,6 +574,15 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     - auto_sync 配置为1，只能同步新建的表，而 sync_tables 还可以同步之前区块上建的表
     - sync_tables 可中配置同步加密表所用的解密私钥，加密表只有通过sync_tables的配置才可以同步下来
     - sync_tables 可配置各种同步条件，如同步到某个区块，同步到某个时间，跳过某个区块等
+
+[trusted_ca_list]
+**********************
+    如果开启双向认证，配置用于验证客户端证书的根证书文件路径
+
+.. code-block:: bash
+
+    [trusted_ca_list]
+    /Users/lascion/lcworkspace/cafile/root/root.crt
 
 .. _validators:
 

@@ -1085,10 +1085,11 @@ SQLTranscation RPC交易类型接口的请求方法名固定为\ ``t_sqlTxs``\ �
 
 多链交易
 ++++++++++++++++++++++++++++++++++++++++
-多链交易包含两种交易类型：
+多链交易包含三种交易类型：
  
 - SchemaCreate
 - SchemaModify
+- SchemaDelete
 
 .. _rpcSchemaCreate:
 
@@ -1261,8 +1262,59 @@ SQLTranscation RPC交易类型接口的请求方法名固定为\ ``t_sqlTxs``\ �
             "status": "success"
         }
     }
-          
 
+.. _rpcSchemaDelete:
+
+删除子链交易
+========================
+
+| ChainSQL子链的删除交易一般由子链管理员账户发起，在子链未设置管理员的情况下，需要通过子链各参与节点通过多方签名的方式以建链用户的身份发起。
+| 交易json格式（tx_json对象）各个域的描述如下：
+
+.. list-table::
+    :align: left
+
+    * - **域**
+      - **类型**
+      - **描述**
+    * - TransactionType
+      - 字符串
+      - 必填，交易类型
+    * - Account
+      - 字符串
+      - 必填，交易发起账户
+    * - SchemaID
+      - 字符串
+      - 必填，被操作的子链ID
+
+请求格式：
+
+.. code-block:: json
+
+    {
+        "method": "submit",
+        "params": [{
+            "secret": "xhoYWMokU6Tboe42Z36GJ7VVmVeSy",
+            "tx_json": {
+                "TransactionType": "SchemaDelete",
+                "Account": "zwNSN5J1b67bKqzddvJ9G7HdB87DeML2ak",
+                "SchemaID":"A562E5B71C317BAAF218091752FDFF17F5312080F1F3A885B6F8DEDCA7B3A609"
+            }
+        }]
+    }
+
+应答格式：
+
+.. code-block:: json
+
+    {
+        "result": {
+            "engine_result": "tesSUCCESS",
+            "engine_result_code": 0,
+            "engine_result_message": "The transaction was applied. Only final in a validated ledger.",
+            "status": "success"
+        }
+    }
   
 查询类接口
 ************************************

@@ -91,7 +91,15 @@ validators                  子链共识节点公钥列表             子链要
 - :ref:`Java接口 <javaSchemaModify>`
 - :ref:`Node.js接口 <nodemodifySchema>`
 
-3. 子链相关其它API接口
+--------------------------------
+2.3 SchemaDelete
+--------------------------------
+- :ref:`Rpc接口 <rpcSchemaDelete>`
+- :ref:`Java接口 <javaSchemaDelete>`
+- :ref:`Node.js接口 <nodedeleteSchema>`
+
+
+1. 子链相关其它API接口
 ===========================
 
 --------------------------------

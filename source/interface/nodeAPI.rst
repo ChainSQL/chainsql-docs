@@ -311,21 +311,7 @@ submit
 		- ``tx_hash`` - ``String`` : 交易哈希值。
 		- ``error_message`` - ``String`` : [**可选**]在错误类型为"db_error"或者有 ``error`` 字段的时候，会额外附加错误信息。
 
-  	* 入库相关错误说明如下：
-  
-	====================  ================================================================================
-	字段    	              解释
-	====================  ================================================================================
-	db_error               	入库语句执行失败
-	validate_timeout        交易共识超时
-	db_noTableExistInDB 	要操作的表在数据库中不存在
-	db_noDbConfig        	未配置数据库
-	db_noSyncConfig         加密表未配置解密私钥
-	db_noAutoSync 	        配置文件中auto_sync为0，无法建表
-	db_acctSecretError      加密表解密私钥错误
-	db_notInSync			表不在同步列表中
-	db_noSyncTable          sync_tales中没有找到此加密表相关配置
-	====================  ================================================================================
+  	* 入库相关错误说明见 :ref:`表交易错误码 <TableErrorCodes>` 
 
 示例
 -----------
@@ -2061,11 +2047,6 @@ modifySchema
 参数说明
 -------------
 
-  参数为1为操作类型，可选值为：
-
-  1. ``schema_add``
-  2. ``schema_del``
-
   schemaInfo 结构为：
   
   1. ``SchemaID``         - ``String``:    子链ID；
@@ -2099,6 +2080,43 @@ modifySchema
 
   let ret = await c.modifySchema(schemaInfo).submit({expect:'validate_success'})
   console.log("修改子链结果：" , ret)
+
+.. _nodedeleteSchema:
+
+---------------------
+deleteSchema
+---------------------
+  
+.. code-block:: javascript
+  
+  chainsql.deleteSchema(schemaInfo)
+  
+
+  修改子链
+
+参数说明
+-------------
+
+  schemaInfo 结构为：
+  
+  1. ``SchemaID``         - ``String``:    子链ID；。
+  
+返回值
+------------
+  
+``JsonObject`` : 返回chainsql对象本身。
+  
+示例
+-------------
+  
+.. code-block:: javascript
+  
+  let schemaInfo = {
+	SchemaID:"6BA63B86E5CE48283D03CC21D3BE5F4630CC6572CE7F54982E5AE687C998B7A3"
+  }
+
+  let ret = await c.deleteSchema(schemaInfo).submit({expect:'validate_success'})
+  console.log("删除子链结果：" , ret)
 
 .. _nodegetSchemaList:
 

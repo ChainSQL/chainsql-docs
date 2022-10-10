@@ -496,22 +496,8 @@ submit有3个重载函数，分为异步和同步，用户可以根据需求使�
     - ``tx_hash`` - ``String`` : 交易哈希值。
     - ``error_message`` - ``String`` : [**可选**]在错误类型为 **db_error** 的时候，会额外附加错误信息。
 
-  * 入库相关错误说明如下：
+  * 入库相关错误说明见 :ref:`表交易错误码 <TableErrorCodes>` 
 
-  ====================  ================================================================================
-  字段    	              解释
-  ====================  ================================================================================
-  validate_error          交易共识失败
-  validate_timeout        交易共识超时
-  db_error               	入库语句执行失败
-  db_noTableExistInDB 	  要操作的表在数据库中不存在
-  db_noDbConfig        	  未配置数据库
-  db_noSyncConfig         加密表未配置解密私钥
-  db_noAutoSync 	        配置文件中auto_sync为0，无法建表
-  db_acctSecretError      加密表解密私钥错误
-	db_notInSync			      表不在同步列表中
-  db_noSyncTable          sync_tales中没有找到此加密表相关配置
-  ====================  ================================================================================
 
 示例
 
@@ -3384,13 +3370,12 @@ createSchema
 -------------------
 modifySchema
 -------------------
-  
+
 .. code-block:: java
   
   public Chainsql modifySchema(SchemaOpType type,JSONObject schemaInfo)
-  
 
-  修改子链
+修改子链
 
 参数
 ----------
@@ -3430,6 +3415,40 @@ modifySchema
     try {
       //增加节点
       JSONObject obj = c.modifySchema(SchemaOpType.schema_add, schemaInfo).submit(SyncCond.validate_success);
+      System.out.println(obj);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+.. _javaSchemaDelete:
+
+-------------------
+deleteSchema
+-------------------
+
+.. code-block:: java
+  
+  public Chainsql deleteSchema(String schemaID)
+
+删除子链
+
+参数
+----------
+  
+  1. ``SchemaID``         - ``String``:    子链ID；
+  
+返回值
+----------
+  
+  ``Chainsql`` - Chainsql对象，后面一般接submit函数进行连续操作，如示例。
+  
+  示例
+  
+  .. code-block:: java
+  
+    try {
+      //增加节点
+      JSONObject obj = c.deleteSchema("59FA6AD350FFD235460C0455CA83461B31D6428150671EBEC093604AC75F0477").submit(SyncCond.validate_success);
       System.out.println(obj);
     } catch (Exception e) {
       e.printStackTrace();
@@ -3510,10 +3529,8 @@ setSchema
 
 设置要操作的子链ID，设置后所有的请求都针对子链进行
 
-
 参数
 ----------
-  
 
   1. ``schemaID``  - ``String``：  子链ID
     
@@ -3542,13 +3559,11 @@ setSchema
 subscribeTable
 -------------------
 
-
 .. code-block:: java
 
   public void subscribeTable(String name, String owner ,Callback<JSONObject> cb);
 
 订阅某张表。该表相关的信息发生改变时，会通过回调函数返回改变内容。
-
 
 参数
 ----------

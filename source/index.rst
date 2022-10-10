@@ -34,6 +34,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 - 无缝兼容EVM智能合约（基于solidity版本：``0.4.25-nightly.2018.8.1+commit.21888e24`` ）
 - solidity语法中增加了对表操作的指令
 - solidity语法中增加对数字资产的操作指令
+- 支持wasm智能合约虚拟机
 
 系统架构
 ===============
@@ -51,6 +52,17 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 版本变化
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
+
+3.2.0
+---------------------
+- 支持wasm合约虚拟机
+- 支持 ``Prometheus`` 对节点的监控
+- 增加peer连接证书准入机制
+- 支持与sdk之间的ssl连接，支持国密与非国密证书
+- 支持用户证书吊销功能
+- 超级管理员治理功能
+- 增加删除子链功能
+- 增加对子链单独执行stop与start操作的功能
 
 3.1.0
 ---------------------
@@ -147,6 +159,14 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 
    tutorial/commonSense
    tutorial/deploy
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 快速开始
+
+   quickstart/normal_deploy
+   quickstart/docker_deploy
+   quickstart/common_use
 
 .. toctree::
     :maxdepth: 2

@@ -119,7 +119,7 @@ CA 证书的校验，是通过在ChainSQL API发送的交易请求中带上CA证
  - 新增加根证书配置项  ``[x509_crt_path]`` ，该选项表示X509 根证书文件路径
 
 .. code-block:: bash
-d
+
     # X509 根证书文件路径
     [x509_crt_path]
     ./ca1.cert

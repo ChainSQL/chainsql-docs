@@ -417,3 +417,24 @@ tefBAD_STATEMENT					Statement is error.
                                      
 tesSUCCESS               			The transaction was applied. Only final in a validated ledger.               	
 ==================================	======================================================================================
+
+.. _TableErrorCodes:
+
+表交易错误码
+===================
+  通过sdk的 ``submit`` 接口提交交易， ``validate_success`` 与 ``db_success`` 为成功返回，除此之外的错误码如下：
+
+  ====================  ================================================================================
+  字段    	              解释
+  ====================  ================================================================================
+  validate_error          交易共识失败
+  validate_timeout        交易共识超时
+  db_error               	入库语句执行失败
+  db_noTableExistInDB 	  要操作的表在数据库中不存在
+  db_noDbConfig        	  未配置数据库
+  db_noSyncConfig         加密表未配置解密私钥
+  db_noAutoSync 	        配置文件中auto_sync为0，无法建表
+  db_acctSecretError      加密表解密私钥错误
+  db_notInSync			      表不在同步列表中
+  db_noSyncTable          sync_tales中没有找到此加密表相关配置
+  ====================  ================================================================================
