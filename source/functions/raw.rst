@@ -3,7 +3,28 @@ Raw字段解析
 
  -  Chainsql表相关操作中，一般用Raw字段来表示实际操作内容，用到Raw字段的操作包括：建表、授权、插入、更新、删除、查询
  -  这里只是解析Raw字段的写法，针对各个操作的具体使用方法还需要参考 :ref:`Java <JavaAPI_entry>` 与  :ref:`Node.js <NodeAPI_entry>` api使用文档
-  
+
+
+OpType字段值
+----------------
+
+  ====================  ================================================================================
+    值    	              表操作
+  ====================  ================================================================================
+  1                       建表
+  2                       删表
+  3               	      重命名表
+  6 	                    表插入
+  8        	              表更新
+  9                       表删除
+  11 	                    表授权
+  14                      添加表字段
+  15			                删除表字段
+  16                      修改字段类型
+  17                      添加索引
+  18                      删除索引
+  ====================  ================================================================================
+
   下面针对各个操作，对Raw字段进行解析。
 
 .. _create-table:
@@ -260,6 +281,150 @@ Raw字段解析
 .. code-block:: sql
 
     delete from xxx where id=2 or name='张三';
+
+加字段
+----------------
+示例
+*******
+    
+    加字段交易Raw字段示例（与建表交易中的字段定义类似）：
+
+.. code-block:: json
+
+    {
+        "Raw": [
+          {
+              "field": "id",
+              "type": "int",
+              "PK": 1,
+          }
+      ]
+    }
+
+说明
+**********
+
+- 上例中Raw字段的意义为：
+
+.. code-block:: sql
+
+    ALTER TABLE table_name ADD age int primary key;
+
+
+删字段
+----------------
+示例
+*******
+    
+    删字段交易Raw字段示例：
+
+.. code-block:: json
+
+    {
+        "Raw": [
+          {
+              "field": "age"
+          }
+      ]
+    }
+
+说明
+**********
+
+- 上例中Raw字段的意义为：
+
+.. code-block:: sql
+
+    ALTER TABLE table_name drop age;
+
+
+修改字段类型
+-------------------
+示例
+*******
+    
+    修改字段类型交易Raw字段示例（与建表交易中的字段定义类似）：
+
+.. code-block:: json
+
+    {
+        "Raw": [
+          {
+              "field": "age",
+              "type": "varchar",
+              "length": 10,
+              "NN":1
+          }
+      ]
+    }
+
+说明
+**********
+
+- 上例中Raw字段的意义为：
+
+.. code-block:: sql
+
+    ALTER TABLE table_name MODIFY age varchar(10) not null;
+
+创建索引
+-------------------
+示例
+*******
+    
+    创建索引类型交易Raw字段示例：
+
+.. code-block:: json
+
+    {
+        "Raw": [
+          {
+              "index": "AcctLgrIndex"
+          },
+          {
+              "field": "LedgerSeq"
+          },
+          {
+              "field": "Account"
+          }
+      ]
+    }
+
+说明
+**********
+
+- 上例中Raw字段的意义为：
+
+.. code-block:: sql
+
+    CREATE INDEX AcctLgrIndex ON tablename(LedgerSeq,Account);
+
+删除索引
+-------------------
+示例
+*******
+    
+    创建索引类型交易Raw字段示例：
+
+.. code-block:: json
+
+    {
+        "Raw": [
+          {
+              "index": "AcctLgrIndex"
+          }
+      ]
+    }
+
+说明
+**********
+
+- 上例中Raw字段的意义为：
+
+.. code-block:: sql
+
+    DROP INDEX AcctLgrIndex ON tablename;
+
 
 .. _查询Raw详解:
 

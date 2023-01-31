@@ -19,11 +19,11 @@ PoP共识算法版本
 
 .. _pconsensus配置:
 
-* ``[pconsensus]``
+* ``[consensus]``
 
   .. code-block:: cfg
 
-    [pconsensus]
+    [consensus]
     omit_empty_block=true
     min_block_time=1000
     max_block_time=1000

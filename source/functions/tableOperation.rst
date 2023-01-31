@@ -436,7 +436,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 
 
 
-2.6 数据库表权限的授权
+2.6 数据库表授权
 =============================================
 
 表的拥有者可以授予其他用户操作表的权限。权限包括 ``select`` ``insert`` ``update`` ``delete`` 等4种。
@@ -517,7 +517,337 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 
 -----------------
 
-2.7 数据库表数据的查询
+2.7 数据库表添加字段
+=============================================
+
+表的拥有者可以对表执行添加字段操作
+
+
+- RPC代码
+
+.. code-block:: json
+
+     {   
+        "method": "t_create",
+        "params": [{
+              "secret": "xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+              "tx_json": {
+                     "TransactionType": "TableListSet",
+                     "Account": "zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                     "Tables": [{
+                            "Table": {
+                                   "TableName": "gmTest4"
+                            }
+                     }],
+                     "OpType": 14,
+                     "Raw": [{
+                            "field": "col1",
+                            "type": "int"
+                     }, {
+                            "field": "col2",
+                            "type": "varchar",
+                            "length": 90
+                     }]
+              }
+       }]
+    }
+
+
+-----------
+
+- java代码
+
+.. code-block:: java
+  
+    String sTableName = "hi33";
+    List<String> args = Util.array("{'field':'name','type':'varchar','length':50,'default':null}");
+    JSONObject obj= c.addTableFields(sTableName, args).submit(SyncCond.db_success);
+    System.out.println("addTableFields result:" + obj);
+
+-------------------
+
+- Node.js代码
+
+.. code-block:: javascript
+
+    var testAddFields = async function(){
+        var raw = [
+            {'field':'firmname','type':'varchar','length':50,'default':null},
+            {'field':'height','type':'int'}
+        ]
+        var rs = await c.addTableFields(sTableName,raw).submit({expect:'db_success'});
+        console.log("addTableFields",rs);
+    }
+
+---------------------------
+
+2.8 数据库表删除字段
+=============================================
+
+表的拥有者可以对表执行删除字段操作
+
+
+- RPC代码
+
+.. code-block:: json
+
+    {
+        "method":"t_create",
+        "params":[
+            {
+                "secret":"xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+                "tx_json":{
+                    "TransactionType":"TableListSet",
+                    "Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "Tables":[
+                        {
+                            "Table":{
+                                "TableName":"test19"
+                            }
+                        }
+                    ],
+                    "OpType":15,
+                    "Raw":[
+                        {
+                            "field":"firmname"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+
+-----------
+
+- java代码
+
+.. code-block:: java
+  
+    String sTableName = "hi33";
+    args = Util.array("{'field':'height'}");
+    obj = c.deleteTableFields(sTableName, args).submit(SyncCond.db_success);
+    System.out.println("deleteTableFields result:" + obj);
+
+-------------------
+
+- Node.js代码
+
+.. code-block:: javascript
+
+    var testDeleteFields = async function(){
+        var raw = [
+            {'field':'firmname'}
+        ]
+        var rs = await c.deleteTableFields(sTableName,raw).submit({expect:'db_success'});
+        console.log("deleteTableFields",rs);
+    }
+
+-------------------------
+
+2.9 数据库表修改字段类型
+=============================================
+
+表的拥有者可以对表执行修改字段类型操作
+
+
+- RPC代码
+
+.. code-block:: json
+
+    {
+        "method":"t_create",
+        "params":[
+            {
+                "secret":"xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+                "tx_json":{
+                    "TransactionType":"TableListSet",
+                    "Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "Tables":[
+                        {
+                            "Table":{
+                                "TableName":"test19"
+                            }
+                        }
+                    ],
+                    "OpType":16,
+                    "Raw":[
+                        {
+                            "field":"col1",
+                            "type":"float"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+
+-----------
+
+- java代码
+
+.. code-block:: java
+  
+    String sTableName = "hi33";
+    args = Util.array("{'field':'name','type':'text'}");
+    obj = c.modifyTableFields(sTableName, args).submit(SyncCond.db_success);
+    System.out.println("modifyTableFields result:" + obj);
+
+-------------------
+
+- Node.js代码
+
+.. code-block:: javascript
+
+    var testModifyFields = async function(){
+        var raw = [
+            {'field':'firmname','type':'text'}
+        ]
+        var rs = await c.modifyTableFields(sTableName,raw).submit({expect:'db_success'});
+        console.log("modifyTableFields",rs);
+    }
+
+-----------------------
+
+2.10 数据库表添加索引
+=============================================
+
+表的拥有者可以对表执行添加索引操作
+
+
+- RPC代码
+
+.. code-block:: json
+
+    {
+        "method":"t_create",
+        "params":[
+            {
+                "secret":"xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+                "tx_json":{
+                    "TransactionType":"TableListSet",
+                    "Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "Tables":[
+                        {
+                            "Table":{
+                                "TableName":"test19"
+                            }
+                        }
+                    ],
+                    "OpType":17,
+                    "Raw":[
+                        {
+                            "index": "AcctLgrIndex"
+                        },
+                        {
+                            "field": "id"
+                        },
+                        {
+                            "field": "col2"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+
+-----------
+
+- java代码
+
+.. code-block:: java
+  
+    String sTableName = "hi33";
+    args = Util.array("{'index':'PIndex'}","{'field':'id'}","{'field':'firmname'}");
+    obj = c.createIndex(sTableName, args).submit(SyncCond.db_success);
+    System.out.println("createIndex result:" + obj);
+
+-------------------
+
+- Node.js代码
+
+.. code-block:: javascript
+
+    var testCreateIndex = async function(){
+        var raw = [
+            {'index':'NameIndex'},
+            {'field':'id'},
+            {'field':'name'}
+        ]
+        var rs = await c.createIndex(sTableName,raw).submit({expect:'db_success'});
+        console.log("createIndex",rs);
+    }
+
+-----------------
+
+
+2.11 数据库表删除索引
+=============================================
+
+表的拥有者可以对表执行删除索引操作
+
+
+- RPC代码
+
+.. code-block:: json
+
+    {
+        "method":"t_create",
+        "params":[
+            {
+                "secret":"xnoPBzXtMeMyMHUVTgbuqAfg1SUTb",
+                "tx_json":{
+                    "TransactionType":"TableListSet",
+                    "Account":"zHb9CJAWyB4zj91VRWn96DkukG4bwdtyTh",
+                    "Tables":[
+                        {
+                            "Table":{
+                                "TableName":"test19"
+                            }
+                        }
+                    ],
+                    "OpType":18,
+                    "Raw":[
+                        {
+                            "index": "AcctLgrIndex"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+
+-----------
+
+- java代码
+
+.. code-block:: java
+  
+    String sTableName = "hi33";
+    args = Util.array("{'index':'PIndex'}");
+    obj = c.deleteIndex(sTableName, args).submit(SyncCond.db_success);
+    System.out.println("deleteIndex result:" + obj);
+
+-------------------
+
+- Node.js代码
+
+.. code-block:: javascript
+
+    var testDeleteIndex = async function(){
+        var raw = [
+            {'index':'NameIndex'}
+        ]
+        var rs = await c.deleteIndex(sTableName,raw).submit({expect:'db_success'});
+        console.log("deleteIndex",rs);
+    }
+
+----------------------------
+
+2.12 数据库表数据的查询
 =============================================
 
 查询数据库的表数据。
@@ -568,7 +898,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 -----------------
 
 
-2.8 加密表的支持
+2.13 加密表的支持
 =============================================
 
 设计文档参见  :ref:`Raw 加密 <Raw_Confidential>`
@@ -665,7 +995,7 @@ ChainSQL 目前对数据库表操作的支持包括以下几个部分:
 
 ----------------------
 
-2.9 智能合约对表操作的支持
+2.14 智能合约对表操作的支持
 =============================================
 
  :ref:`表操作智能合约支持 <SmartContract_DB_Oper>`

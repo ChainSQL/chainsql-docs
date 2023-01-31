@@ -53,16 +53,38 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
 ===============
 详细版本变化请参考 `github <https://github.com/ChainSQL/chainsqld/releases>`_ ，这里只列出自0.30.3版本开始的主要变化：
 
+3.4.5
+---------------------
+- 实现以太坊布隆过滤器，及相关Web3接口
+- 增加新特性： ``BloomFilter`` ，特性生效时会在区块头中增加Bloom字段，用于存储布隆值
+- 增加预编译合约: ``ToolsPrecompiled``
+- 新特性生效时间由2周改为12小时
+- 共识优化：当出现2v2（最新共识过的区块号不同导致无法达成共识）的情况时，增加拉取最新区块投票的方式以达到共识
+- Bug修复
+
+3.3.1
+---------------------
+- 增加实名认证功能，实名认证账户才可以将系统币转出
+- 增加 ``GasPriceCompress`` 特性，特性启用时，最终消耗的手续费为之前的千分之一
+- 增加多个Web3接口实现，增加 :ref:`[eth] <eth>` 配置用于配置以太坊本地签名账户私钥
+- fullbelow缓存优化：没有区块同步任务时，每一分钟请求一次最新区块，以保持fullbelow缓存不被全部释放
+- 修复POP共识Bug：同步区块切换前要检查与前面共识过的区块是否是一条链的
+- 修复以太坊交易哈希计算方式
+- 修复区块同步Bug：会导致区块同步不完整，导致交易无法从交易池移除
+- 已有 `chainID` 状态的链， ``eth_chainId`` 返回现有 `chainID` 的后2个字节转成的整数
+- 修复Web3应用调用过程中的bug
+
 3.2.0
 ---------------------
 - 支持wasm合约虚拟机
-- 支持 ``Prometheus`` 对节点的监控
-- 增加peer连接证书准入机制
-- 支持与sdk之间的ssl连接，支持国密与非国密证书
+- 支持 ``Prometheus`` 对节点的监控，参考配置 :ref:`[prometheus] <prometheus>` 
+- 增加peer连接证书准入机制，参考配置 :ref:`[peer_x509_root_path] <peer_x509_root_path>` 及 :ref:`[peer_x509_cred_path] <peer_x509_cred_path>`
+- 支持与sdk之间的ssl连接，支持国密与非国密证书，参考配置 :ref:`[server] <server>` 及 :ref:`[trusted_ca_list] <trusted_ca_list>`
 - 支持用户证书吊销功能
-- 超级管理员治理功能
+- 超级管理员治理功能，参考配置 :ref:`[govenance] <govenance>`
 - 增加删除子链功能
 - 增加对子链单独执行stop与start操作的功能
+- 增加新特性： ``ContractStorage,TableGrant,PromethSLEHideInMeta``
 
 3.1.0
 ---------------------
@@ -196,6 +218,7 @@ ChainSQL是全球首个基于区块链的数据库应用平台，由 `众享比�
     functions/shard
     functions/consensus
     functions/schema
+    functions/web3
 
 .. toctree::
    :maxdepth: 2

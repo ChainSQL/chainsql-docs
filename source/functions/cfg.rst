@@ -251,9 +251,22 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
     为了保证与低版本的API的兼容性，drops_per_byte的默认值为976(10^6 /1024)，表示1KB数据消耗1 ZXC。drops_per_byte不配置或者配置为默认值，保持与老版本API的向下兼容性；如果该值配置为非默认值，那么与老版本的API都不兼容，无法发起表交易。
 
+.. _eth:
+
+[eth]
+**************
+    配置以太坊本地签名账户私钥，只支持16进制格式
+
+.. code-block:: bash
+
+    [eth]
+    account_private=0x5e47123b1cfaff98506c716bad61a0d2c500a0dc6bf3c2064fe7880a90558068
+
 [features]
 **************
     要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ，这里不再赘述
+
+.. _govenance:
 
 [govenance]
 **************
@@ -368,6 +381,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 - ``online_delete`` 最小值为256，节点最小维持的区块数量，这个值不能小于 ``ledger_history`` 配置项的值
 - ``advisory_delete`` 0为禁用，1为启用。如果启用了，需要调用admin权限接口 ``can_delete`` 来开启区块的在线删除功能
 
+.. _peer_x509_root_path:
+
 [peer_x509_root_path]
 **************************
     配置信任的根证书，用于在建立p2p连接的过程中验证对等节点的子证书
@@ -376,6 +391,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
     [peer_x509_root_path]
     ./ca.cert  
+
+.. _peer_x509_cred_path:
 
 [peer_x509_cred_path]
 **************************
@@ -386,9 +403,11 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     [peer_x509_cred_path]
     ./peer1.cert  
 
+.. _prometheus:
+
 [prometheus]
 *****************
-    Prometheus监控对外提供的http访问端口
+    Prometheus监控对外提供的http访问端口，Prometheus监控功能默认开启，与是否配置此端口号无关
 
 .. code-block:: bash
 
@@ -474,6 +493,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
     [select_limit]
     200
+
+.. _server:
 
 [server]
 ************
@@ -574,6 +595,8 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
     - auto_sync 配置为1，只能同步新建的表，而 sync_tables 还可以同步之前区块上建的表
     - sync_tables 可中配置同步加密表所用的解密私钥，加密表只有通过sync_tables的配置才可以同步下来
     - sync_tables 可配置各种同步条件，如同步到某个区块，同步到某个时间，跳过某个区块等
+
+.. _trusted_ca_list:
 
 [trusted_ca_list]
 **********************
