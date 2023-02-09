@@ -47,7 +47,7 @@
     [node_size]
     medium
 
-    # 区块数据存储配置，windows下用 ``NuDB`` ，Linux/Mac下用 ``RocksDB`` 或 ``NuDB`` 
+    # 区块数据存储配置，Windows/Linux/Mac下都可以用 ``RocksDB`` 或 ``NuDB`` 
     [node_db]
     type=RocksDB
     path=./rocksdb
@@ -138,6 +138,8 @@
 
 版本变化
 ----------------
+    - 3.4.5 版本无配置项增加
+    - 3.3.1 版本增加配置项 ``[genesis]``, ``[eth]``
     - 3.2.0 版本增加配置项 ``[prometheus]``, ``[govenance]`` 等
     - 3.1.0 版本增加配置项 :ref:`cfgledger_tx_tables`
     - 3.0.0 版本增加配置项 :ref:`schema <Schema>`, :ref:`consensus <Consensus>`
@@ -266,6 +268,16 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 **************
     要在节点启动时就在本节点启用的特性，特性的具体介绍参考 :ref:`features <amendments>` ，这里不再赘述
 
+
+[genesis]
+******************
+    设置链创世块相关配置
+
+.. code-block:: bash
+
+    [genesis]
+    chainID=9527
+
 .. _govenance:
 
 [govenance]
@@ -373,7 +385,7 @@ max_txs_in_pool       正整数     N/A     100000    交易池的容量大小
 
 配置项的具体内容：
 
-- ``type`` node_db可选类型有两种，一个是 NuDB（平台兼容，可运行在linux/windows)，一个是 RocksDB（只支持linux）
+- ``type`` node_db可选类型有两种， NuDB 与 RocksDB（两个类型在各运行平台通用）
 - ``path`` node_db 可配置绝对路径也可以配置相对路径（相对于当前配置文件）
 
 可选配置项（用于开启非全节点）：
