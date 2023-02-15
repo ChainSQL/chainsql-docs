@@ -6,3 +6,4 @@ _build/
 build/
 chainsqld-docs.code-workspace
 
+.DS_Store

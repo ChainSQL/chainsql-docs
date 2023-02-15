@@ -24,8 +24,10 @@ ChainSQL 节点的 Docker 镜像地址为：
 
 ::
 
-    wget https://github.com/ChainSQL/chainsql-tools/releases/download/v1.0.0/chainsql-tools.tar.gz
+    wget https://github.com/ChainSQL/chainsql-tools/releases/download/v1.0.1/chainsql-tools.tar.gz
 
+.. IMPORTANT::
+    下载前可前往发布页检查是否为最新版： https://github.com/ChainSQL/chainsql-tools/releases
 
 2. 执行命令对工具解压
    
